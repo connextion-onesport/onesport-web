@@ -12,7 +12,7 @@ export default function RootLayout({
         <Navbar />
       </header>
       {children}
-      <footer className="mx-auto max-w-screen-2xl">
+      <footer className="bg-neutral-950 px-6 pt-10 md:px-8 md:pt-12">
         <Footer />
       </footer>
     </>
