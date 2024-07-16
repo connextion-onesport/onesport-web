@@ -8,7 +8,7 @@ export default function RootLayout({
 }) {
   return (
     <>
-      <header className="mx-auto max-w-full">
+      <header className="bg-background">
         <Navbar />
       </header>
       {children}

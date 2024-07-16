@@ -6,6 +6,26 @@ import {
   RiTwitterXFill,
 } from "react-icons/ri";
 
+// NAVBAR
+export const navbarLinks = [
+  {
+      name: "Home",
+      url: "/"
+  },
+  {
+      name: "Booking",
+      url: "/booking"
+  },
+  {
+      name: "About Us",
+      url: "/about-us"
+  },
+  {
+      name: "Register Business",
+      url: "/create-business"
+  }
+]
+
 // FOOTER
 export const footerSocialMedia = [
   {
