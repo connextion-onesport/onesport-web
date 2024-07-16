@@ -8,7 +8,7 @@ export default function RootLayout({
 }) {
   return (
     <>
-      <header className="mx-auto max-w-screen-2xl">
+      <header className="mx-auto max-w-full">
         <Navbar />
       </header>
       {children}
