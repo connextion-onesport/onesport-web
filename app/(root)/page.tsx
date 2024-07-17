@@ -2,6 +2,7 @@ import Hero from "@/components/Hero";
 import Recommendation from "@/components/Recommendation";
 import FlashSale from "@/components/FlashSale";
 import CTA from "@/components/CTA";
+import BlogList from "@/components/BlogList";
 
 export default function HomePage() {
   return (
@@ -10,6 +11,7 @@ export default function HomePage() {
       <Recommendation />
       <FlashSale />
       <CTA />
+      <BlogList />
     </main>
   );
 }
