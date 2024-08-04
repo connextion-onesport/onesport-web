@@ -4,139 +4,174 @@ import {
   RiInstagramFill,
   RiLinkedinFill,
   RiTwitterXFill,
-} from "react-icons/ri";
+  RiHomeLine,
+  RiSearchLine,
+  RiShoppingCart2Line,
+  RiUserLine,
+  RiSearchFill,
+  RiHomeFill,
+  RiShoppingCart2Fill,
+  RiUserFill,
+} from 'react-icons/ri';
 
 // NAVBAR
-export const navbarLinks = [
+export const navbarRoutes = [
   {
-      name: "Home",
-      url: "/"
+    name: 'Home',
+    path: '/',
   },
   {
-      name: "Booking",
-      url: "/booking"
+    name: 'Sewa Lapangan',
+    path: '/fields',
   },
   {
-      name: "About Us",
-      url: "/about-us"
+    name: 'News',
+    path: '#',
   },
   {
-      name: "Register Business",
-      url: "/create-business"
-  }
-]
+    name: 'About Us',
+    path: '#',
+  },
+];
+
+export const navbarMobileRoutes = [
+  {
+    name: 'Home',
+    path: '/',
+    icon: RiHomeLine,
+    activeIcon: RiHomeFill,
+  },
+  {
+    name: 'Search',
+    path: '/search',
+    icon: RiSearchLine,
+    activeIcon: RiSearchFill,
+  },
+  {
+    name: 'Cart',
+    path: '/cart',
+    icon: RiShoppingCart2Line,
+    activeIcon: RiShoppingCart2Fill,
+  },
+  {
+    name: 'User',
+    path: '/user',
+    icon: RiUserLine,
+    activeIcon: RiUserFill,
+  },
+];
 
 // FOOTER
 export const footerSocialMedia = [
   {
-    name: "OneSport - LinkedIn",
+    name: 'OneSport - LinkedIn',
     icon: RiLinkedinFill,
-    link: "/",
+    link: '/',
   },
   {
-    name: "OneSport - Instagram",
+    name: 'OneSport - Instagram',
     icon: RiInstagramFill,
-    link: "/",
+    link: '/',
   },
   {
-    name: "OneSport - Twitter",
+    name: 'OneSport - Twitter',
     icon: RiTwitterXFill,
-    link: "/",
+    link: '/',
   },
   {
-    name: "OneSport - Facebook",
+    name: 'OneSport - Facebook',
     icon: RiFacebookFill,
-    link: "/",
+    link: '/',
   },
   {
-    name: "OneSport - Discord",
+    name: 'OneSport - Discord',
     icon: RiDiscordFill,
-    link: "/",
+    link: '/',
   },
 ];
 
 export const footerColumnLinks = [
   {
-    title: "General",
+    title: 'General',
     links: [
       {
-        name: "About Us",
-        link: "/",
+        name: 'About Us',
+        link: '/',
       },
       {
-        name: "Contact Us",
-        link: "/",
+        name: 'Contact Us',
+        link: '/',
       },
       {
-        name: "Pricing",
-        link: "/",
+        name: 'Pricing',
+        link: '/',
       },
       {
-        name: "Consulting",
-        link: "/",
+        name: 'Consulting',
+        link: '/',
       },
       {
-        name: "Privacy Policy",
-        link: "/",
+        name: 'Privacy Policy',
+        link: '/',
       },
     ],
   },
   {
-    title: "Services",
+    title: 'Services',
     links: [
       {
-        name: "Football",
-        link: "/",
+        name: 'Football',
+        link: '/',
       },
       {
-        name: "Basketball",
-        link: "/",
+        name: 'Basketball',
+        link: '/',
       },
       {
-        name: "Tennis",
-        link: "/",
+        name: 'Tennis',
+        link: '/',
       },
       {
-        name: "Volleyball",
-        link: "/",
+        name: 'Volleyball',
+        link: '/',
       },
       {
-        name: "Golf",
-        link: "/",
+        name: 'Golf',
+        link: '/',
       },
     ],
   },
   {
-    title: "Resources",
+    title: 'Resources',
     links: [
       {
-        name: "Blog",
-        link: "/",
+        name: 'Blog',
+        link: '/',
       },
       {
-        name: "FAQ",
-        link: "/",
+        name: 'FAQ',
+        link: '/',
       },
       {
-        name: "Support",
-        link: "/",
+        name: 'Support',
+        link: '/',
       },
     ],
   },
   {
-    title: "Legal",
+    title: 'Legal',
     links: [
       {
-        name: "Terms & Conditions",
-        link: "/",
+        name: 'Terms & Conditions',
+        link: '/',
       },
       {
-        name: "Privacy Policy",
-        link: "/",
+        name: 'Privacy Policy',
+        link: '/',
       },
       {
-        name: "Cookie Policy",
-        link: "/",
+        name: 'Cookie Policy',
+        link: '/',
       },
     ],
   },
