@@ -53,12 +53,6 @@ export const navbarMobileRoutes = [
     icon: RiShoppingCart2Line,
     activeIcon: RiShoppingCart2Fill,
   },
-  {
-    name: 'User',
-    path: '/user',
-    icon: RiUserLine,
-    activeIcon: RiUserFill,
-  },
 ];
 
 export const heroCategories = [

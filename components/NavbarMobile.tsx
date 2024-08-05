@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import {usePathname} from 'next/navigation';
 import {navbarMobileRoutes} from '@/lib/constants';
+import AuthDialog from './AuthDialog';
 
 export default function NavbarMobile() {
   const pathName = usePathname();
@@ -28,6 +29,9 @@ export default function NavbarMobile() {
             </li>
           );
         })}
+        <li className="flex items-center justify-center">
+          <AuthDialog authVariant={'login'} />
+        </li>
       </ul>
     </div>
   );
