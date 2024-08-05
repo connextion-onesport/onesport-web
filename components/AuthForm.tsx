@@ -26,13 +26,6 @@ export default function AuthForm({
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [googleHover, setGoogleHover] = useState<boolean>(false);
 
-  const toggleVariant = useCallback(() => {
-    setVariant(currentVariant => (currentVariant === 'login' ? 'register' : 'login'));
-
-    registerForm.reset();
-    loginForm.reset();
-  }, []);
-
   const registerForm = useForm<z.infer<typeof registerFormSchema>>({
     resolver: zodResolver(registerFormSchema),
     defaultValues: {
@@ -57,6 +50,13 @@ export default function AuthForm({
   async function onLogin(values: z.infer<typeof loginFormSchema>) {
     console.log(values);
   }
+
+  const toggleVariant = useCallback(() => {
+    setVariant(currentVariant => (currentVariant === 'login' ? 'register' : 'login'));
+
+    registerForm.reset();
+    loginForm.reset();
+  }, [registerForm, loginForm]);
 
   return (
     <section className="my-auto flex min-w-full flex-col gap-8 rounded-none bg-background px-8 py-10 sm:min-w-[400px] sm:rounded-lg">
