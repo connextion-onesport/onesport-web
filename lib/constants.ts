@@ -61,6 +61,37 @@ export const navbarMobileRoutes = [
   },
 ];
 
+export const heroCategories = [
+  {
+    name: 'Basket',
+    image: '/images/icons/basketball.svg',
+  },
+  {
+    name: 'Pingpong',
+    image: '/images/icons/pingpong.svg',
+  },
+  {
+    name: 'Softball',
+    image: '/images/icons/softball.svg',
+  },
+  {
+    name: 'Track',
+    image: '/images/icons/track.svg',
+  },
+  {
+    name: 'Soccer',
+    image: '/images/icons/soccer.svg',
+  },
+  {
+    name: 'Baseball',
+    image: '/images/icons/baseball.svg',
+  },
+  {
+    name: 'Volley',
+    image: '/images/icons/volleyball.svg',
+  },
+];
+
 // FOOTER
 export const footerSocialMedia = [
   {
