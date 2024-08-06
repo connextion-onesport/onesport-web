@@ -1,5 +1,11 @@
 import {z} from 'zod';
 
+export const emailFormSchema = z.object({
+  email: z.string().email({
+    message: 'Email address must be a valid email address.',
+  }),
+});
+
 export const registerFormSchema = z.object({
   name: z
     .string()

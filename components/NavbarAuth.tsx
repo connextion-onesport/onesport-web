@@ -9,7 +9,7 @@ export default function NavbarAuth() {
   const [showAuthDialog, setShowAuthDialog] = useState<boolean>(false);
 
   function handleRegister() {
-    setAuthVariant('register');
+    setAuthVariant('email');
     setShowAuthDialog(true);
   }
 
@@ -19,7 +19,7 @@ export default function NavbarAuth() {
   }
 
   return (
-    <div className="hidden items-center gap-2 sm:flex">
+    <div className="hidden items-center gap-2 md:flex">
       {showAuthDialog && (
         <AuthDialog
           authVariant={authVariant}

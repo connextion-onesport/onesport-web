@@ -33,10 +33,10 @@ function NavbarLogo() {
 function NavbarAction() {
   return (
     <div className="flex items-center gap-4">
-      <Button size="icon" variant="ghost">
+      <Button size="icon" variant="ghost" className="hidden md:flex">
         <Image src="/images/icons/cart.svg" height={24} width={24} alt="Cart Icon" />
       </Button>
-      <Separator orientation="vertical" />
+      <Separator orientation="vertical" className="hidden md:flex" />
       <NavbarAuth />
       <Button size="icon" variant="ghost" className="flex lg:hidden">
         <RiMenuFill size={24} />
