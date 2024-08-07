@@ -2,12 +2,12 @@ import Image from 'next/image';
 
 export default function PaymentDetail() {
   return (
-    <section className="flex flex-col gap-4 rounded-md bg-background p-4 md:p-8">
+    <section className="flex flex-col gap-4 rounded-xl bg-background p-6">
       <div className="flex flex-col">
-        <h2 className="text-lg font-bold md:text-xl">Rincian Pesanan</h2>
-        <span className="text-sm text-muted-foreground md:text-base">
+        <h3 className="text-lg font-bold md:text-xl">Detail Pesanan</h3>
+        <p className="text-sm text-muted-foreground md:text-base">
           Cek detail pesananmu di bawah ini!
-        </span>
+        </p>
       </div>
 
       <div className="flex flex-col gap-4">

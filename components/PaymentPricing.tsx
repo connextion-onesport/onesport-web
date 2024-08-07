@@ -4,8 +4,8 @@ import {Separator} from './ui/separator';
 
 export default function PaymentPricing() {
   return (
-    <section className="flex flex-col gap-4 rounded-md bg-background p-4 md:p-8">
-      <div className="flex items-start gap-4 rounded-md border p-2">
+    <section className="flex flex-col gap-4 rounded-xl bg-background p-6">
+      <div className="flex items-start gap-4 rounded-md border p-2 md:p-4">
         <div className="flex aspect-video w-36 items-center justify-center">
           <Image
             src="/images/img_bicycle.webp"
@@ -32,10 +32,10 @@ export default function PaymentPricing() {
       </div>
 
       <div className="flex flex-col">
-        <h2 className="text-lg font-bold md:text-xl">Rincian Biaya</h2>
-        <span className="text-sm text-muted-foreground md:text-base">
+        <h3 className="text-lg font-bold md:text-xl">Detail Biaya</h3>
+        <p className="text-sm text-muted-foreground md:text-base">
           Berikut adalah biaya yang perlu kamu bayar.
-        </span>
+        </p>
       </div>
 
       <div className="flex flex-col gap-4">
