@@ -1,4 +1,5 @@
 import PaymentDetail from '@/components/PaymentDetail';
+import PaymentPricing from '@/components/PaymentPricing';
 
 export default function PaymentPage() {
   return (
@@ -6,9 +7,7 @@ export default function PaymentPage() {
       <div className="flex flex-col gap-8">
         <PaymentDetail />
       </div>
-      <div className="flex h-dvh w-full items-center justify-center rounded-md border">
-        <h2>Payment Detail</h2>
-      </div>
+      <PaymentPricing />
     </section>
   );
 }
