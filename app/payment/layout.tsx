@@ -8,8 +8,10 @@ export default function PaymentLayout({children}: {children: React.ReactNode}) {
       <header className="bg-background">
         <Navbar />
       </header>
-      <PaymentSteps />
-      {children}
+      <main className="h-dvh bg-accent">
+        <PaymentSteps />
+        {children}
+      </main>
     </>
   );
 }
