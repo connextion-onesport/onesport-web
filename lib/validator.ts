@@ -41,3 +41,17 @@ export const loginFormSchema = z.object({
       message: 'Your password must contain less than 72 characters.',
     }),
 });
+
+export const paymentFormSchema = z.object({
+  name: z
+    .string()
+    .min(4, {
+      message: 'Name must be between 4 and 64 characters long.',
+    })
+    .max(64, {
+      message: 'Name must be between 4 and 64 characters long.',
+    }),
+  email: z.string().email({
+    message: 'Email address must be a valid email address.',
+  }),
+});
