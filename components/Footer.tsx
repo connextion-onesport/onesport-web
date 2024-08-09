@@ -1,6 +1,6 @@
-import { Button } from "./ui/button";
-import Link from "next/link";
-import { footerColumnLinks, footerSocialMedia } from "@/lib/constants";
+import {Button} from './ui/button';
+import Link from 'next/link';
+import {footerColumnLinks, footerSocialMedia} from '@/lib/constants';
 
 export default function Footer() {
   const year = new Date().getFullYear();
@@ -11,8 +11,9 @@ export default function Footer() {
         <div className="flex flex-col gap-4">
           <span className="text-4xl font-bold">One Sport</span>
           <div className="flex items-center gap-2">
-            {footerSocialMedia.map((social) => (
+            {footerSocialMedia.map(social => (
               <Button
+                key={social.name}
                 asChild
                 size="icon"
                 variant="secondary"
@@ -26,20 +27,18 @@ export default function Footer() {
             ))}
           </div>
           <div className="flex flex-col">
-            <span className="text-2xl font-bold">
-              Are you interested with the offer?
-            </span>
+            <span className="text-2xl font-bold">Are you interested with the offer?</span>
             <span>Sign in or try to manage your services.</span>
           </div>
         </div>
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4">
-          {footerColumnLinks.map((column) => (
-            <div className="flex flex-col gap-4">
+          {footerColumnLinks.map(column => (
+            <div key={column.title} className="flex flex-col gap-4">
               <span className="text-lg font-bold">{column.title}</span>
               <ul className="flex flex-col gap-2">
-                {column.links.map((link) => (
-                  <li className="text-sm hover:underline">
+                {column.links.map(link => (
+                  <li key={link.name} className="text-sm hover:underline">
                     <Link href={link.link}>{link.name}</Link>
                   </li>
                 ))}
@@ -51,7 +50,7 @@ export default function Footer() {
 
       <div className="flex w-full items-center justify-center border-t border-white p-8">
         <span className="text-sm">
-          © {year} |{" "}
+          © {year} |{' '}
           <Link href="/" className="hover:underline">
             One Sport
           </Link>

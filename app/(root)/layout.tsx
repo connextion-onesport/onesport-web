@@ -1,18 +1,14 @@
-import Footer from "@/components/Footer";
-import Navbar from "@/components/Navbar";
+import Footer from '@/components/Footer';
+import Navbar from '@/components/Navbar';
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({children}: {children: React.ReactNode}) {
   return (
     <>
       <header className="bg-background">
         <Navbar />
       </header>
       {children}
-      <footer className="bg-neutral-950 px-6 pt-10 md:px-8 md:pt-12">
+      <footer className="mb-[68px] bg-neutral-950 px-6 pt-10 md:mb-0 md:px-8 md:pt-12">
         <Footer />
       </footer>
     </>
