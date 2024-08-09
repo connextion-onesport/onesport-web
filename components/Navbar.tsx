@@ -35,7 +35,6 @@ export default function Navbar() {
             Register
           </Button>
         </div>
-
         <Button size="icon" variant="ghost" className="flex lg:hidden">
           <RiMenuFill size={24} />
         </Button>
