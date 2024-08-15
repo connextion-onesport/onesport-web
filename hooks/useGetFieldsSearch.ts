@@ -22,7 +22,9 @@ export default function useGetFieldsSearch() {
         field.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         field.location.toLowerCase().includes(searchQuery.toLowerCase());
 
-      const matchesDate = dateQuery ? format(field.date, 'yyyy-MM-dd') === dateQuery : true;
+      const matchesDate = dateQuery
+        ? field.date !== undefined && format(new Date(field.date), 'yyyy-MM-dd') === dateQuery
+        : true;
 
       return matchesQuery && matchesDate;
     });
