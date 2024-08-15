@@ -2,7 +2,7 @@
 
 import FilterButtonList from '@/components/FilterButtonList';
 import FieldList from '@/components/FieldList';
-import {useState} from 'react';
+import {Suspense, useState} from 'react';
 import {useRouter} from 'next/navigation';
 import NavbarMobile from '@/components/NavbarMobile';
 import Searchbar from '@/components/Searchbar';
@@ -27,10 +27,12 @@ export default function FieldsPage() {
 
       <NavbarMobile />
 
-      <FieldList
-        title="Rekomendasi Tempat Olahraga"
-        description="Daftar tempat olahraga yang ada di OneSport"
-      />
+      <Suspense>
+        <FieldList
+          title="Rekomendasi Tempat Olahraga"
+          description="Daftar tempat olahraga yang ada di OneSport"
+        />
+      </Suspense>
     </div>
   );
 }
