@@ -7,17 +7,17 @@ import {useRouter} from 'next/navigation';
 import Searchbar from '@/components/Searchbar';
 import NavbarMobile from '@/components/NavbarMobile';
 
-const RentField: React.FC = () => {
+export default function FieldsPage() {
   const router = useRouter();
   const [searchField, setSearchField] = useState<string>('');
-  const [dateString, setDateString] = useState<string>('');
+  const [searchDate, setSearchDate] = useState<string>('');
 
-  const handleSearch = (newSearchField: string, newDateString: string) => {
+  const handleSearch = (newSearchField: string, newSearchDate: string) => {
     setSearchField(newSearchField);
-    setDateString(newDateString);
-    router.push(`?search=${newSearchField}&date=${newDateString}`);
+    setSearchDate(newSearchDate);
+    router.push(`?search=${newSearchField}&date=${newSearchDate}`);
   };
-  
+
   return (
     <div className="mx-auto flex w-full max-w-screen-2xl flex-col">
       <section className="flex flex-col gap-4 p-4 md:p-8">
@@ -30,11 +30,7 @@ const RentField: React.FC = () => {
       <FieldList
         title="Rekomendasi Tempat Olahraga"
         description="Daftar tempat olahraga yang ada di OneSport"
-        searchField={searchField}
-        dateString={dateString}
       />
     </div>
   );
-};
-
-export default RentField;
+}

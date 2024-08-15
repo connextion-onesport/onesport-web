@@ -161,7 +161,7 @@ function FieldsList({data}: FieldsListProps) {
 }
 
 interface FieldsSearchProps {
-  data: FieldItemProps[];
+  data: FieldItemProps[] | undefined;
 }
 
 function FieldsSearch({data}: FieldsSearchProps) {
