@@ -4,8 +4,8 @@ import FilterButtonList from '@/components/FilterButtonList';
 import FieldList from '@/components/FieldList';
 import {useState} from 'react';
 import {useRouter} from 'next/navigation';
-import Searchbar from '@/components/Searchbar';
 import NavbarMobile from '@/components/NavbarMobile';
+import Searchbar from '@/components/Searchbar';
 
 export default function FieldsPage() {
   const router = useRouter();

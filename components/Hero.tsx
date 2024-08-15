@@ -1,12 +1,12 @@
 'use client';
 
 import Image from 'next/image';
-import Searchbar from './Searchbar';
 import Link from 'next/link';
 import {Button} from './ui/button';
 import {heroCategories} from '@/libs/constants';
 import {useState} from 'react';
 import {useRouter} from 'next/navigation';
+import Searchbar from './Searchbar';
 
 export default function Hero() {
   const router = useRouter();
