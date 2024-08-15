@@ -3,7 +3,7 @@
 import {zodResolver} from '@hookform/resolvers/zod';
 import {useForm} from 'react-hook-form';
 import {z} from 'zod';
-import {emailFormSchema, loginFormSchema, registerFormSchema} from '@/lib/validator';
+import {emailFormSchema, loginFormSchema, registerFormSchema} from '@/libs/validator';
 
 import {Button} from '@/components/ui/button';
 import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from '@/components/ui/form';

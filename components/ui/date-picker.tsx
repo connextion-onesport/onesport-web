@@ -1,22 +1,18 @@
-"use client";
+'use client';
 
-import * as React from "react";
-import { format } from "date-fns";
+import * as React from 'react';
+import {format} from 'date-fns';
 
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import { Calendar } from "@/components/ui/calendar";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-
-interface DatePickerDemoProps {
+import {cn} from '@/libs/utils';
+import {Button} from '@/components/ui/button';
+import {Calendar} from '@/components/ui/calendar';
+import {Popover, PopoverContent, PopoverTrigger} from '@/components/ui/popover';
+import {CalendarIcon} from '@radix-ui/react-icons';
+interface DatePickerProps {
   onDateChange: (date: Date | undefined) => void;
 }
 
-export function DatePickerDemo({ onDateChange }: DatePickerDemoProps) {
+export function DatePicker({onDateChange}: DatePickerProps) {
   const [date, setDate] = React.useState<Date>();
 
   const handleDateSelect = (newDate: Date | undefined) => {
@@ -28,14 +24,13 @@ export function DatePickerDemo({ onDateChange }: DatePickerDemoProps) {
     <Popover>
       <PopoverTrigger asChild>
         <Button
-          variant={"outline"}
           className={cn(
-            "w-full justify-start rounded-r-full px-8 text-left font-normal placeholder:text-sm lg:py-6",
-            !date && "text-muted-foreground",
+            'flex h-full w-full items-center justify-start rounded-none rounded-r-full border-none bg-background px-4 text-left font-normal text-muted-foreground shadow-none placeholder:text-sm hover:bg-accent hover:text-accent-foreground',
+            !date && 'text-muted-foreground'
           )}
         >
-          {/* <CalendarIcon className="mr-2 h-4 w-4" /> */}
-          {date ? format(date, "PPP") : <span>Pick a date</span>}
+          <CalendarIcon className="mr-2 h-5 w-5 text-primary" />
+          {date ? format(date, 'PPP') : <span>Pick a date</span>}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0">

@@ -1,10 +1,10 @@
-import { categoryFilter } from "@/lib/constants";
+import {categoryFilter} from '@/libs/constants';
 export default function CategoryModal() {
   return (
     <div className="flex flex-col gap-4 p-5">
       <p className="text-lg font-semibold">Category</p>
       <div className="flex flex-col gap-4 p-2">
-        {categoryFilter.map((category) => (
+        {categoryFilter.map(category => (
           <div className="flex rounded-full border p-2" key={category.id}>
             <input
               type="radio"

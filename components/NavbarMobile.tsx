@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import {usePathname} from 'next/navigation';
-import {navbarMobileRoutes} from '@/lib/constants';
+import {navbarMobileRoutes} from '@/libs/constants';
 import AuthDialog from './AuthDialog';
 
 export default function NavbarMobile() {
@@ -21,7 +21,7 @@ export default function NavbarMobile() {
                 className="flex h-9 w-9 cursor-pointer flex-col items-center justify-center rounded-md hover:bg-accent hover:text-accent-foreground"
               >
                 {isActiveRoute ? (
-                  <route.activeIcon className="h-6 w-6" />
+                  <route.activeIcon className="h-6 w-6 text-primary" />
                 ) : (
                   <route.icon className="h-6 w-6" />
                 )}

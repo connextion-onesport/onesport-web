@@ -1,6 +1,6 @@
 import {Button} from './ui/button';
 import Link from 'next/link';
-import {footerColumnLinks, footerSocialMedia} from '@/lib/constants';
+import {footerColumnLinks, footerSocialMedia} from '@/libs/constants';
 
 export default function Footer() {
   const year = new Date().getFullYear();

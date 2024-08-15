@@ -1,14 +1,15 @@
-"use client";
-import OrderByModal from "./OrderByModal";
-import PriceModal from "./PriceModal";
-import RatingModal from "./RatingModal";
-import Modal from "./Modal";
-import CategoryModal from "./CategoryModal";
-import { useState } from "react";
-import { Button } from "./ui/button";
+'use client';
+import OrderByModal from './OrderByModal';
+import PriceModal from './PriceModal';
+import RatingModal from './RatingModal';
+import Modal from './Modal';
+import CategoryModal from './CategoryModal';
+import {useState} from 'react';
+import {Button} from './ui/button';
 
 const FilterButton = () => {
   const [open, setOpen] = useState<boolean>(false);
+
   return (
     <>
       <div className="pr-3">

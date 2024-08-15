@@ -1,16 +1,14 @@
-import { orderByModal } from "@/lib/constants";
-import { useState } from "react";
+import {orderByModal} from '@/libs/constants';
+import {useState} from 'react';
+
 export default function OrderByModal() {
   return (
     <div className="p-5">
       <p className="text-lg font-semibold">Order by</p>
       <div className="grid grid-cols-2 pt-3 lg:gap-x-7 lg:gap-y-1">
-        {orderByModal.map((order) => (
+        {orderByModal.map(order => (
           <div className="flex" key={order.id}>
-            <label
-              htmlFor={order.htmlFor}
-              className="relative flex gap-3 text-base"
-            >
+            <label htmlFor={order.htmlFor} className="relative flex gap-3 text-base">
               <input
                 type="radio"
                 name="orderBy"
