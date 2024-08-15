@@ -1,10 +1,24 @@
+'use client';
+
 import Image from 'next/image';
 import Searchbar from './Searchbar';
 import Link from 'next/link';
 import {Button} from './ui/button';
 import {heroCategories} from '@/libs/constants';
+import {useState} from 'react';
+import {useRouter} from 'next/navigation';
 
 export default function Hero() {
+  const router = useRouter();
+  const [searchField, setSearchField] = useState<string>('');
+  const [searchDate, setSearchDate] = useState<string>('');
+
+  const handleSearch = (newSearchField: string, newSearchDate: string) => {
+    setSearchField(newSearchField);
+    setSearchDate(newSearchDate);
+    router.push(`?search=${newSearchField}&date=${newSearchDate}`);
+  };
+
   return (
     <div className="flex flex-col items-center justify-center">
       <div className="relative flex w-full items-center justify-center">
@@ -14,7 +28,7 @@ export default function Hero() {
         <div className="absolute flex h-full w-full flex-col items-center justify-center gap-8 p-4 md:p-8">
           <HeroText />
           <div className="w-full max-w-2xl">
-            <Searchbar />
+            <Searchbar onSearch={handleSearch} />
           </div>
           <HeroCategoryDesktop />
         </div>
