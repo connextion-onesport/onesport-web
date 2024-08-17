@@ -5,13 +5,9 @@ import {
   RiLinkedinFill,
   RiTwitterXFill,
   RiHomeLine,
-  RiSearchLine,
-  RiShoppingCart2Line,
-  RiUserLine,
-  RiSearchFill,
   RiHomeFill,
-  RiShoppingCart2Fill,
-  RiUserFill,
+  RiTicket2Line,
+  RiTicket2Fill,
 } from 'react-icons/ri';
 
 // NAVBAR
@@ -28,22 +24,16 @@ export const navbarRoutes = [
 
 export const navbarMobileRoutes = [
   {
-    name: 'Home',
+    name: 'Beranda',
     path: '/',
     icon: RiHomeLine,
     activeIcon: RiHomeFill,
   },
   {
-    name: 'Search',
-    path: '/fields',
-    icon: RiSearchLine,
-    activeIcon: RiSearchFill,
-  },
-  {
-    name: 'Cart',
-    path: '/cart',
-    icon: RiShoppingCart2Line,
-    activeIcon: RiShoppingCart2Fill,
+    name: 'Pesanan',
+    path: '#',
+    icon: RiTicket2Line,
+    activeIcon: RiTicket2Fill,
   },
 ];
 

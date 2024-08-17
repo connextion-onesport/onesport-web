@@ -11,12 +11,10 @@ import Searchbar from './Searchbar';
 export default function Hero() {
   const router = useRouter();
   const [searchField, setSearchField] = useState<string>('');
-  const [searchDate, setSearchDate] = useState<string>('');
 
-  const handleSearch = (newSearchField: string, newSearchDate: string) => {
+  const handleSearch = (newSearchField: string) => {
     setSearchField(newSearchField);
-    setSearchDate(newSearchDate);
-    router.push(`?search=${newSearchField}&date=${newSearchDate}`);
+    router.push(`/fields?search=${newSearchField}`);
   };
 
   return (
@@ -71,7 +69,7 @@ function HeroText() {
         <br />
         <span className="relative mr-1 whitespace-nowrap">
           <span className="absolute -bottom-1 -left-2 -right-2 -top-1 -rotate-1 bg-background md:-bottom-0 md:-left-3 md:-right-3 md:-top-0" />
-          <span className="font-bebas relative font-bold text-blue-500">sport field</span>
+          <span className="relative font-bebas font-bold text-blue-500">sport field</span>
         </span>{' '}
         venue,
         <br />
@@ -81,7 +79,7 @@ function HeroText() {
         Find the right
         <span className="relative ml-6 whitespace-nowrap">
           <span className="absolute -bottom-1 -left-2 -right-2 -top-1 -rotate-1 bg-primary md:-bottom-0 md:-left-3 md:-right-3 md:-top-0" />
-          <span className="font-bebas relative font-bold">sport field</span>
+          <span className="relative font-bebas font-bold">sport field</span>
         </span>
         <br />
         venue, right away
@@ -108,14 +106,14 @@ function HeroCategoryDesktop() {
             href="#"
             className="flex flex-col items-center justify-center gap-1"
           >
-            <Button className="h-12 w-12 rounded-full p-0 md:h-16 md:w-16">
-              <span className="rounded-full border-4 bg-background p-[1px]">
+            <Button className="h-12 w-12 rounded-full bg-[#F3ECEC] p-0 hover:bg-[#E6E6EF] md:h-16 md:w-16">
+              <span className="rounded-full border-4 border-[#E6E6EF] bg-background p-[1px]">
                 <Image
                   src={category.image}
                   height={32}
                   width={32}
                   alt={category.name}
-                  className="h-8 w-8 md:h-10 md:w-10"
+                  className="h-8 w-8 text-primary md:h-10 md:w-10"
                 />
               </span>
             </Button>
@@ -131,8 +129,8 @@ function HeroCategoryDesktop() {
             href="#"
             className="flex flex-col items-center justify-center gap-1"
           >
-            <Button className="h-12 w-12 rounded-full p-0 md:h-16 md:w-16">
-              <span className="rounded-full border-4 bg-background p-[1px] hover:border-background">
+            <Button className="h-12 w-12 rounded-full bg-[#F3ECEC] p-0 hover:bg-[#E6E6EF] md:h-16 md:w-16">
+              <span className="rounded-full border-4 border-[#E6E6EF] bg-background p-[1px]">
                 <Image
                   src={category.image}
                   height={40}

@@ -10,12 +10,10 @@ import Searchbar from '@/components/Searchbar';
 export default function FieldsPage() {
   const router = useRouter();
   const [searchField, setSearchField] = useState<string>('');
-  const [searchDate, setSearchDate] = useState<string>('');
 
-  const handleSearch = (newSearchField: string, newSearchDate: string) => {
+  const handleSearch = (newSearchField: string) => {
     setSearchField(newSearchField);
-    setSearchDate(newSearchDate);
-    router.push(`?search=${newSearchField}&date=${newSearchDate}`);
+    router.push(`?search=${newSearchField}`);
   };
 
   return (

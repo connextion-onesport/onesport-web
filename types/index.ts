@@ -14,5 +14,5 @@ export interface FieldItemProps {
 }
 
 export interface SearchbarProps {
-  onSearch: (searchField: string, dateString: string) => void;
+  onSearch: (searchField: string) => void;
 }

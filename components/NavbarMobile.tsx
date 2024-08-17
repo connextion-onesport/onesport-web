@@ -10,7 +10,7 @@ export default function NavbarMobile() {
 
   return (
     <div className="fixed bottom-0 z-10 mx-auto w-full max-w-screen-md overflow-hidden border-t bg-background p-4 md:hidden">
-      <ul className="grid w-full grid-cols-4 gap-4">
+      <ul className="grid w-full grid-cols-3 gap-4">
         {navbarMobileRoutes.map(route => {
           const isActiveRoute = pathName === route.path;
 
@@ -18,19 +18,26 @@ export default function NavbarMobile() {
             <li key={route.name} className="flex items-center justify-center">
               <Link
                 href={route.path}
-                className="flex h-9 w-9 cursor-pointer flex-col items-center justify-center rounded-md hover:bg-accent hover:text-accent-foreground"
+                className="flex cursor-pointer flex-col items-center justify-center hover:text-primary"
               >
                 {isActiveRoute ? (
-                  <route.activeIcon className="h-6 w-6 text-primary" />
+                  <>
+                    <route.activeIcon className="h-6 w-6 text-primary" />
+                    <span className="text-xs text-primary">{route.name}</span>
+                  </>
                 ) : (
-                  <route.icon className="h-6 w-6" />
+                  <>
+                    <route.icon className="h-6 w-6" />
+                    <span className="text-xs">{route.name}</span>
+                  </>
                 )}
               </Link>
             </li>
           );
         })}
-        <li className="flex items-center justify-center">
+        <li className="flex cursor-pointer flex-col items-center justify-center hover:text-primary">
           <AuthDialog authVariant={'login'} />
+          <span className="text-xs">Akun</span>
         </li>
       </ul>
     </div>

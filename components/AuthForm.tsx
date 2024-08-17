@@ -105,7 +105,7 @@ function AuthLogo({openAuth}: {openAuth: Dispatch<boolean>}) {
         className="flex aspect-square h-12 w-12 cursor-pointer items-center justify-center rounded-md"
       >
         <Image
-          src="/images/logo.svg"
+          src="/images/logo_shape.svg"
           alt="OneSport Logo"
           width={48}
           height={48}
