@@ -134,7 +134,7 @@ function FieldsList({data}: FieldsListProps) {
   return (
     <div
       className={
-        data && data.pages.length > 0 ? 'grid grid-cols-2 gap-4 lg:grid-cols-4' : 'my-10 h-full'
+        data && data.pages.length > 0 ? 'grid grid-cols-1 gap-4 lg:grid-cols-4' : 'my-10 h-full'
       }
     >
       {data && data.pages.length > 0 ? (

@@ -5,9 +5,9 @@ import Image from 'next/image';
 import Link from 'next/link';
 import {usePathname} from 'next/navigation';
 import {Button} from './ui/button';
-import {Separator} from './ui/separator';
 import AuthDialog from './AuthDialog';
 import {navbarRoutes} from '@/libs/constants';
+import {RiSearchLine} from 'react-icons/ri';
 
 export default function Navbar() {
   const pathName = usePathname();
@@ -22,7 +22,8 @@ export default function Navbar() {
           <HamburgerButton />
           <NavbarLogo />
           <NavbarMenu />
-          <NavbarAction />
+          <SearchButton />
+          <AuthButton />
         </>
       )}
     </nav>
@@ -37,10 +38,10 @@ function NavbarLogo() {
         height={40}
         width={40}
         alt="OneSport Logo"
-        className="hidden h-9 w-9 rounded-md md:flex"
+        className="h-9 w-9 rounded-full"
       />
-      <Image src="/images/logo_text.svg" height={785} width={144} alt="OneSport Logo" />
-      {/* <h1 className="hidden text-xl font-bold text-primary md:block">OneSport</h1> */}
+
+      <h1 className="text-xl font-bold text-primary">OneSport</h1>
     </Link>
   );
 }
@@ -64,34 +65,23 @@ function NavbarMenu() {
 
 function HamburgerButton() {
   return (
-    <Button size="icon" variant="ghost" className="flex h-10 w-10 md:hidden">
+    <Button size="icon" variant="ghost" className="h-10 w-10 md:hidden">
       <Image src="/images/icons/menu.svg" height={24} width={24} alt="Menu Icon" />
     </Button>
   );
 }
 
-function NavbarAction() {
+function SearchButton() {
   return (
-    <div className="flex items-center gap-4">
-      <CartButton />
-      <Separator orientation="vertical" className="hidden md:flex" />
-      <NavbarAuth />
-      <Link href="/register" className="font-bold hover:text-primary sm:hidden">
-        Daftar
+    <Button asChild size="icon" variant="ghost" className="h-10 w-10 md:hidden">
+      <Link href="/fields">
+        <RiSearchLine className="h-6 w-6" />
       </Link>
-    </div>
-  );
-}
-
-function CartButton() {
-  return (
-    <Button size="icon" variant="ghost" className="hidden md:flex">
-      <Image src="/images/icons/cart.svg" height={24} width={24} alt="Cart Icon" />
     </Button>
   );
 }
 
-function NavbarAuth() {
+function AuthButton() {
   const [authVariant, setAuthVariant] = useState<string>('login');
   const [showAuthDialog, setShowAuthDialog] = useState<boolean>(false);
 
@@ -101,7 +91,7 @@ function NavbarAuth() {
   };
 
   return (
-    <div className="hidden items-center gap-2 sm:flex">
+    <div className="hidden items-center gap-2 md:flex">
       {showAuthDialog && (
         <AuthDialog
           authVariant={authVariant}

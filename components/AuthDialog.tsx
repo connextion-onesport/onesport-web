@@ -29,11 +29,8 @@ export default function AuthDialog({
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger
-        className={`${showAuth ? 'hidden' : 'flex'} h-9 w-9 items-center justify-center rounded-md hover:bg-accent hover:text-accent-foreground`}
-        aria-label="Open Auth Dialog"
-      >
-        <RiUserLine className="h-6 w-6 sm:h-5 sm:w-5" />
+      <DialogTrigger className={`${showAuth ? 'hidden' : 'block'}`} aria-label="Open Auth Dialog">
+        <RiUserLine className="h-6 w-6" />
       </DialogTrigger>
       <DialogContent className="flex h-dvh w-full items-center justify-center overflow-auto p-0 sm:h-fit sm:w-fit">
         <VisuallyHidden>
