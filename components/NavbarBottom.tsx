@@ -5,7 +5,7 @@ import {usePathname} from 'next/navigation';
 import {navbarMobileRoutes} from '@/libs/constants';
 import AuthDialog from './AuthDialog';
 
-export default function NavbarMobile() {
+export default function NavbarBottom() {
   const pathName = usePathname();
 
   return (
