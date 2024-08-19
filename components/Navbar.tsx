@@ -53,7 +53,8 @@ function NavbarMenu() {
           key={route.name}
           className={`${pathName === route.path ? 'font-bold text-primary' : 'text-slate-500'} whitespace-nowrap hover:text-primary md:h-10 md:rounded-md md:px-4 md:py-2`}
         >
-          <Link href={route.path}>{route.name}</Link>
+          {/* <Link href={route.path}>{route.name}</Link> */}
+          <Link href="/">{route.name}</Link>
         </li>
       ))}
     </ul>
