@@ -4,7 +4,7 @@ import FilterButtonList from '@/components/FilterButtonList';
 import FieldList from '@/components/FieldList';
 import {Suspense, useState} from 'react';
 import {useRouter} from 'next/navigation';
-import NavbarMobile from '@/components/NavbarMobile';
+import NavbarBottom from '@/components/NavbarBottom';
 import Searchbar from '@/components/Searchbar';
 
 export default function FieldsPage() {
@@ -23,7 +23,7 @@ export default function FieldsPage() {
         <FilterButtonList />
       </section>
 
-      <NavbarMobile />
+      <NavbarBottom />
 
       <Suspense>
         <FieldList
