@@ -8,6 +8,7 @@ import {Button} from './ui/button';
 import AuthDialog from './AuthDialog';
 import {navbarRoutes} from '@/libs/constants';
 import {RiSearchLine} from 'react-icons/ri';
+import NavbarMobileMenu from './NavbarMobileMenu';
 
 export default function Navbar() {
   const pathName = usePathname();
@@ -19,7 +20,7 @@ export default function Navbar() {
         <NavbarLogo />
       ) : (
         <>
-          <HamburgerButton />
+          <NavbarMobileMenu />
           <NavbarLogo />
           <NavbarMenu />
           <SearchButton />
@@ -60,14 +61,6 @@ function NavbarMenu() {
         </li>
       ))}
     </ul>
-  );
-}
-
-function HamburgerButton() {
-  return (
-    <Button size="icon" variant="ghost" className="h-10 w-10 md:hidden">
-      <Image src="/images/icons/menu.svg" height={24} width={24} alt="Menu Icon" />
-    </Button>
   );
 }
 
