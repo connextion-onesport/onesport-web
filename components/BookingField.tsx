@@ -3,12 +3,10 @@ import Image from 'next/image';
 import ScheduleBar from './ScheduleBar';
 import ScheduleDialog from './ScheduleDialog';
 
-function BookingField({isClicked}: {isClicked: boolean}) {
+function BookingField() {
   return (
-    <section>
-      <div
-        className={`${isClicked ? 'h-fit' : 'h-0'} overflow-hidden bg-gradient-to-b from-[#E9EFFD] via-[#F8F8FB] to-[#D5E8FE] transition delay-75 ease-in-out`}
-      >
+    <section id="booking-field">
+      <div className="h-fit overflow-hidden bg-gradient-to-b from-[#E9EFFD] via-[#F8F8FB] to-[#D5E8FE] transition delay-75 ease-in-out">
         <BookingFieldHeader />
         <BookingFieldContent />
       </div>
@@ -18,40 +16,43 @@ function BookingField({isClicked}: {isClicked: boolean}) {
 
 function BookingFieldHeader() {
   return (
-    <div className="flex flex-col gap-4 p-6 pb-0 sm:p-8 sm:pb-0">
-      <h2 className="text-lg font-semibold">Pilih Lapangan</h2>
-      <ScheduleBar className="grid grid-cols-3 justify-evenly rounded-lg bg-white px-2 py-3 shadow-sm sm:grid-cols-5 md:grid-cols-8" />
-      <div className="flex flex-wrap gap-2">
-        <Button
-          variant="outline"
-          className="rounded-full border-none bg-[#E5EEFC] text-xs text-primary shadow-none hover:bg-primary hover:text-white sm:text-sm"
-        >
-          All
-        </Button>
-        <Button
-          variant="outline"
-          className="rounded-full border-none bg-[#E5EEFC] text-xs text-primary shadow-none hover:bg-primary hover:text-white sm:text-sm"
-        >
-          Soccer
-        </Button>
-        <Button
-          variant="outline"
-          className="rounded-full border-none bg-[#E5EEFC] text-xs text-primary shadow-none hover:bg-primary hover:text-white sm:text-sm"
-        >
-          Basket
-        </Button>
-        <Button
-          variant="outline"
-          className="rounded-full border-none bg-[#E5EEFC] text-xs text-primary shadow-none hover:bg-primary hover:text-white sm:text-sm"
-        >
-          Pingpong
-        </Button>
-        <Button
-          variant="outline"
-          className="rounded-full border-none bg-[#E5EEFC] text-xs text-primary shadow-none hover:bg-primary hover:text-white sm:text-sm"
-        >
-          Tenis
-        </Button>
+    <div className="flex flex-col gap-8 p-4 pb-0 sm:p-8 md:p-8">
+      <h2 className="text-2xl font-bold">Pilih Lapangan</h2>
+
+      <div className="flex flex-col gap-4">
+        <ScheduleBar className="grid grid-cols-3 justify-evenly rounded-lg bg-white px-2 py-3 shadow-sm sm:grid-cols-5 md:grid-cols-8" />
+        <div className="flex flex-wrap gap-2">
+          <Button
+            variant="outline"
+            className="rounded-full border-none bg-[#E5EEFC] text-xs text-primary shadow-none hover:bg-primary hover:text-white sm:text-sm"
+          >
+            All
+          </Button>
+          <Button
+            variant="outline"
+            className="rounded-full border-none bg-[#E5EEFC] text-xs text-primary shadow-none hover:bg-primary hover:text-white sm:text-sm"
+          >
+            Soccer
+          </Button>
+          <Button
+            variant="outline"
+            className="rounded-full border-none bg-[#E5EEFC] text-xs text-primary shadow-none hover:bg-primary hover:text-white sm:text-sm"
+          >
+            Basket
+          </Button>
+          <Button
+            variant="outline"
+            className="rounded-full border-none bg-[#E5EEFC] text-xs text-primary shadow-none hover:bg-primary hover:text-white sm:text-sm"
+          >
+            Pingpong
+          </Button>
+          <Button
+            variant="outline"
+            className="rounded-full border-none bg-[#E5EEFC] text-xs text-primary shadow-none hover:bg-primary hover:text-white sm:text-sm"
+          >
+            Tenis
+          </Button>
+        </div>
       </div>
     </div>
   );
@@ -59,7 +60,7 @@ function BookingFieldHeader() {
 
 function BookingFieldContent() {
   return (
-    <div className="flex flex-col gap-5 p-6 sm:p-8">
+    <div className="flex flex-col gap-4 p-4 md:p-8">
       <FieldContent />
       <FieldContent />
       <FieldContent />
