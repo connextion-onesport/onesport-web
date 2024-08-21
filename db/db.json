@@ -1,7 +1,7 @@
 {
   "fields": [
     {
-      "id": 1,
+      "id": "1",
       "name": "Mini Soccer Kuningan",
       "description": "Soccer field with artificial grass.",
       "image": "https://asset.ayo.co.id/image/venue/165528450821896.image_cropper_1655284384009_middle.jpg",
@@ -15,7 +15,7 @@
       "location": "Kuningan, Jakarta Selatan"
     },
     {
-      "id": 2,
+      "id": "2",
       "name": "Sport Center Jakarta Pusat",
       "description": "Multi-purpose sports center.",
       "image": "https://asset.ayo.co.id/image/venue/170902029479080.image_cropper_9F999465-83E5-49C2-97BB-3BA533CF9915-1905-000000DD24536E28_middle.jpg",
@@ -29,7 +29,7 @@
       "location": "Gambir, Jakarta Pusat"
     },
     {
-      "id": 3,
+      "id": "3",
       "name": "Gelora Bung Karno",
       "description": "Large stadium for various sports.",
       "image": "https://asset.ayo.co.id/image/venue/171205611019272.image_cropper_713F695E-A267-44C1-BC10-15C8D401BA39-4241-00000298C10A3C79_middle.jpg",
@@ -43,7 +43,7 @@
       "location": "Gambir, Jakarta Pusat"
     },
     {
-      "id": 4,
+      "id": "4",
       "name": "Jakarta International Stadium",
       "description": "International standard stadium.",
       "image": "https://asset.ayo.co.id/image/venue/171696773166888.image_cropper_1716967712028_middle.jpg",
@@ -57,7 +57,7 @@
       "location": "Kuningan, Jakarta Pusat"
     },
     {
-      "id": 5,
+      "id": "5",
       "name": "VIJ Petojo Stadium",
       "description": "Multipurpose stadium in Petojo.",
       "image": "https://asset.ayo.co.id/image/venue/171696926925433.image_cropper_1716969262601_middle.jpg",
@@ -71,7 +71,7 @@
       "location": "Kuningan, Jakarta Selatan"
     },
     {
-      "id": 6,
+      "id": "6",
       "name": "Polda Metro Jaya Arena",
       "description": "Sports arena near Polda Metro Jaya.",
       "image": "https://asset.ayo.co.id/image/venue/171143538146430.image_cropper_7056C4F0-9DD2-4684-B794-79F16DDEEEBC-27606-0000153DE722AFE4_middle.jpg",
@@ -85,7 +85,7 @@
       "location": "Gambir, Jakarta Pusat"
     },
     {
-      "id": 7,
+      "id": "7",
       "name": "Atang Soetrisna",
       "description": "Multipurpose sports field.",
       "image": "https://asset.ayo.co.id/image/venue/165112943876992.image_cropper_1651129266462_middle.jpg",
@@ -99,7 +99,7 @@
       "location": "Kuningan, Jakarta Pusat"
     },
     {
-      "id": 8,
+      "id": "8",
       "name": "Stadion Mini Gebyuran",
       "description": "Small stadium for community sports.",
       "image": "https://asset.ayo.co.id/image/venue/171447165766637.image_cropper_1714471638922_middle.jpg",
@@ -113,7 +113,7 @@
       "location": "Kuningan, Jakarta Pusat"
     },
     {
-      "id": 9,
+      "id": "9",
       "name": "Kebon Jeruk Arena",
       "description": "Sports arena in Kebon Jeruk.",
       "image": "https://asset.ayo.co.id/image/venue/170184564912592.image_cropper_1701845483403_middle.jpg",
@@ -127,7 +127,7 @@
       "location": "Kuningan, Jakarta Selatan"
     },
     {
-      "id": 10,
+      "id": "10",
       "name": "Mini Soccer UMS",
       "description": "Mini soccer field at UMS.",
       "image": "https://asset.ayo.co.id/image/venue/169398793887489.image_cropper_49E8E0E8-03DB-4D7C-A46F-769120EA03FA-3362-000002000DB1948B_middle.jpg",
@@ -141,7 +141,7 @@
       "location": "Kuningan, Jakarta Selatan"
     },
     {
-      "id": 11,
+      "id": "11",
       "name": "Sunter Stadium",
       "description": "Stadium in Sunter area.",
       "image": "https://asset.ayo.co.id/image/venue/170230503437594.image_cropper_F3C47460-3C88-4D27-9E51-FD9DB29309CE-12014-000001E336637411_middle.jpg",
@@ -155,7 +155,7 @@
       "location": "Kuningan, Jakarta Selatan"
     },
     {
-      "id": 12,
+      "id": "12",
       "name": "Jakarta International Stadium",
       "description": "International standard stadium.",
       "image": "https://asset.ayo.co.id/image/venue/172258726714924.image_cropper_0F3B5CD6-2F2C-449F-A1B4-90B0D4F656F1-6539-0000022C48425536_middle.jpg",
@@ -167,6 +167,15 @@
       "price_per_hour": 1500000.0,
       "is_indoor": false,
       "location": "Kuningan, Jakarta Pusat"
+    }
+  ],
+  "available_hours": [
+    {
+      "available_hours_id": "",
+      "day_of_week": "",
+      "hour": "",
+      "is_available": "",
+      "field_id": ""
     }
   ]
 }
