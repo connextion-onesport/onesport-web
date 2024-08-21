@@ -10,6 +10,8 @@ import {
   RiTicket2Fill,
 } from 'react-icons/ri';
 
+export const API_URL = 'http://localhost:5000';
+
 // NAVBAR
 export const navbarRoutes = [
   {
@@ -150,6 +152,131 @@ export const orderByModal = [
     value: 'highest-rating',
     htmlFor: 'highest-rating',
     text: 'Highest Rating',
+  },
+];
+
+//FASILITAS__DUMMY
+export const fasilitasDummy = [
+  {
+    name: 'Musholla',
+    icon: '/images/icons/mosque.svg',
+  },
+  {
+    name: 'Loker',
+    icon: '/images/icons/loker.svg',
+  },
+  {
+    name: 'Loker',
+    icon: '/images/icons/loker.svg',
+  },
+  {
+    name: 'Cafe',
+    icon: '/images/icons/cafe.svg',
+  },
+  {
+    name: 'Parkir',
+    icon: '/images/icons/parkir.svg',
+  },
+  {
+    name: 'Shower',
+    icon: '/images/icons/shower.svg',
+  },
+  {
+    name: 'Toilet',
+    icon: '/images/icons/toilet.svg',
+  },
+  {
+    name: 'Shower',
+    icon: '/images/icons/shower.svg',
+  },
+];
+
+//SCHEDULE DUMMY DATA
+export const scheduleDummyData = [
+  {
+    id: 1,
+    hour: '09.00 - 10.00',
+    availability: 'Available',
+    price: 500000,
+  },
+  {
+    id: 2,
+    hour: '10.00 - 11.00',
+    availability: 'Available',
+    price: 500000,
+  },
+  {
+    id: 3,
+    hour: '11.00 - 12.00',
+    availability: 'Available',
+    price: 500000,
+  },
+  {
+    id: 4,
+    hour: '13.00 - 14.00',
+    availability: 'Available',
+    price: 500000,
+  },
+  {
+    id: 5,
+    hour: '14.00 - 15.00',
+    availability: 'Available',
+    price: 500000,
+  },
+  {
+    id: 6,
+    hour: '16.00 - 17.00',
+    availability: 'Booked',
+    price: 500000,
+  },
+  {
+    id: 7,
+    hour: '18.00 - 19.00',
+    availability: 'Booked',
+    price: 500000,
+  },
+  {
+    id: 8,
+    hour: '19.00 - 20.00',
+    availability: 'Available',
+    price: 500000,
+  },
+  {
+    id: 9,
+    hour: '20.00 - 21.00',
+    availability: 'Booked',
+    price: 500000,
+  },
+  {
+    id: 10,
+    hour: '21.00 - 22.00',
+    availability: 'Booked',
+    price: 500000,
+  },
+];
+
+//RATING_AND_REVIEW DUMMY DATA
+export const ratingAndReview = [
+  {
+    id: 1,
+    name: 'Faza Abdillah',
+    date: '15 Juli 2024',
+    rating: 4.6,
+    comments: '“Enak banget tempatnya, cocok main bareng teman teman”',
+  },
+  {
+    id: 2,
+    name: 'Faza Abdillah',
+    date: '15 Juli 2024',
+    rating: 4.6,
+    comments: '“Enak banget tempatnya, cocok main bareng teman teman”',
+  },
+  {
+    id: 3,
+    name: 'Faza Abdillah',
+    date: '15 Juli 2024',
+    rating: 4.6,
+    comments: '“Enak banget tempatnya, cocok main bareng teman teman”',
   },
 ];
 
