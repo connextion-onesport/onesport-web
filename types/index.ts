@@ -21,9 +21,11 @@ export interface FieldItemProps {
   name: string;
   image: string;
   date?: string;
+  ratingAvg: number
   price_per_hour: number;
   is_indoor: boolean;
   location: string;
+  category: string;
 }
 
 export interface SearchbarProps {

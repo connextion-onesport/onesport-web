@@ -2,21 +2,24 @@ import {Button} from './ui/button';
 import Image from 'next/image';
 import ScheduleBar from './ScheduleBar';
 import ScheduleDialog from './ScheduleDialog';
+import React from 'react';
 
-function BookingField() {
+const BookingField = React.forwardRef<HTMLDivElement>((props, ref) => {
   return (
-    <section id="booking-field">
+    <section id="booking-field" ref={ref}>
       <div className="h-fit overflow-hidden bg-gradient-to-b from-[#E9EFFD] via-[#F8F8FB] to-[#D5E8FE] transition delay-75 ease-in-out">
         <BookingFieldHeader />
         <BookingFieldContent />
       </div>
     </section>
   );
-}
+});
+
+BookingField.displayName = 'BookingField';
 
 function BookingFieldHeader() {
   return (
-    <div className="flex flex-col gap-8 p-4 pb-0 sm:p-8 md:p-8">
+    <div className="flex flex-col gap-8 p-4 pb-0 sm:p-8 md:p-8" id="bookingfield">
       <h2 className="text-2xl font-bold">Pilih Lapangan</h2>
 
       <div className="flex flex-col gap-4">

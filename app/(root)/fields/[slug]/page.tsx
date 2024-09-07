@@ -1,7 +1,7 @@
 'use client';
 
 import useGetFieldDetails from '@/hooks/useGetFieldDetails';
-import {Dispatch, useState} from 'react';
+import {Dispatch, useRef, useState} from 'react';
 import {Button} from '@/components/ui/button';
 import {fasilitasDummy} from '@/libs/constants';
 import {ratingAndReview} from '@/libs/constants';
@@ -16,11 +16,22 @@ import Link from 'next/link';
 
 export default function DetailPage() {
   const {data, isLoading, isError, isSuccess} = useGetFieldDetails();
+  const ref = useRef<HTMLDivElement | null>(null);
+
+  const handleClick = () => {
+    ref.current?.scrollIntoView({behavior: 'smooth'});
+  };
 
   return (
     <div className="mx-auto flex w-full max-w-screen-2xl flex-col">
-      <FieldDetails data={data} isLoading={isLoading} isError={isError} isSuccess={isSuccess} />
-      <BookingField />
+      <FieldDetails
+        data={data}
+        isLoading={isLoading}
+        isError={isError}
+        isSuccess={isSuccess}
+        handleClick={handleClick}
+      />
+      <BookingField ref={ref} />
       <ReviewAndRating />
       <FieldRecommendation />
       <BookMobileButton data={data} />
@@ -33,9 +44,10 @@ interface FieldDetailsProps {
   isLoading: boolean;
   isError: boolean;
   isSuccess: boolean;
+  handleClick: () => void;
 }
 
-function FieldDetails({data, isLoading, isError, isSuccess}: FieldDetailsProps) {
+function FieldDetails({data, isLoading, isError, isSuccess, handleClick}: FieldDetailsProps) {
   return (
     <>
       {isError && <div className="">error</div>}
@@ -120,7 +132,7 @@ function FieldDetails({data, isLoading, isError, isSuccess}: FieldDetailsProps) 
                   Rp{data?.price_per_hour !== undefined ? formatNumber(data?.price_per_hour) : '-'}{' '}
                   <span className="text-sm font-semibold text-muted-foreground">/hours</span>
                 </p>
-                <Button className="w-fit" onClick={() => scrollIntoTheView('booking-field')}>
+                <Button className="w-fit" onClick={handleClick}>
                   Book Field
                 </Button>
               </div>
@@ -134,7 +146,7 @@ function FieldDetails({data, isLoading, isError, isSuccess}: FieldDetailsProps) 
                 <div className="flex">
                   <Image src="/images/icons/star.svg" width={16} height={16} alt="star icon" />
                   <p className="text-sm text-muted-foreground">
-                    4.6 <span>(10 review)</span>
+                    {data?.ratingAvg} <span>(10 review)</span>
                   </p>
                 </div>
 
@@ -266,7 +278,7 @@ function FieldRecommendation() {
 
       {isSuccess && (
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {data.map(({id, is_indoor, location, name, price_per_hour, image}) => (
+          {data.map(({id, is_indoor, location, name, price_per_hour, image, ratingAvg}) => (
             <FieldItem
               id={id}
               image={image}
@@ -274,6 +286,7 @@ function FieldRecommendation() {
               is_indoor={is_indoor}
               location={location}
               name={name}
+              ratingAvg={ratingAvg}
               price_per_hour={price_per_hour}
             />
           ))}
@@ -298,7 +311,7 @@ function BookMobileButton({data}: BookMobileButtonProps) {
         </p>
       </div>
 
-      <Button onClick={() => scrollIntoTheView('booking-field')}>Book Field</Button>
+      <Button>Book Field</Button>
     </div>
   );
 }

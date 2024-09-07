@@ -12,7 +12,6 @@ export default function FieldList({title, description}: FieldListProps) {
   const pathName = usePathname();
   const searchParams = useSearchParams();
   const searchQuery = searchParams.get('search') || '';
-  const dateQuery = searchParams.get('date') || '';
 
   const {
     data: fieldsData,
@@ -41,7 +40,7 @@ export default function FieldList({title, description}: FieldListProps) {
 
   return (
     <section className="flex flex-col gap-8 p-4 md:p-8">
-      {searchQuery || dateQuery ? (
+      {searchQuery  ? (
         <FieldListHeader title="Tempat olahraga" description="Tempat olahraga sesuai pencarianmu" />
       ) : (
         <FieldListHeader title={title} description={description} pathName={pathName} />
@@ -51,7 +50,17 @@ export default function FieldList({title, description}: FieldListProps) {
       {showError && <ErrorMessage />}
       {showFetching && <FetchingMessage />}
       {showSuccess &&
-        (fieldsSuccess ? <FieldsList data={fieldsData} /> : <FieldsSearch data={searchData} />)}
+        (searchQuery  ? (
+          searchSuccess ? (
+            <FieldsSearch data={searchData} />
+          ) : (
+            <LoadingMessage />
+          )
+        ) : fieldsSuccess ? (
+          <FieldsList data={fieldsData} />
+        ) : (
+          <LoadingMessage />
+        ))}
 
       {pathName !== '/' && (
         <LoadMoreButton
@@ -146,6 +155,7 @@ function FieldsList({data}: FieldsListProps) {
               <FieldItem
                 key={field.id}
                 id={field.id}
+                ratingAvg={field.ratingAvg}
                 image={field.image}
                 is_indoor={field.is_indoor}
                 location={field.location}
@@ -176,10 +186,11 @@ function FieldsSearch({data}: FieldsSearchProps) {
       }
     >
       {data && data.length > 0 ? (
-        data.map(({id, is_indoor, location, name, price_per_hour, image}) => (
+        data.map(({id, is_indoor, location, name, price_per_hour, image, ratingAvg}) => (
           <FieldItem
             id={id}
             image={image}
+            ratingAvg={ratingAvg}
             key={id}
             is_indoor={is_indoor}
             location={location}
