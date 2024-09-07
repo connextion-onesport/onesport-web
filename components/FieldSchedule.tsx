@@ -1,9 +1,10 @@
 import ScheduleBar from './ScheduleBar';
 import {scheduleDummyData} from '@/libs/constants';
 import {Button} from './ui/button';
-import {useState} from 'react';
+import {useRef, useState} from 'react';
 import {DialogClose} from './ui/dialog';
 import {formatNumber} from '@/libs/utils';
+import {useRouter} from 'next/navigation';
 export default function FieldSchedule() {
   return (
     <div className="flex flex-col">

@@ -1,7 +1,7 @@
-import { Input } from "./ui/input";
-import { Button } from "./ui/button";
-import { useState } from "react";
-export default function PriceModal() {
+import {Input} from './ui/input';
+import {Button} from './ui/button';
+import {useState} from 'react';
+export default function PriceContent() {
   const [priceRange, setPriceRange] = useState<{
     minimum: number | undefined;
     maximum: number | undefined;
@@ -12,38 +12,32 @@ export default function PriceModal() {
 
   //the function to set minimum price to 250
   const setPriceMinimum250 = () => {
-    setPriceRange({ minimum: 250000, maximum: 0 });
+    setPriceRange({minimum: 250000, maximum: 0});
   };
 
-  // the function to set maximum price to 150
   const setPriceMaximum150 = () => {
-    setPriceRange({ minimum: 0, maximum: 150000 });
+    setPriceRange({minimum: 0, maximum: 150000});
   };
 
-  // the function to set price range from 150 to 250
   const setPriceRange150to250 = () => {
-    setPriceRange({ minimum: 150000, maximum: 250000 });
+    setPriceRange({minimum: 150000, maximum: 250000});
   };
 
   // the function to handle price change in minimum input elements
   const handleMinimumPriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value
-      ? Math.max(0, parseInt(e.target.value, 10))
-      : undefined;
-    setPriceRange({ ...priceRange, minimum: value });
+    const value = e.target.value ? Math.max(0, parseInt(e.target.value, 10)) : undefined;
+    setPriceRange({...priceRange, minimum: value});
   };
 
   // the function to handle price change in maximum input elements
   const handleMaximumPriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value
-      ? Math.max(0, parseInt(e.target.value, 10))
-      : undefined;
-    setPriceRange({ ...priceRange, maximum: value });
+    const value = e.target.value ? Math.max(0, parseInt(e.target.value, 10)) : undefined;
+    setPriceRange({...priceRange, maximum: value});
   };
 
   // function to prevent users input minus value
   const preventMinus = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "-") {
+    if (e.key === '-') {
       e.preventDefault();
     }
   };
@@ -62,7 +56,7 @@ export default function PriceModal() {
             className="border-none shadow-none"
             onChange={handleMinimumPriceChange}
             onKeyDown={preventMinus}
-            value={priceRange.minimum !== undefined ? priceRange.minimum : ""}
+            value={priceRange.minimum !== undefined ? priceRange.minimum : ''}
             min="0"
           ></Input>
         </div>
@@ -76,7 +70,7 @@ export default function PriceModal() {
             className="border-none shadow-none"
             onChange={handleMaximumPriceChange}
             onKeyDown={preventMinus}
-            value={priceRange.maximum !== undefined ? priceRange.maximum : ""}
+            value={priceRange.maximum !== undefined ? priceRange.maximum : ''}
           ></Input>
         </div>
         <Button

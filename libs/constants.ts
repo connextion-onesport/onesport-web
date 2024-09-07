@@ -133,13 +133,6 @@ export const orderByModal = [
     text: 'Recommendation',
   },
   {
-    name: 'lowest-price',
-    id: 'lowest-price',
-    value: 'lowest-price',
-    htmlFor: 'lowest-price',
-    text: 'Lowest Price',
-  },
-  {
     name: 'highest-price',
     id: 'highest-price',
     value: 'highest-price',
@@ -152,6 +145,13 @@ export const orderByModal = [
     value: 'highest-rating',
     htmlFor: 'highest-rating',
     text: 'Highest Rating',
+  },
+  {
+    name: 'lowest-price',
+    id: 'lowest-price',
+    value: 'lowest-price',
+    htmlFor: 'lowest-price',
+    text: 'Lowest Price',
   },
 ];
 
