@@ -1,61 +1,88 @@
 import {Button} from './ui/button';
 import Link from 'next/link';
 import {footerColumnLinks, footerSocialMedia} from '@/libs/constants';
+import Image from 'next/image';
 
 export default function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <div className="mx-auto flex w-full max-w-screen-2xl flex-col items-center justify-center gap-8 text-white">
+    <div className="mx-auto flex w-full max-w-screen-2xl flex-col items-center justify-center gap-10 text-white md:gap-12">
       <div className="flex w-full flex-col items-start justify-between gap-8 sm:flex-row">
-        <div className="flex flex-col gap-4">
-          <span className="text-4xl font-bold">One Sport</span>
-          <div className="flex items-center gap-2">
-            {footerSocialMedia.map(social => (
-              <Button
-                key={social.name}
-                asChild
-                size="icon"
-                variant="secondary"
-                className="rounded-full"
-                aria-label={social.name}
-              >
-                <Link href={social.link} target="_blank">
-                  <social.icon size="20" />
-                </Link>
-              </Button>
-            ))}
-          </div>
-          <div className="flex flex-col">
-            <span className="text-2xl font-bold">Are you interested with the offer?</span>
-            <span>Sign in or try to manage your services.</span>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4">
-          {footerColumnLinks.map(column => (
-            <div key={column.title} className="flex flex-col gap-4">
-              <span className="text-lg font-bold">{column.title}</span>
-              <ul className="flex flex-col gap-2">
-                {column.links.map(link => (
-                  <li key={link.name} className="text-sm hover:underline">
-                    <Link href={link.link}>{link.name}</Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
+        <FooterLogo />
+        <FooterColumns />
       </div>
 
-      <div className="flex w-full items-center justify-center border-t border-white p-8">
-        <span className="text-sm">
-          © {year} |{' '}
-          <Link href="/" className="hover:underline">
-            One Sport
+      <div className="flex w-full flex-col items-center justify-between gap-4 border-t border-white py-8 md:flex-row">
+        <div className="flex flex-col items-center gap-4">
+          <Link href="/" className="md:hidden">
+            <Image
+              src="/images/logo_text.webp"
+              width={697}
+              height={128}
+              alt="OneSport Logo"
+              className="h-6 w-fit"
+            />
           </Link>
-        </span>
+          <p className="text-sm">© {year} OneSport Inc. All rights reserved.</p>
+        </div>
+
+        <FooterSocialMedia />
       </div>
     </div>
   );
 }
+
+const FooterLogo = () => (
+  <div className="min-w-xs hidden flex-col gap-4 md:flex">
+    <Image
+      src="/images/logo_shape.webp"
+      width={128}
+      height={128}
+      alt="OneSport Logo"
+      className="h-10 w-fit rounded-full"
+    />
+    <div className="flex flex-col">
+      <h2 className="text-2xl font-bold">OneSport</h2>
+      <p className="text-lg">
+        Find the right sport field venue, <br /> right away.
+      </p>
+    </div>
+  </div>
+);
+
+const FooterColumns = () => (
+  <div className="grid w-full grid-cols-2 gap-8 md:max-w-2xl md:grid-cols-4">
+    {footerColumnLinks.map(column => (
+      <div key={column.title} className="flex flex-col gap-4">
+        <span className="text-lg font-bold">{column.title}</span>
+        <ul className="flex flex-col gap-2">
+          {column.links.map(link => (
+            <li key={link.name} className="text-sm hover:underline">
+              <Link href={link.link}>{link.name}</Link>
+            </li>
+          ))}
+        </ul>
+      </div>
+    ))}
+  </div>
+);
+
+const FooterSocialMedia = () => (
+  <div className="flex items-center gap-2">
+    {footerSocialMedia.map(social => (
+      <Button
+        key={social.name}
+        asChild
+        size="icon"
+        variant="ghost"
+        className="h-10 w-10 rounded-full"
+        aria-label={social.name}
+      >
+        <Link href={social.link} target="_blank" rel="noopener noreferrer">
+          <social.icon size="24" />
+        </Link>
+      </Button>
+    ))}
+  </div>
+);
