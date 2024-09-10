@@ -2,7 +2,7 @@ import type {Metadata} from 'next';
 import {Inter as FontSans, Bebas_Neue as Bebas} from 'next/font/google';
 import '@/styles/globals.css';
 import {cn} from '@/libs/utils';
-import Providers from '@/providers';
+import {Providers} from '@/providers';
 
 const fontSans = FontSans({
   subsets: ['latin'],

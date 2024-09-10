@@ -7,12 +7,12 @@ import {Button} from './ui/button';
 import {FieldItemProps, FieldListProps} from '@/types';
 import useGetAllFields from '@/hooks/useGetAllFields';
 import useGetFieldsSearch from '@/hooks/useGetFieldsSearch';
+import {Skeleton} from './ui/skeleton';
 
 export default function FieldList({title, description}: FieldListProps) {
   const pathName = usePathname();
   const searchParams = useSearchParams();
   const searchQuery = searchParams.get('search') || '';
-  const dateQuery = searchParams.get('date') || '';
 
   const {
     data: fieldsData,
@@ -41,17 +41,27 @@ export default function FieldList({title, description}: FieldListProps) {
 
   return (
     <section className="flex flex-col gap-8 p-4 md:p-8">
-      {searchQuery || dateQuery ? (
+      {searchQuery ? (
         <FieldListHeader title="Tempat olahraga" description="Tempat olahraga sesuai pencarianmu" />
       ) : (
         <FieldListHeader title={title} description={description} pathName={pathName} />
       )}
 
-      {showLoading && <LoadingMessage />}
-      {showError && <ErrorMessage />}
-      {showFetching && <FetchingMessage />}
+      {showLoading && <LoadingSkeleton />}
+      {showError && <LoadingSkeleton />}
+      {showFetching && <LoadingSkeleton />}
       {showSuccess &&
-        (fieldsSuccess ? <FieldsList data={fieldsData} /> : <FieldsSearch data={searchData} />)}
+        (searchQuery ? (
+          searchSuccess ? (
+            <FieldsSearch data={searchData} />
+          ) : (
+            <LoadingSkeleton />
+          )
+        ) : fieldsSuccess ? (
+          <FieldsList data={fieldsData} />
+        ) : (
+          <LoadingSkeleton />
+        ))}
 
       {pathName !== '/' && (
         <LoadMoreButton
@@ -110,8 +120,14 @@ function SportCategoryButtons() {
   );
 }
 
-function LoadingMessage() {
-  return <p className="my-10 text-center text-lg">Loading...</p>;
+function LoadingSkeleton() {
+  return (
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+      {[1, 2, 3, 4].map(index => (
+        <Skeleton key={index} className="h-[418px] rounded-xl" />
+      ))}
+    </div>
+  );
 }
 
 function ErrorMessage() {
@@ -134,7 +150,9 @@ function FieldsList({data}: FieldsListProps) {
   return (
     <div
       className={
-        data && data.pages.length > 0 ? 'grid grid-cols-1 gap-4 lg:grid-cols-4' : 'my-10 h-full'
+        data && data.pages.length > 0
+          ? 'grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'
+          : 'my-10 h-full'
       }
     >
       {data && data.pages.length > 0 ? (
@@ -144,6 +162,7 @@ function FieldsList({data}: FieldsListProps) {
               <FieldItem
                 key={field.id}
                 id={field.id}
+                ratingAvg={field.ratingAvg}
                 image={field.image}
                 is_indoor={field.is_indoor}
                 location={field.location}
@@ -174,10 +193,11 @@ function FieldsSearch({data}: FieldsSearchProps) {
       }
     >
       {data && data.length > 0 ? (
-        data.map(({id, is_indoor, location, name, price_per_hour, image}) => (
+        data.map(({id, is_indoor, location, name, price_per_hour, image, ratingAvg}) => (
           <FieldItem
             id={id}
             image={image}
+            ratingAvg={ratingAvg}
             key={id}
             is_indoor={is_indoor}
             location={location}

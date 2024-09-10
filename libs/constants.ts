@@ -133,13 +133,6 @@ export const orderByModal = [
     text: 'Recommendation',
   },
   {
-    name: 'lowest-price',
-    id: 'lowest-price',
-    value: 'lowest-price',
-    htmlFor: 'lowest-price',
-    text: 'Lowest Price',
-  },
-  {
     name: 'highest-price',
     id: 'highest-price',
     value: 'highest-price',
@@ -152,6 +145,13 @@ export const orderByModal = [
     value: 'highest-rating',
     htmlFor: 'highest-rating',
     text: 'Highest Rating',
+  },
+  {
+    name: 'lowest-price',
+    id: 'lowest-price',
+    value: 'lowest-price',
+    htmlFor: 'lowest-price',
+    text: 'Lowest Price',
   },
 ];
 
@@ -311,86 +311,110 @@ export const footerSocialMedia = [
 
 export const footerColumnLinks = [
   {
-    title: 'General',
-    links: [
-      {
-        name: 'About Us',
-        link: '/',
-      },
-      {
-        name: 'Contact Us',
-        link: '/',
-      },
-      {
-        name: 'Pricing',
-        link: '/',
-      },
-      {
-        name: 'Consulting',
-        link: '/',
-      },
-      {
-        name: 'Privacy Policy',
-        link: '/',
-      },
-    ],
-  },
-  {
-    title: 'Services',
+    title: 'Sports',
     links: [
       {
         name: 'Football',
-        link: '/',
+        link: '/football',
+      },
+      {
+        name: 'Futsal',
+        link: '/futsal',
+      },
+      {
+        name: 'Badminton',
+        link: '/badminton',
       },
       {
         name: 'Basketball',
-        link: '/',
-      },
-      {
-        name: 'Tennis',
-        link: '/',
+        link: '/basketball',
       },
       {
         name: 'Volleyball',
-        link: '/',
+        link: '/volleyball',
       },
       {
-        name: 'Golf',
-        link: '/',
-      },
-    ],
-  },
-  {
-    title: 'Resources',
-    links: [
-      {
-        name: 'Blog',
-        link: '/',
+        name: 'Tennis',
+        link: '/tennis',
       },
       {
-        name: 'FAQ',
-        link: '/',
-      },
-      {
-        name: 'Support',
-        link: '/',
+        name: 'Ping-pong',
+        link: '/pingpong',
       },
     ],
   },
   {
-    title: 'Legal',
+    title: 'About',
     links: [
       {
-        name: 'Terms & Conditions',
-        link: '/',
+        name: 'Company Info',
+        link: '/about',
+      },
+      {
+        name: 'Careers',
+        link: '/careers',
+      },
+      {
+        name: 'Our Team',
+        link: '/team',
+      },
+      {
+        name: 'Terms of Service',
+        link: '/terms',
       },
       {
         name: 'Privacy Policy',
-        link: '/',
+        link: '/privacy',
+      },
+    ],
+  },
+  {
+    title: 'Community',
+    links: [
+      {
+        name: 'Forum',
+        link: '/forum',
       },
       {
-        name: 'Cookie Policy',
-        link: '/',
+        name: 'Local Events',
+        link: '/events',
+      },
+      {
+        name: 'Blog',
+        link: '/blog',
+      },
+      {
+        name: 'Social Media',
+        link: '/social',
+      },
+      {
+        name: 'Join a Team',
+        link: '/join-team',
+      },
+    ],
+  },
+  {
+    title: 'Support',
+    links: [
+      {
+        name: 'Help Center',
+        link: '/help',
+      },
+      {
+        name: 'FAQs',
+        link: '/faqs',
+      },
+      {
+        name: 'Contact Us',
+        link: '/contact',
+      },
+      {
+        name: 'User Guides',
+        link: '/guides',
+      },
+      {
+        name: 'Report an Issue',
+        link: '/report',
       },
     ],
   },

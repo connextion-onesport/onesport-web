@@ -3,11 +3,10 @@
 import React, {useState} from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import {Button} from './ui/button';
+import {Button} from '../ui/button';
 import {VisuallyHidden} from '@radix-ui/react-visually-hidden';
 import {RiArrowRightSLine} from 'react-icons/ri';
 import {Cross2Icon} from '@radix-ui/react-icons';
-import AuthDialog from './AuthDialog';
 import {
   Drawer,
   DrawerClose,
@@ -18,6 +17,7 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from '@/components/ui/drawer';
+import {useAuthStore} from '@/providers/zustand-provider';
 
 export default function NavbarMobileMenu() {
   return (
@@ -29,7 +29,7 @@ export default function NavbarMobileMenu() {
         <section className="flex flex-col gap-4">
           <MobileMenuHeader />
 
-          <div className="flex flex-col gap-6 px-6 pb-6">
+          <div className="flex flex-col gap-6 px-4 pb-6">
             <MobileMenu />
             <MobileMenuFooter />
           </div>
@@ -41,7 +41,7 @@ export default function NavbarMobileMenu() {
 
 function MobileMenuHeader() {
   return (
-    <div className="relative flex items-center justify-between border-b px-6">
+    <div className="relative flex items-center justify-between border-b px-4">
       <DrawerHeader className="w-full px-0">
         <DrawerTitle className="text-left">Menu</DrawerTitle>
         <VisuallyHidden>
@@ -87,33 +87,28 @@ function MobileMenu() {
 }
 
 function MobileMenuFooter() {
-  const [authVariant, setAuthVariant] = useState<string>('login');
-  const [showAuthDialog, setShowAuthDialog] = useState<boolean>(false);
+  const {setCurrentStep, inProgress, setShowAuth} = useAuthStore(state => state);
 
-  const handleAuthVariant = (variant: string) => {
-    setAuthVariant(variant);
-    setShowAuthDialog(true);
+  const handleCurrentStep = (currentStep: string) => {
+    if (inProgress) {
+      setShowAuth(true);
+    } else {
+      setShowAuth(true);
+      setCurrentStep(currentStep);
+    }
   };
 
   return (
     <DrawerFooter className="flex flex-row items-center gap-2 p-0">
-      {showAuthDialog && (
-        <AuthDialog
-          authVariant={authVariant}
-          showAuth={showAuthDialog}
-          setShowAuth={setShowAuthDialog}
-        />
-      )}
-
       <Button
         variant="outline"
         size="lg"
         className="w-full px-4"
-        onClick={() => handleAuthVariant('login')}
+        onClick={() => handleCurrentStep('login')}
       >
         Masuk
       </Button>
-      <Button size="lg" className="w-full px-4" onClick={() => handleAuthVariant('email')}>
+      <Button size="lg" className="w-full px-4" onClick={() => handleCurrentStep('register')}>
         Daftar
       </Button>
     </DrawerFooter>

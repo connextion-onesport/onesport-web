@@ -5,17 +5,24 @@ import {FieldItemProps} from '@/types';
 import Image from 'next/image';
 import Link from 'next/link';
 import {RiStarFill, RiTimeLine} from 'react-icons/ri';
+import {useRouter} from 'next/navigation';
 
 export default function FieldItem({
   id,
   is_indoor,
   location,
   name,
+  ratingAvg,
   image,
   price_per_hour,
 }: FieldItemProps) {
+  const router = useRouter();
+
   return (
-    <Link href={`/fields/${id}`} className="h-full max-h-full rounded-xl border">
+    <div
+      className="h-full max-h-full rounded-xl border"
+      onClick={() => router.push(`/fields/${id}`)}
+    >
       <div className="relative flex h-48 w-full items-center justify-center">
         <Image
           src="/images/img_bicycle.webp"
@@ -41,7 +48,8 @@ export default function FieldItem({
           <div className="flex items-center gap-2">
             <RiStarFill className="h-6 w-6 text-amber-400" />
             <p className="text-sm text-muted-foreground">
-              4.6 <span>(10 review)</span>
+              {ratingAvg}
+              <span> (10 review)</span>
             </p>
           </div>
         </div>
@@ -53,6 +61,6 @@ export default function FieldItem({
           </p>
         </div>
       </div>
-    </Link>
+    </div>
   );
 }
