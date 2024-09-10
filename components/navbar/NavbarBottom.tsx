@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import {usePathname} from 'next/navigation';
 import {navbarMobileRoutes} from '@/libs/constants';
-import AuthDialog from './AuthDialog';
+import {AuthDialog} from '../auth';
 
 export default function NavbarBottom() {
   const pathName = usePathname();
@@ -36,7 +36,7 @@ export default function NavbarBottom() {
           );
         })}
         <li className="flex cursor-pointer flex-col items-center justify-center hover:text-primary">
-          <AuthDialog authVariant={'login'} />
+          <AuthDialog />
           <span className="text-xs">Akun</span>
         </li>
       </ul>

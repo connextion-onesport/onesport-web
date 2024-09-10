@@ -4,10 +4,10 @@ import {useState} from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import {usePathname} from 'next/navigation';
-import {Button} from './ui/button';
-import AuthDialog from './AuthDialog';
+import {Button} from '../ui/button';
 import {navbarRoutes} from '@/libs/constants';
 import {RiSearchLine} from 'react-icons/ri';
+import {useAuthStore} from '@/providers/zustand-provider';
 import NavbarMobileMenu from './NavbarMobileMenu';
 
 export default function Navbar() {
@@ -75,33 +75,28 @@ function SearchButton() {
 }
 
 function AuthButton() {
-  const [authVariant, setAuthVariant] = useState<string>('login');
-  const [showAuthDialog, setShowAuthDialog] = useState<boolean>(false);
+  const {setCurrentStep, inProgress, setShowAuth} = useAuthStore(state => state);
 
-  const handleAuthVariant = (variant: string) => {
-    setAuthVariant(variant);
-    setShowAuthDialog(true);
+  const handleCurrentStep = (currentStep: string) => {
+    if (inProgress) {
+      setShowAuth(true);
+    } else {
+      setShowAuth(true);
+      setCurrentStep(currentStep);
+    }
   };
 
   return (
     <div className="hidden items-center gap-2 md:flex">
-      {showAuthDialog && (
-        <AuthDialog
-          authVariant={authVariant}
-          showAuth={showAuthDialog}
-          setShowAuth={setShowAuthDialog}
-        />
-      )}
-
       <Button
         variant="outline"
         size="lg"
         className="px-4"
-        onClick={() => handleAuthVariant('login')}
+        onClick={() => handleCurrentStep('login')}
       >
         Masuk
       </Button>
-      <Button size="lg" className="px-4" onClick={() => handleAuthVariant('email')}>
+      <Button size="lg" className="px-4" onClick={() => handleCurrentStep('register')}>
         Daftar
       </Button>
     </div>

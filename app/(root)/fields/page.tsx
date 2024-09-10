@@ -4,7 +4,7 @@ import FilterButtonList from '@/components/FilterButtonList';
 import FieldList from '@/components/FieldList';
 import {Suspense, useCallback, useEffect, useState} from 'react';
 import {usePathname, useRouter, useSearchParams} from 'next/navigation';
-import NavbarBottom from '@/components/NavbarBottom';
+import NavbarBottom from '@/components/navbar/NavbarBottom';
 import Searchbar from '@/components/Searchbar';
 
 export default function FieldsPage() {
