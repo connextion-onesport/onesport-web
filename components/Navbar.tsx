@@ -35,7 +35,7 @@ function NavbarLogo() {
   return (
     <Link href="/" className="flex h-10 cursor-pointer items-center gap-2 sm:mr-auto md:mr-0">
       <Image
-        src="/images/logo_shape.svg"
+        src="/images/logo_shape.webp"
         height={40}
         width={40}
         alt="OneSport Logo"
@@ -55,7 +55,7 @@ function NavbarMenu() {
       {navbarRoutes.map(route => (
         <li
           key={route.name}
-          className={`${pathName === route.path ? 'font-bold text-primary' : 'text-slate-500'} whitespace-nowrap hover:text-primary md:h-10 md:rounded-md md:px-4 md:py-2`}
+          className={`${pathName === route.path ? 'font-bold text-primary' : 'text-slate-500'} whitespace-nowrap hover:text-primary md:h-10 md:px-4 md:py-2`}
         >
           <Link href={route.path}>{route.name}</Link>
         </li>
