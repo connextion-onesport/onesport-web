@@ -7,6 +7,7 @@ import {Button} from './ui/button';
 import {FieldItemProps, FieldListProps} from '@/types';
 import useGetAllFields from '@/hooks/useGetAllFields';
 import useGetFieldsSearch from '@/hooks/useGetFieldsSearch';
+import {Skeleton} from './ui/skeleton';
 
 export default function FieldList({title, description}: FieldListProps) {
   const pathName = usePathname();
@@ -40,26 +41,26 @@ export default function FieldList({title, description}: FieldListProps) {
 
   return (
     <section className="flex flex-col gap-8 p-4 md:p-8">
-      {searchQuery  ? (
+      {searchQuery ? (
         <FieldListHeader title="Tempat olahraga" description="Tempat olahraga sesuai pencarianmu" />
       ) : (
         <FieldListHeader title={title} description={description} pathName={pathName} />
       )}
 
-      {showLoading && <LoadingMessage />}
-      {showError && <ErrorMessage />}
-      {showFetching && <FetchingMessage />}
+      {showLoading && <LoadingSkeleton />}
+      {showError && <LoadingSkeleton />}
+      {showFetching && <LoadingSkeleton />}
       {showSuccess &&
-        (searchQuery  ? (
+        (searchQuery ? (
           searchSuccess ? (
             <FieldsSearch data={searchData} />
           ) : (
-            <LoadingMessage />
+            <LoadingSkeleton />
           )
         ) : fieldsSuccess ? (
           <FieldsList data={fieldsData} />
         ) : (
-          <LoadingMessage />
+          <LoadingSkeleton />
         ))}
 
       {pathName !== '/' && (
@@ -119,8 +120,14 @@ function SportCategoryButtons() {
   );
 }
 
-function LoadingMessage() {
-  return <p className="my-10 text-center text-lg">Loading...</p>;
+function LoadingSkeleton() {
+  return (
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+      {[1, 2, 3, 4].map(index => (
+        <Skeleton key={index} className="h-[418px] rounded-xl" />
+      ))}
+    </div>
+  );
 }
 
 function ErrorMessage() {
