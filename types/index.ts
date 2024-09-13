@@ -27,11 +27,14 @@ export interface Location {
 export interface FieldItemProps {
   id: number;
   name: string;
-  thumbnail: string; 
+  thumbnail: string;
+  image?: string;
   ratingAvg: number;
-  price_per_hour?: number; 
-  is_indoor?: boolean; 
-  locations: Location[]; 
+  price_per_hour?: number;
+  is_indoor?: boolean;
+  locations: Location[];
+  date?: string;
+  location?: string;
   category?: string;
 }
 

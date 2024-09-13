@@ -40,17 +40,17 @@ export default function Hero() {
 function HeroImage() {
   return (
     <div className="hidden md:flex">
-      <div className="aspect-video min-h-[672px] w-full">
+      <div className="min-h-[672px] w-full">
         <Image
-          src="/images/img_bicycle.webp"
+          src="/images/hero_image.webp"
           alt="Person riding a bicycle"
-          className="object-cover"
+          className="object-cover 2xl:rounded-xl"
           fill
           priority
         />
       </div>
 
-      <span className="absolute inset-0 bg-slate-950 opacity-40" />
+      <span className="absolute inset-0 bg-slate-950 opacity-40 2xl:rounded-xl" />
     </div>
   );
 }

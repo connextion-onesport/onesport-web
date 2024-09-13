@@ -1,4 +1,4 @@
-import Navbar from '@/components/Navbar';
+import Navbar from '@/components/navbar/Navbar';
 
 export default function PaymentLayout({children}: {children: React.ReactNode}) {
   return (

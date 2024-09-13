@@ -1,6 +1,6 @@
 import Hero from '@/components/Hero';
-import NavbarBottom from '@/components/NavbarBottom';
 import FieldHome from '@/components/FieldHome';
+import {NavbarBottom} from '@/components/navbar';
 
 export default function HomePage() {
   return (
