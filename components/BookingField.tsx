@@ -23,7 +23,7 @@ function BookingFieldHeader() {
       <h2 className="text-2xl font-bold">Pilih Lapangan</h2>
 
       <div className="flex flex-col gap-4">
-        <ScheduleBar className="grid grid-cols-3 justify-evenly rounded-lg bg-white px-2 py-3 shadow-sm sm:grid-cols-5 md:grid-cols-8" />
+        <ScheduleBar className="justify-evenly rounded-lg bg-white px-2 py-3 shadow-sm sm:grid-cols-5 md:grid-cols-8" />
         <div className="flex flex-wrap gap-2">
           <Button
             variant="outline"

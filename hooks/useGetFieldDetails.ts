@@ -6,15 +6,14 @@ import {useParams} from 'next/navigation';
 export default function useGetFieldDetails() {
   const params = useParams<{slug: string}>();
   const getFields = async () => {
-    const response = await fetch(`${API_URL}/fields/${params.slug}`);
+    const response = await fetch(`${API_URL}/venues/${params.slug}`);
 
     if (!response.ok) {
       throw new Error('Fetching Error');
     }
 
-    const result: FieldItemProps = await response.json();
+    const result: any = await response.json();
 
-    console.log(result);
     return result;
   };
 

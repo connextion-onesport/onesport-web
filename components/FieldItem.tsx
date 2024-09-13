@@ -1,22 +1,24 @@
 'use client';
 
+import React from 'react';
 import {formatNumber} from '@/libs/utils';
 import {FieldItemProps} from '@/types';
 import Image from 'next/image';
-import Link from 'next/link';
 import {RiStarFill, RiTimeLine} from 'react-icons/ri';
 import {useRouter} from 'next/navigation';
 
-export default function FieldItem({
+const FieldItem: React.FC<FieldItemProps> = ({
   id,
   is_indoor,
-  location,
+  locations,
   name,
   ratingAvg,
-  image,
+  thumbnail,
   price_per_hour,
-}: FieldItemProps) {
+}) => {
   const router = useRouter();
+
+  const address = locations && locations.length > 0 ? locations[0].address : 'Jakarta Pusat';
 
   return (
     <div
@@ -25,7 +27,7 @@ export default function FieldItem({
     >
       <div className="relative flex h-48 w-full items-center justify-center">
         <Image
-          src="/images/img_bicycle.webp"
+          src={'/images/img_bicycle.webp'}
           alt={name}
           fill
           className="absolute w-full rounded-t-xl object-cover"
@@ -44,7 +46,7 @@ export default function FieldItem({
               <p className="self-center text-xs text-muted-foreground">04.00 - 20.00</p>
             </div>
           </div>
-          <p className="text-sm text-muted-foreground">{location}</p>
+          <p className="text-sm text-muted-foreground">{address}</p>
           <div className="flex items-center gap-2">
             <RiStarFill className="h-6 w-6 text-amber-400" />
             <p className="text-sm text-muted-foreground">
@@ -56,11 +58,13 @@ export default function FieldItem({
         <div className="pt-5">
           <s className="text-base font-semibold text-muted-foreground">Rp 1.000.000</s>
           <p className="text-lg font-semibold">
-            Rp {formatNumber(price_per_hour)}
+            Rp {formatNumber(500000)}
             <span className="text-base font-semibold text-muted-foreground">/hours</span>
           </p>
         </div>
       </div>
     </div>
   );
-}
+};
+
+export default FieldItem;

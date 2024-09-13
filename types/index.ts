@@ -16,17 +16,33 @@ export interface FieldListProps {
   description: string;
 }
 
+export interface Location {
+  id: number;
+  latitude: number;
+  longitude: number;
+  address: string;
+  venueId: number;
+}
+
 export interface FieldItemProps {
   id: number;
   name: string;
-  image: string;
-  date?: string;
+  thumbnail: string;
+  image?: string;
   ratingAvg: number;
-  price_per_hour: number;
-  is_indoor: boolean;
-  location: string;
+  price_per_hour?: number;
+  is_indoor?: boolean;
+  locations: Location[];
+  date?: string;
+  location?: string;
   category?: string;
 }
+
+// The root structure of the data you're receiving
+export interface PagesData {
+  data: FieldItemProps[];
+}
+
 
 export interface SearchbarProps {
   onSearch: (searchField: string) => void;
