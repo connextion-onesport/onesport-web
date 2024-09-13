@@ -40,7 +40,7 @@ export default function FieldList({title, description}: FieldListProps) {
 
   return (
     <section className="flex flex-col gap-8 p-4 md:p-8">
-      {searchQuery  ? (
+      {searchQuery ? (
         <FieldListHeader title="Tempat olahraga" description="Tempat olahraga sesuai pencarianmu" />
       ) : (
         <FieldListHeader title={title} description={description} pathName={pathName} />
@@ -50,7 +50,7 @@ export default function FieldList({title, description}: FieldListProps) {
       {showError && <ErrorMessage />}
       {showFetching && <FetchingMessage />}
       {showSuccess &&
-        (searchQuery  ? (
+        (searchQuery ? (
           searchSuccess ? (
             <FieldsSearch data={searchData} />
           ) : (
@@ -134,36 +134,42 @@ function FetchingMessage() {
 interface FieldsListProps {
   data: {
     pages: Array<{
-      data: FieldItemProps[] | undefined;
+      data: any;
+      nextPage?: number;
     }>;
   };
 }
 
 function FieldsList({data}: FieldsListProps) {
+  const response = data.pages;
+  const allFields = response[0].data;
+
+  console.log('allFields', allFields);
+
+  const hasFields = allFields.length > 0;
+  console.log('hasFields', hasFields);
+
   return (
     <div
       className={
-        data && data.pages.length > 0
+        hasFields
           ? 'grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'
           : 'my-10 h-full'
       }
     >
-      {data && data.pages.length > 0 ? (
-        data.pages.map((page, i) => (
-          <React.Fragment key={i}>
-            {page.data?.map(field => (
-              <FieldItem
-                key={field.id}
-                id={field.id}
-                ratingAvg={field.ratingAvg}
-                image={field.image}
-                is_indoor={field.is_indoor}
-                location={field.location}
-                name={field.name}
-                price_per_hour={field.price_per_hour}
-              />
-            ))}
-          </React.Fragment>
+      {hasFields ? (
+        allFields.map((field: FieldItemProps) => (
+          <FieldItem
+            key={field.id}
+            id={field.id}
+            name={field.name}
+            ratingAvg={field.ratingAvg}
+            thumbnail={field.thumbnail}
+            is_indoor={field.is_indoor}
+            locations={field.locations}
+            price_per_hour={field.price_per_hour}
+            category={field.category}
+          />
         ))
       ) : (
         <p className="text-center text-lg font-semibold">No fields found.</p>
@@ -186,17 +192,19 @@ function FieldsSearch({data}: FieldsSearchProps) {
       }
     >
       {data && data.length > 0 ? (
-        data.map(({id, is_indoor, location, name, price_per_hour, image, ratingAvg}) => (
-          <FieldItem
-            id={id}
-            image={image}
-            ratingAvg={ratingAvg}
-            key={id}
-            is_indoor={is_indoor}
-            location={location}
-            name={name}
-            price_per_hour={price_per_hour}
-          />
+        data.map(field => (
+          <React.Fragment key={field.id}>
+            <FieldItem
+              id={field.id}
+              ratingAvg={field.ratingAvg}
+              thumbnail={field.thumbnail}
+              is_indoor={field.is_indoor}
+              locations={field.locations}
+              name={field.name}
+              price_per_hour={field.price_per_hour}
+              category={field.category}
+            />
+          </React.Fragment>
         ))
       ) : (
         <p className="text-center text-lg font-semibold">No fields found.</p>

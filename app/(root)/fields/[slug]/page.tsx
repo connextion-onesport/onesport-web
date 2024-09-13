@@ -18,6 +18,8 @@ export default function DetailPage() {
   const {data, isLoading, isError, isSuccess} = useGetFieldDetails();
   const ref = useRef<HTMLDivElement | null>(null);
 
+  const fieldData = data?.data ?? data;
+
   const handleClick = () => {
     ref.current?.scrollIntoView({behavior: 'smooth'});
   };
@@ -25,7 +27,7 @@ export default function DetailPage() {
   return (
     <div className="mx-auto flex w-full max-w-screen-2xl flex-col">
       <FieldDetails
-        data={data}
+        data={fieldData}
         isLoading={isLoading}
         isError={isError}
         isSuccess={isSuccess}
@@ -40,7 +42,7 @@ export default function DetailPage() {
 }
 
 interface FieldDetailsProps {
-  data: FieldItemProps | undefined;
+  data: any;
   isLoading: boolean;
   isError: boolean;
   isSuccess: boolean;
@@ -48,6 +50,9 @@ interface FieldDetailsProps {
 }
 
 function FieldDetails({data, isLoading, isError, isSuccess, handleClick}: FieldDetailsProps) {
+  const address =
+    data?.locations && data?.locations.length > 0 ? data?.locations[0].address : 'Jakarta Pusat';
+
   return (
     <>
       {isError && <div className="">error</div>}
@@ -114,7 +119,7 @@ function FieldDetails({data, isLoading, isError, isSuccess, handleClick}: FieldD
                     4.8 km
                   </p>
                   <p className="content-center text-base font-semibold text-muted-foreground">
-                    {data?.location}
+                    {address}
                   </p>
                 </div>
                 <div className="flex gap-1">
@@ -129,7 +134,7 @@ function FieldDetails({data, isLoading, isError, isSuccess, handleClick}: FieldD
               <div className="flex flex-col gap-1">
                 <p className="text-sm text-muted-foreground">Harga dari</p>
                 <p className="text-lg font-semibold">
-                  Rp{data?.price_per_hour !== undefined ? formatNumber(data?.price_per_hour) : '-'}{' '}
+                  Rp{formatNumber(500000)}{' '}
                   <span className="text-sm font-semibold text-muted-foreground">/hours</span>
                 </p>
                 <Button className="w-fit" onClick={handleClick}>
@@ -278,13 +283,13 @@ function FieldRecommendation() {
 
       {isSuccess && (
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {data.map(({id, is_indoor, location, name, price_per_hour, image, ratingAvg}) => (
+          {data.map(({id, is_indoor, name, price_per_hour, thumbnail, ratingAvg, locations}) => (
             <FieldItem
               id={id}
-              image={image}
+              thumbnail={thumbnail}
               key={id}
               is_indoor={is_indoor}
-              location={location}
+              locations={locations}
               name={name}
               ratingAvg={ratingAvg}
               price_per_hour={price_per_hour}

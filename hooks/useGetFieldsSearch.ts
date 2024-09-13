@@ -7,31 +7,31 @@ export default function useGetFieldsSearch() {
   const searchQuery = searchParams.get('search') || ''; // Get search query
 
   const getFields = async () => {
-    const response = await fetch('http://localhost:5000/fields'); // Fetch fields from the API
+    const response = await fetch('http://cymint.cloud:3000/api/venues'); 
 
     if (!response.ok) {
       throw new Error('Fetching Error');
     }
 
-    let result: FieldItemProps[] = await response.json(); // Get all fields as an array
+    let result: any = await response.json();
 
-    // Filter fields based on the search query (if search query exists)
+    console.log(result)
+
     if (searchQuery) {
-      result = result.filter((field) => {
+      result = result.data.filter((field: any) => {
         const matchesQuery =
-          field.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          field.location.toLowerCase().includes(searchQuery.toLowerCase());
-        
-        return matchesQuery; // Filtered fields by name or location match
-      });
+          field.name.toLowerCase().includes(searchQuery.toLowerCase())
+          return matchesQuery; 
+        });
     }
+    
 
-    return result; // Return the sorted and filtered fields
+    return result; 
   };
 
   return useQuery({
-    queryKey: ['fields', searchQuery], // Update query key to include both search and order
-    queryFn: getFields, // Function to get and filter the fields
+    queryKey: ['fields', searchQuery],
+    queryFn: getFields, 
     refetchOnWindowFocus: false, // Prevent refetching on window focus
   });
 }

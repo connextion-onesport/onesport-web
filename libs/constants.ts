@@ -10,7 +10,7 @@ import {
   RiTicket2Fill,
 } from 'react-icons/ri';
 
-export const API_URL = 'http://localhost:5000';
+export const API_URL = 'http://cymint.cloud:3000/api';
 
 // NAVBAR
 export const navbarRoutes = [
