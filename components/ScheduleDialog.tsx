@@ -22,7 +22,7 @@ export default function ScheduleDialog() {
           Order Now
         </Button>
       </DialogTrigger>
-      <DialogContent className="m-0 max-h-screen max-w-max overflow-scroll p-0">
+      <DialogContent className="m-0 max-h-screen max-w-3xl overflow-scroll p-0">
         <VisuallyHidden>
           <DialogHeader>
             <DialogTitle>Are you absolutely sure?</DialogTitle>

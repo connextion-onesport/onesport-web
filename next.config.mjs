@@ -17,8 +17,13 @@ const nextConfig = {
         hostname: 'plus.unsplash.com',
         port: '',
       },
+      {
+        protocol: 'https',
+        hostname: 'unsplash.com',
+        port: '',
+      },
     ],
-    domains: ['example.com', 'images.unsplash.com', 'plus.unsplash.com'],
+    domains: ['example.com', 'images.unsplash.com', 'plus.unsplash.com', 'unsplash.com'],
   },
 };
 

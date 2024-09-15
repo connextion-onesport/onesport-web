@@ -24,6 +24,10 @@ export interface Location {
   venueId: number;
 }
 
+export interface Fields {
+  name: string
+}
+
 export interface FieldItemProps {
   id: number;
   name: string;
@@ -36,6 +40,7 @@ export interface FieldItemProps {
   date?: string;
   location?: string;
   category?: string;
+  fields?: Fields[]
 }
 
 // The root structure of the data you're receiving

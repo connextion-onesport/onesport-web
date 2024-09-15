@@ -18,7 +18,7 @@ function ScheduleHeader() {
   return (
     <div className="flex flex-col">
       <h2 className="text-lg-font-semibold p-4 sm:p-6">Pilih Jadwal</h2>
-      <ScheduleBar className="grid grid-cols-4 justify-evenly bg-[#FAFAFA] px-2 py-3 sm:grid-cols-5 md:grid-cols-8" />
+      <ScheduleBar className="max-w-3xl justify-evenly overflow-auto bg-[#FAFAFA] px-2 py-3" />
     </div>
   );
 }
@@ -99,6 +99,7 @@ function ScheduleFooter({
 }
 
 function ScheduleFooterButtons({isChecked}: {isChecked: boolean}) {
+  const router = useRouter();
   return (
     <div className="flex w-full gap-4 pt-4">
       <DialogClose className="w-1/2">
@@ -106,7 +107,12 @@ function ScheduleFooterButtons({isChecked}: {isChecked: boolean}) {
           Close
         </Button>
       </DialogClose>
-      <Button variant={isChecked ? 'default' : 'outline'} className="w-1/2" disabled={!isChecked}>
+      <Button
+        variant={isChecked ? 'default' : 'outline'}
+        className="w-1/2"
+        disabled={!isChecked}
+        onClick={() => router.push('/payment')}
+      >
         Book Field
       </Button>
     </div>

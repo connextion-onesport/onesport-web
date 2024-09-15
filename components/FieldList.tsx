@@ -8,11 +8,14 @@ import {FieldItemProps, FieldListProps} from '@/types';
 import useGetAllFields from '@/hooks/useGetAllFields';
 import useGetFieldsSearch from '@/hooks/useGetFieldsSearch';
 import {Skeleton} from './ui/skeleton';
+import useGetFieldsByCategory from '@/hooks/useGetFieldsByCategory';
+import {fieldImages} from '@/libs/constants';
 
 export default function FieldList({title, description}: FieldListProps) {
   const pathName = usePathname();
   const searchParams = useSearchParams();
   const searchQuery = searchParams.get('search') || '';
+  const categoryQuery = searchParams.get('category') || '';
 
   const {
     data: fieldsData,
@@ -33,11 +36,26 @@ export default function FieldList({title, description}: FieldListProps) {
     isSuccess: searchSuccess,
   } = useGetFieldsSearch();
 
-  const showLoading = fieldsLoading || searchLoading;
-  const showError = !showLoading && (fieldsError || searchError);
-  const showFetching = !showLoading && !showError && (fieldsFetching || searchFetching);
+  const {
+    data: categoryData,
+    isError: categoryError,
+    isLoading: categoryLoading,
+    isFetching: categoryFetching,
+    isSuccess: categorySuccess,
+  } = useGetFieldsByCategory();
+
+  const showLoading = fieldsLoading || searchLoading || categoryLoading;
+  const showError = !showLoading && (fieldsError || searchError || categoryLoading);
+  const showFetching =
+    !showLoading && !showError && (fieldsFetching || searchFetching || categoryFetching);
   const showSuccess =
-    !showLoading && !showError && !showFetching && (fieldsSuccess || searchSuccess);
+    !showLoading &&
+    !showError &&
+    !showFetching &&
+    (fieldsSuccess || searchSuccess || categorySuccess);
+
+  console.log('categorySuccess:', categorySuccess);
+  console.log('categoryData:', categoryData);
 
   return (
     <section className="flex flex-col gap-8 p-4 md:p-8">
@@ -50,10 +68,17 @@ export default function FieldList({title, description}: FieldListProps) {
       {showLoading && <LoadingSkeleton />}
       {showError && <LoadingSkeleton />}
       {showFetching && <LoadingSkeleton />}
+
       {showSuccess &&
         (searchQuery ? (
           searchSuccess ? (
             <FieldsSearch data={searchData} />
+          ) : (
+            <LoadingSkeleton />
+          )
+        ) : categoryQuery ? (
+          categorySuccess ? (
+            <FieldsCategory data={categoryData} />
           ) : (
             <LoadingSkeleton />
           )
@@ -156,6 +181,15 @@ function FieldsList({data}: FieldsListProps) {
   const hasFields = allFields.length > 0;
   console.log('hasFields', hasFields);
 
+  const shuffleArray = (array: any) => {
+    return array.sort(() => Math.random() - 0.5);
+  };
+
+  const shuffledImages = shuffleArray(fieldImages);
+
+  const defaultImage =
+    'https://plus.unsplash.com/premium_photo-1667598736309-1ea3b0fb1afa?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D';
+
   return (
     <div
       className={
@@ -165,13 +199,13 @@ function FieldsList({data}: FieldsListProps) {
       }
     >
       {hasFields ? (
-        allFields.map((field: FieldItemProps) => (
+        allFields.map((field: FieldItemProps, index: any) => (
           <FieldItem
             key={field.id}
             id={field.id}
             name={field.name}
             ratingAvg={field.ratingAvg}
-            thumbnail={field.thumbnail}
+            thumbnail={shuffledImages[index] || defaultImage}
             is_indoor={field.is_indoor}
             locations={field.locations}
             price_per_hour={field.price_per_hour}
@@ -185,8 +219,46 @@ function FieldsList({data}: FieldsListProps) {
   );
 }
 
+function FieldsCategory({data}: FieldsCategoryProps) {
+  const fieldsCategory = data.data;
+  console.log('category data', data.data);
+
+  return (
+    <div
+      className={
+        fieldsCategory && fieldsCategory.length > 0
+          ? 'grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'
+          : 'my-10 h-full'
+      }
+    >
+      {fieldsCategory && fieldsCategory.length > 0 ? (
+        fieldsCategory.map((field: FieldItemProps) => (
+          <React.Fragment key={field.id}>
+            <FieldItem
+              id={field.id}
+              ratingAvg={field.ratingAvg}
+              thumbnail={field.thumbnail}
+              is_indoor={field.is_indoor}
+              locations={field.locations}
+              fields={field.fields}
+              name={field.name}
+              price_per_hour={field.price_per_hour}
+              category={field.category}
+            />
+          </React.Fragment>
+        ))
+      ) : (
+        <p className="text-center text-lg font-semibold">No fields found.</p>
+      )}
+    </div>
+  );
+}
+
 interface FieldsSearchProps {
   data: FieldItemProps[] | undefined;
+}
+interface FieldsCategoryProps {
+  data: any;
 }
 
 function FieldsSearch({data}: FieldsSearchProps) {

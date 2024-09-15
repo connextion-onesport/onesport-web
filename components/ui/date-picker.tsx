@@ -20,7 +20,7 @@ export default function DatePicker({selectedDate, onSelect}: DatePickerProps) {
       <PopoverTrigger asChild>
         <Button
           className={cn(
-            'mt-0 flex h-full w-full max-w-fit items-center justify-center self-center rounded-none rounded-r-full border-none bg-background bg-none px-4 pt-0 text-left font-normal text-muted-foreground shadow-none placeholder:text-sm hover:bg-accent hover:text-accent-foreground',
+            'mt-0 flex h-full w-full max-w-fit items-center justify-center self-center rounded-none border-none bg-transparent px-4 pt-0 text-left font-normal text-muted-foreground shadow-none placeholder:text-sm hover:bg-accent hover:text-accent-foreground',
             !selectedDate && 'text-muted-foreground'
           )}
         >
