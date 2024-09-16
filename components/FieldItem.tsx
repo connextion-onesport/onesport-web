@@ -6,6 +6,7 @@ import {FieldItemProps} from '@/types';
 import Image from 'next/image';
 import {RiStarFill, RiTimeLine} from 'react-icons/ri';
 import {useRouter} from 'next/navigation';
+import {fieldImages} from '@/libs/constants';
 
 const FieldItem: React.FC<FieldItemProps> = ({
   id,
@@ -22,12 +23,12 @@ const FieldItem: React.FC<FieldItemProps> = ({
 
   return (
     <div
-      className="h-full max-h-full rounded-xl border"
+      className="h-full max-h-full rounded-xl border hover:-translate-y-1 hover:shadow-lg"
       onClick={() => router.push(`/fields/${id}`)}
     >
-      <div className="relative flex h-48 w-full items-center justify-center">
+      <div className="relative flex h-56 w-full items-center justify-center">
         <Image
-          src={'/images/img_bicycle.webp'}
+          src={thumbnail}
           alt={name}
           fill
           className="absolute w-full rounded-t-xl object-cover"
@@ -56,6 +57,7 @@ const FieldItem: React.FC<FieldItemProps> = ({
           </div>
         </div>
         <div className="pt-5">
+          <p className="text-xs text-muted-foreground">Mulai dari</p>
           <s className="text-base font-semibold text-muted-foreground">Rp 1.000.000</s>
           <p className="text-lg font-semibold">
             Rp {formatNumber(500000)}

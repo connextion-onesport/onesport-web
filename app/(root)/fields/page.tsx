@@ -20,7 +20,6 @@ export default function FieldsPage() {
   const updateURL = useCallback(() => {
     const params = new URLSearchParams();
 
-    // Masukkan hanya parameter yang aktif ke dalam URL
     if (searchField) params.set('search', searchField);
     if (orderField) params.set('order', orderField);
     if (ratingField) params.set('rating', ratingField.toString());
@@ -30,7 +29,6 @@ export default function FieldsPage() {
     router.push(newURL);
   }, [pathname, router, searchField, orderField, ratingField, categoryField]);
 
-  // Gunakan useEffect untuk memantau perubahan nilai filter dan memperbarui URL
   useEffect(() => {
     updateURL();
   }, [searchField, orderField, ratingField, categoryField, updateURL]);

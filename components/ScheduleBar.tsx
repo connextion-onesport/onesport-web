@@ -16,7 +16,7 @@ export default function ScheduleBar({className}: {className: string}) {
     }
   }, [selectedDate]);
 
-  const handleDateSelect = (date: Date) => {
+  const handleDateSelect = (date: Date | undefined) => {
     setSelectedDate(date || new Date());
   };
 
@@ -24,7 +24,7 @@ export default function ScheduleBar({className}: {className: string}) {
 
   return (
     <div className={`${className} flex items-center justify-between gap-4 space-y-4`}>
-      <div className="flex w-full justify-evenly space-x-2 overflow-x-auto pb-2 items-center">
+      <div className="flex w-full items-center justify-evenly space-x-2 overflow-x-auto pb-2">
         {weekDates.map((date, index) => (
           <Button
             key={index}

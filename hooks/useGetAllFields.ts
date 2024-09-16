@@ -13,6 +13,7 @@ export default function useGetAllFields() {
   const ratingQuery = searchParams.get('rating') || '';
   const categoryQuery = searchParams.get('category') || '';
 
+
   async function getAllFields({ pageParam = 0 }) {
     try {
       const response = await axios.get(`${API_URL}/venues/`, {
@@ -27,7 +28,6 @@ export default function useGetAllFields() {
 
       let fields = response.data.data;
 
-      // Apply filters on the client-side if needed
       if (ratingQuery) {
         const ratingThreshold = parseFloat(ratingQuery);
         fields = fields.filter((field: any) => {
@@ -37,17 +37,12 @@ export default function useGetAllFields() {
       }
 
       if (categoryQuery) {
-        fields = fields.filter((field: any) => field.category === categoryQuery);
-      }
+        fields = fields.filter((field: any) => field.category === categoryQuery).sort((a: any, b: any) => b.ratingAvg - a.ratingAvg);
+          }
 
-      // Apply sorting on the client-side if needed
-      // if (orderQuery === 'highest-price') {
-      //   fields.sort((a, b) => b.price_per_hour - a.price_per_hour);
-      // } else if (orderQuery === 'lowest-price') {
-      //   fields.sort((a, b) => a.price_per_hour - b.price_per_hour);
-      // } else if (orderQuery === 'highest-rating') {
-      //   fields.sort((a, b) => b.ratingAvg - a.ratingAvg);
-      // }
+      if (orderQuery === 'highest-rating') {
+        fields.sort((a: any, b: any) => b.ratingAvg - a.ratingAvg);
+      }
 
       return {
         data: fields,

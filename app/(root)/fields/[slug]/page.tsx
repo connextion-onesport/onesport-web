@@ -13,6 +13,7 @@ import {formatNumber, scrollIntoTheView} from '@/libs/utils';
 import {Separator} from '@/components/ui/separator';
 import {FieldItemProps} from '@/types';
 import Link from 'next/link';
+import {fieldImages} from '@/libs/constants';
 
 export default function DetailPage() {
   const {data, isLoading, isError, isSuccess} = useGetFieldDetails();
@@ -24,6 +25,8 @@ export default function DetailPage() {
     ref.current?.scrollIntoView({behavior: 'smooth'});
   };
 
+  console.log(fieldData);
+
   return (
     <div className="mx-auto flex w-full max-w-screen-2xl flex-col">
       <FieldDetails
@@ -33,7 +36,7 @@ export default function DetailPage() {
         isSuccess={isSuccess}
         handleClick={handleClick}
       />
-      <BookingField ref={ref} />
+      <BookingField ref={ref} fieldsDataBooking={fieldData?.fields} />
       <ReviewAndRating />
       <FieldRecommendation />
       <BookMobileButton data={data} />
@@ -53,6 +56,14 @@ function FieldDetails({data, isLoading, isError, isSuccess, handleClick}: FieldD
   const address =
     data?.locations && data?.locations.length > 0 ? data?.locations[0].address : 'Jakarta Pusat';
 
+  console.log('field details data', data);
+
+  const shuffleArray = (array: any) => {
+    return array.sort(() => Math.random() - 0.5);
+  };
+
+  const shuffledImages = shuffleArray(fieldImages);
+
   return (
     <>
       {isError && <div className="">error</div>}
@@ -66,7 +77,7 @@ function FieldDetails({data, isLoading, isError, isSuccess, handleClick}: FieldD
         <div className="flex flex-col gap-8 px-4 py-8 md:px-8">
           <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
             <Image
-              src="/images/field1.svg"
+              src={shuffledImages[0]}
               alt={data?.name || 'Field Image'}
               width={0}
               height={0}
@@ -75,7 +86,7 @@ function FieldDetails({data, isLoading, isError, isSuccess, handleClick}: FieldD
             />
             <div className="grid w-full grid-cols-4 gap-2 md:grid-cols-2">
               <Image
-                src="/images/field1.svg"
+                src={shuffledImages[1]}
                 alt={data?.name || 'Field Image'}
                 width={0}
                 height={0}
@@ -83,7 +94,7 @@ function FieldDetails({data, isLoading, isError, isSuccess, handleClick}: FieldD
                 className="h-full w-full rounded-lg object-cover"
               />
               <Image
-                src="/images/field1.svg"
+                src={shuffledImages[2]}
                 alt={data?.name || 'Field Image'}
                 width={0}
                 height={0}
@@ -91,7 +102,7 @@ function FieldDetails({data, isLoading, isError, isSuccess, handleClick}: FieldD
                 className="h-full w-full rounded-lg object-cover"
               />
               <Image
-                src="/images/field1.svg"
+                src={shuffledImages[3]}
                 alt={data?.name || 'Field Image'}
                 width={0}
                 height={0}
@@ -99,7 +110,7 @@ function FieldDetails({data, isLoading, isError, isSuccess, handleClick}: FieldD
                 className="h-full w-full rounded-lg object-cover"
               />
               <Image
-                src="/images/field1.svg"
+                src={shuffledImages[4]}
                 alt={data?.name || 'Field Image'}
                 width={0}
                 height={0}
