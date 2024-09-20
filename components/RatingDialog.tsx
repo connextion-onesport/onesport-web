@@ -58,6 +58,8 @@ export default function RatingDialog({
             </DialogDescription>
           </DialogHeader>
         </VisuallyHidden>
+        <h2 className="border-b p-5 text-center font-semibold">Order By</h2>
+
         <RatingContent selectedRating={selectedRating} setSelectedRating={setSelectedRating} />
         <RatingFooter onApply={handleApplyFilter} />
       </DialogContent>

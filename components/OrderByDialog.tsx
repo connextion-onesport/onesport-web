@@ -57,6 +57,7 @@ export default function OrderByDialog({
             </DialogDescription>
           </DialogHeader>
         </VisuallyHidden>
+        <h2 className="border-b p-5 text-center font-semibold">Order By</h2>
         <OrderByContent selectedOrder={selectedOrder} setSelectedOrder={setSelectedOrder} />
         <OrderByFooter onApply={handleApplyFilter} />
       </DialogContent>

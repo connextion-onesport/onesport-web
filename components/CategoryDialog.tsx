@@ -56,6 +56,7 @@ export default function CategoryDialog({onCategory, category}: CategoryDialogPro
             </DialogDescription>
           </DialogHeader>
         </VisuallyHidden>
+        <h2 className="border-b p-5 text-center font-semibold">Category</h2>
         <CategoryContent
           selectedCategory={selectedCategory}
           setSelectedCategory={setSelectedCategory}
