@@ -33,7 +33,7 @@ const FieldItem: React.FC<FieldItemProps> = ({
           fill
           className="absolute w-full rounded-t-xl object-cover"
         />
-        <h1 className="absolute bottom-0 left-0 z-10 rounded-tr-2xl bg-[#65558F] px-3 py-1 text-lg font-semibold text-white">
+        <h1 className="absolute bottom-0 left-0 z-auto rounded-tr-2xl bg-[#65558F] px-3 py-1 text-lg font-semibold text-white">
           4.6 Km
         </h1>
       </div>
