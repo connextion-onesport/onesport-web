@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, {useState} from 'react';
 import FieldItem from './FieldItem';
 import {usePathname, useSearchParams} from 'next/navigation';
 import {Button} from './ui/button';
@@ -23,9 +23,6 @@ export default function FieldList({title, description}: FieldListProps) {
     isLoading: fieldsLoading,
     isFetching: fieldsFetching,
     isSuccess: fieldsSuccess,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
   } = useGetAllFields();
 
   const {
@@ -44,6 +41,10 @@ export default function FieldList({title, description}: FieldListProps) {
     isSuccess: categorySuccess,
   } = useGetFieldsByCategory();
 
+  const [itemsToShow, setItemsToShow] = useState(pathName === '/' ? 4 : 8);
+  const [itemsToShowSearch, setItemsToShowSearch] = useState(8);
+  const [itemsToShowCategory, setItemsToShowCategory] = useState(8);
+
   const showLoading = fieldsLoading || searchLoading || categoryLoading;
   const showError = !showLoading && (fieldsError || searchError || categoryLoading);
   const showFetching =
@@ -54,11 +55,27 @@ export default function FieldList({title, description}: FieldListProps) {
     !showFetching &&
     (fieldsSuccess || searchSuccess || categorySuccess);
 
-  console.log('categorySuccess:', categorySuccess);
-  console.log('categoryData:', categoryData);
+  const limitedData = fieldsData?.pages[0].data.slice(0, itemsToShow);
+
+  const loadMoreItems = () => {
+    setItemsToShow(prev => prev + 8);
+    setItemsToShowSearch(prev => prev + 8);
+    setItemsToShowCategory(prev => prev + 8);
+  };
+
+  const hasMoreItems = () => {
+    if (searchQuery && searchSuccess) {
+      return searchData && searchData.length > itemsToShowSearch;
+    } else if (categoryQuery && categorySuccess) {
+      return categoryData && categoryData.data && categoryData.data.length > itemsToShowCategory;
+    } else if (fieldsSuccess) {
+      return fieldsData && fieldsData.pages[0] && fieldsData.pages[0].data.length > itemsToShow;
+    }
+    return false;
+  };
 
   return (
-    <section className="flex flex-col gap-8 p-4 md:p-8">
+    <section className="flex flex-col gap-8 p-4 pb-16 md:p-8 md:pb-16">
       {searchQuery ? (
         <FieldListHeader title="Tempat olahraga" description="Tempat olahraga sesuai pencarianmu" />
       ) : (
@@ -72,28 +89,24 @@ export default function FieldList({title, description}: FieldListProps) {
       {showSuccess &&
         (searchQuery ? (
           searchSuccess ? (
-            <FieldsSearch data={searchData} />
+            <FieldsSearch data={searchData?.slice(0, itemsToShowSearch)} />
           ) : (
             <LoadingSkeleton />
           )
         ) : categoryQuery ? (
           categorySuccess ? (
-            <FieldsCategory data={categoryData} />
+            <FieldsCategory data={categoryData?.data.slice(0, itemsToShowCategory)} />
           ) : (
             <LoadingSkeleton />
           )
         ) : fieldsSuccess ? (
-          <FieldsList data={fieldsData} />
+          <FieldsList data={limitedData} />
         ) : (
           <LoadingSkeleton />
         ))}
 
-      {pathName !== '/' && (
-        <LoadMoreButton
-          fetchNextPage={fetchNextPage}
-          hasNextPage={hasNextPage}
-          isFetchingNextPage={isFetchingNextPage}
-        />
+      {pathName !== '/' && showSuccess && hasMoreItems() && (
+        <LoadMoreButton loadMoreItems={loadMoreItems} />
       )}
     </section>
   );
@@ -163,22 +176,20 @@ function FetchingMessage() {
   return <p className="my-5 text-center text-lg font-semibold">Fetching data...</p>;
 }
 
-interface FieldsListProps {
-  data: {
-    pages: Array<{
-      data: any;
-      nextPage?: number;
-    }>;
-  };
-}
+// interface FieldsListProps {
+//   data: {
+//     pages: Array<{
+//       data: any;
+//       nextPage?: number;
+//     }>;
+//   };
+// }
 
-function FieldsList({data}: FieldsListProps) {
-  const response = data.pages;
-  const allFields = response[0].data;
+function FieldsList({data}: any) {
+  console.log('allFields', data);
+  console.log('fields length', data?.length);
 
-  console.log('allFields', allFields);
-
-  const hasFields = allFields.length > 0;
+  const hasFields = data?.length > 0;
   console.log('hasFields', hasFields);
 
   const shuffleArray = (array: any) => {
@@ -194,12 +205,12 @@ function FieldsList({data}: FieldsListProps) {
     <div
       className={
         hasFields
-          ? 'grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'
+          ? 'grid grid-cols-1 gap-x-8 gap-y-10 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'
           : 'my-10 h-full'
       }
     >
       {hasFields ? (
-        allFields.map((field: FieldItemProps, index: any) => (
+        data.map((field: FieldItemProps, index: any) => (
           <FieldItem
             key={field.id}
             id={field.id}
@@ -220,24 +231,30 @@ function FieldsList({data}: FieldsListProps) {
 }
 
 function FieldsCategory({data}: FieldsCategoryProps) {
-  const fieldsCategory = data.data;
-  console.log('category data', data.data);
+  const shuffleArray = (array: any) => {
+    return array.sort(() => Math.random() - 0.5);
+  };
+
+  const shuffledImages = shuffleArray(fieldImages);
+
+  const defaultImage =
+    'https://plus.unsplash.com/premium_photo-1667598736309-1ea3b0fb1afa?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D';
 
   return (
     <div
       className={
-        fieldsCategory && fieldsCategory.length > 0
-          ? 'grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'
+        data && data.length > 0
+          ? 'grid grid-cols-1 gap-x-8 gap-y-10 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'
           : 'my-10 h-full'
       }
     >
-      {fieldsCategory && fieldsCategory.length > 0 ? (
-        fieldsCategory.map((field: FieldItemProps) => (
+      {data && data.length > 0 ? (
+        data.map((field: FieldItemProps) => (
           <React.Fragment key={field.id}>
             <FieldItem
               id={field.id}
               ratingAvg={field.ratingAvg}
-              thumbnail={field.thumbnail}
+              thumbnail={shuffledImages[field.id] || defaultImage}
               is_indoor={field.is_indoor}
               locations={field.locations}
               fields={field.fields}
@@ -262,11 +279,20 @@ interface FieldsCategoryProps {
 }
 
 function FieldsSearch({data}: FieldsSearchProps) {
+  console.log('fields search', data);
+  const shuffleArray = (array: any) => {
+    return array.sort(() => Math.random() - 0.5);
+  };
+
+  const shuffledImages = shuffleArray(fieldImages);
+
+  const defaultImage =
+    'https://plus.unsplash.com/premium_photo-1667598736309-1ea3b0fb1afa?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D';
   return (
     <div
       className={
         data && data.length > 0
-          ? 'grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'
+          ? 'grid grid-cols-1 gap-x-8 gap-y-10 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'
           : 'my-10 h-full'
       }
     >
@@ -276,7 +302,7 @@ function FieldsSearch({data}: FieldsSearchProps) {
             <FieldItem
               id={field.id}
               ratingAvg={field.ratingAvg}
-              thumbnail={field.thumbnail}
+              thumbnail={shuffledImages[field.id] || defaultImage}
               is_indoor={field.is_indoor}
               locations={field.locations}
               name={field.name}
@@ -298,21 +324,28 @@ interface LoadMoreButtonProps {
   isFetchingNextPage: boolean;
 }
 
-function LoadMoreButton({fetchNextPage, hasNextPage, isFetchingNextPage}: LoadMoreButtonProps) {
+function LoadMoreButton({loadMoreItems}: {loadMoreItems: () => void}) {
   return (
-    <div className="flex items-center justify-center p-4">
-      <Button
-        onClick={() => fetchNextPage()}
-        disabled={!hasNextPage || isFetchingNextPage}
-        variant="outline"
-        className="text-primary"
-      >
-        {isFetchingNextPage
-          ? 'Loading more...'
-          : hasNextPage
-            ? 'Load More'
-            : 'Nothing more to load'}
-      </Button>
-    </div>
+    <Button
+      onClick={loadMoreItems}
+      variant="outline"
+      className="mx-auto w-fit rounded-full text-primary"
+    >
+      Load More
+    </Button>
+    // <div className="flex items-center justify-center p-4">
+    //   <Button
+    //     onClick={() => fetchNextPage()}
+    //     disabled={!hasNextPage || isFetchingNextPage}
+    //     variant="outline"
+    //     className="text-primary"
+    //   >
+    //     {isFetchingNextPage
+    //       ? 'Loading more...'
+    //       : hasNextPage
+    //         ? 'Load More'
+    //         : 'Nothing more to load'}
+    //   </Button>
+    // </div>
   );
 }

@@ -1,6 +1,7 @@
 'use client';
 
 import useGetFieldDetails from '@/hooks/useGetFieldDetails';
+import {IoIosArrowRoundForward} from 'react-icons/io';
 import {Dispatch, useRef, useState} from 'react';
 import {Button} from '@/components/ui/button';
 import {fasilitasDummy} from '@/libs/constants';
@@ -28,7 +29,16 @@ export default function DetailPage() {
   console.log(fieldData);
 
   return (
-    <div className="mx-auto flex w-full max-w-screen-2xl flex-col">
+    <div className="mx-auto flex w-full max-w-screen-2xl flex-col pb-10">
+      <div className="flex items-center gap-3 px-4 pb-4 pt-8 text-muted-foreground md:px-8">
+        <h1 className="text-sm">Home</h1>
+        <IoIosArrowRoundForward fontSize={24} />
+        <h1 className="text-sm">Rent Field</h1>
+        <IoIosArrowRoundForward fontSize={24} />
+        <h1 className="text-sm">{fieldData?.locations[0].address}</h1>
+        <IoIosArrowRoundForward fontSize={24} />
+        <h1 className="text-sm text-black">{fieldData?.name}</h1>
+      </div>
       <FieldDetails
         data={fieldData}
         isLoading={isLoading}
@@ -74,7 +84,7 @@ function FieldDetails({data, isLoading, isError, isSuccess, handleClick}: FieldD
         </div>
       )}
       {isSuccess && (
-        <div className="flex flex-col gap-8 px-4 py-8 md:px-8">
+        <div className="flex flex-col gap-8 px-4 py-8 pt-0 md:px-8">
           <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
             <Image
               src={shuffledImages[0]}
@@ -278,6 +288,17 @@ function ReviewAndRating() {
 
 function FieldRecommendation() {
   const {data, isError, isSuccess} = useGetFieldRecommendation();
+  const fieldData = data?.data;
+  const limitedData = fieldData?.slice(0, 4);
+
+  const shuffleArray = (array: any) => {
+    return array.sort(() => Math.random() - 0.5);
+  };
+
+  const shuffledImages = shuffleArray(fieldImages);
+
+  const defaultImage =
+    'https://plus.unsplash.com/premium_photo-1667598736309-1ea3b0fb1afa?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D';
 
   return (
     <section className="flex flex-col gap-8 p-4 md:p-8">
@@ -294,18 +315,29 @@ function FieldRecommendation() {
 
       {isSuccess && (
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {data.map(({id, is_indoor, name, price_per_hour, thumbnail, ratingAvg, locations}) => (
-            <FieldItem
-              id={id}
-              thumbnail={thumbnail}
-              key={id}
-              is_indoor={is_indoor}
-              locations={locations}
-              name={name}
-              ratingAvg={ratingAvg}
-              price_per_hour={price_per_hour}
-            />
-          ))}
+          {limitedData?.map(
+            ({
+              id,
+              is_indoor,
+              name,
+              price_per_hour,
+              thumbnail,
+              ratingAvg,
+              locations,
+              index,
+            }: any) => (
+              <FieldItem
+                id={id}
+                thumbnail={shuffledImages[id] || defaultImage}
+                key={id}
+                is_indoor={is_indoor}
+                locations={locations}
+                name={name}
+                ratingAvg={ratingAvg}
+                price_per_hour={price_per_hour}
+              />
+            )
+          )}
         </div>
       )}
     </section>

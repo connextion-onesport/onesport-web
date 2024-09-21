@@ -33,6 +33,9 @@ const FieldItem: React.FC<FieldItemProps> = ({
           fill
           className="absolute w-full rounded-t-xl object-cover"
         />
+        <h1 className="absolute bottom-0 left-0 z-auto rounded-tr-2xl bg-[#65558F] px-3 py-1 text-lg font-semibold text-white">
+          4.6 Km
+        </h1>
       </div>
 
       <div className="flex flex-col justify-between p-4">
@@ -51,7 +54,7 @@ const FieldItem: React.FC<FieldItemProps> = ({
           <div className="flex items-center gap-2">
             <RiStarFill className="h-6 w-6 text-amber-400" />
             <p className="text-sm text-muted-foreground">
-              {ratingAvg}
+              {parseFloat(ratingAvg.toFixed(1))}
               <span> (10 review)</span>
             </p>
           </div>

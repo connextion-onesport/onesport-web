@@ -43,8 +43,9 @@ export default function PriceDialog() {
             </DialogDescription>
           </DialogHeader>
         </VisuallyHidden>
-        <PriceContent  />
-        <PriceFooter  />
+        <h2 className="border-b p-5 text-center font-semibold">Price</h2>
+        <PriceContent />
+        <PriceFooter />
       </DialogContent>
     </Dialog>
   );

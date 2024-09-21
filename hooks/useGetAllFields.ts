@@ -26,7 +26,7 @@ export default function useGetAllFields() {
         },
       });
 
-      let fields = response.data.data;
+      let fields: any = response.data.data;
 
       if (ratingQuery) {
         const ratingThreshold = parseFloat(ratingQuery);
