@@ -1,0 +1,203 @@
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id            String    @id @default(auto()) @map("_id") @db.ObjectId
+  name          String?
+  username      String?   @unique
+  email         String?   @unique
+  emailVerified DateTime?
+  password      String?
+  image         String?
+  phone         String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  accounts     Account[]
+  sessions     Session[]
+  bookings     Booking[]
+  venueReviews VenueReview[]
+}
+
+model Account {
+  id                String  @id @default(auto()) @map("_id") @db.ObjectId
+  userId            String  @db.ObjectId
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.String
+  access_token      String? @db.String
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.String
+  session_state     String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  sessionToken String   @unique
+  userId       String   @db.ObjectId
+  expires      DateTime
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model Venue {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  ownerId   String   @db.ObjectId
+  ratingAvg Float?
+  thumbnail String?
+  minPrice  Float?
+  maxPrice  Float?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  owner      Owner         @relation(fields: [ownerId], references: [id])
+  bookings   Booking[]
+  facilities Facility[]
+  fields     Field[]
+  locations  Location[]
+  reviews    VenueReview[]
+}
+
+model Field {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  description String?
+  venueId     String   @db.ObjectId
+  categoryId  String   @db.ObjectId
+  isIndoor    Boolean
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  availableHours AvailableHour[]
+  images         FieldImage[]
+  category       Category        @relation(fields: [categoryId], references: [id])
+  venue          Venue           @relation(fields: [venueId], references: [id])
+}
+
+model FieldImage {
+  id           String  @id @default(auto()) @map("_id") @db.ObjectId
+  name         String
+  descriptions String?
+  image        String
+  fieldId      String  @db.ObjectId
+
+  field Field @relation(fields: [fieldId], references: [id])
+}
+
+model AvailableHour {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  dayOfWeek    Int
+  hour         Int
+  isAvailable  Boolean
+  pricePerHour Float
+  fieldId      String   @db.ObjectId
+  date         DateTime
+
+  field Field @relation(fields: [fieldId], references: [id])
+}
+
+model Category {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  fields Field[]
+}
+
+model Facility {
+  id      String @id @default(auto()) @map("_id") @db.ObjectId
+  name    String
+  venueId String @db.ObjectId
+
+  venue Venue @relation(fields: [venueId], references: [id])
+}
+
+model VenueReview {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  venueId   String   @db.ObjectId
+  userId    String   @db.ObjectId
+  rating    Int
+  comment   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user  User  @relation(fields: [userId], references: [id])
+  venue Venue @relation(fields: [venueId], references: [id])
+}
+
+model Location {
+  id        String @id @default(auto()) @map("_id") @db.ObjectId
+  latitude  Float
+  longitude Float
+  address   String
+  venueId   String @db.ObjectId
+
+  venue Venue @relation(fields: [venueId], references: [id])
+}
+
+model Owner {
+  id     String  @id @default(auto()) @map("_id") @db.ObjectId
+  name   String
+  venues Venue[]
+}
+
+model Booking {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  venueId       String   @db.ObjectId
+  userId        String   @db.ObjectId
+  bookingDate   DateTime
+  startTime     DateTime
+  endTime       DateTime
+  totalPrice    Float
+  paymentStatus String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  user     User      @relation(fields: [userId], references: [id])
+  venue    Venue     @relation(fields: [venueId], references: [id])
+  payments Payment[]
+}
+
+model Payment {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  bookingId     String   @db.ObjectId
+  paymentTypeId String   @db.ObjectId
+  amount        Float
+  paymentDate   DateTime
+  paymentMethod String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  booking Booking @relation(fields: [bookingId], references: [id])
+}

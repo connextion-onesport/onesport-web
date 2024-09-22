@@ -4,7 +4,7 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'asset.ayo.co.id',
+        hostname: 'lh3.googleusercontent.com',
         port: '',
       },
       {
@@ -23,7 +23,13 @@ const nextConfig = {
         port: '',
       },
     ],
-    domains: ['example.com', 'images.unsplash.com', 'plus.unsplash.com', 'unsplash.com'],
+    domains: [
+      'example.com',
+      'images.unsplash.com',
+      'plus.unsplash.com',
+      'unsplash.com',
+      'lh3.googleusercontent.com',
+    ],
   },
 };
 

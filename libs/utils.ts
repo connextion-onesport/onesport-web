@@ -21,3 +21,14 @@ export function scrollIntoTheView(id: string) {
 
   window.scrollBy(0, -72);
 }
+
+export const getInitials = (name: string) => {
+  const parts = name.split(' ');
+  let initials = '';
+
+  for (let i = 0; i < Math.min(2, parts.length); i++) {
+    initials += parts[i].charAt(0).toUpperCase();
+  }
+
+  return initials;
+};

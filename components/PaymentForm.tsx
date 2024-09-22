@@ -6,7 +6,7 @@ import {Dispatch, useEffect, useState} from 'react';
 import {z} from 'zod';
 import {Input} from './ui/input';
 import {useForm} from 'react-hook-form';
-import {paymentFormSchema} from '@/libs/validator';
+import {paymentFormSchema} from '@/libs/validators';
 import {zodResolver} from '@hookform/resolvers/zod';
 import {RiInformationLine} from 'react-icons/ri';
 import {createPaymentToken} from '@/actions/payment';
