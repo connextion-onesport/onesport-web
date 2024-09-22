@@ -10,7 +10,6 @@ generator client {
 model User {
   id            String    @id @default(auto()) @map("_id") @db.ObjectId
   name          String?
-  username      String?   @unique
   email         String?   @unique
   emailVerified DateTime?
   password      String?
@@ -74,18 +73,26 @@ model Venue {
   name      String
   ownerId   String   @db.ObjectId
   ratingAvg Float?
-  thumbnail String?
-  minPrice  Float?
-  maxPrice  Float?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  owner      Owner         @relation(fields: [ownerId], references: [id])
-  bookings   Booking[]
-  facilities Facility[]
+  owner    Owner     @relation(fields: [ownerId], references: [id])
+  bookings Booking[]
+
+  facilities VenueFacility[]
   fields     Field[]
+  images     VenueImage[]
   locations  Location[]
   reviews    VenueReview[]
+}
+
+model VenueImage {
+  id      String  @id @default(auto()) @map("_id") @db.ObjectId
+  name    String
+  image   String
+  venueId String? @db.ObjectId
+
+  Venue Venue? @relation(fields: [venueId], references: [id])
 }
 
 model Field {
@@ -105,23 +112,21 @@ model Field {
 }
 
 model FieldImage {
-  id           String  @id @default(auto()) @map("_id") @db.ObjectId
-  name         String
-  descriptions String?
-  image        String
-  fieldId      String  @db.ObjectId
+  id      String @id @default(auto()) @map("_id") @db.ObjectId
+  name    String
+  image   String
+  fieldId String @db.ObjectId
 
   field Field @relation(fields: [fieldId], references: [id])
 }
 
 model AvailableHour {
-  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  id           String  @id @default(auto()) @map("_id") @db.ObjectId
   dayOfWeek    Int
   hour         Int
   isAvailable  Boolean
   pricePerHour Float
-  fieldId      String   @db.ObjectId
-  date         DateTime
+  fieldId      String  @db.ObjectId
 
   field Field @relation(fields: [fieldId], references: [id])
 }
@@ -136,19 +141,31 @@ model Category {
 }
 
 model Facility {
-  id      String @id @default(auto()) @map("_id") @db.ObjectId
-  name    String
-  venueId String @db.ObjectId
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  venue Venue @relation(fields: [venueId], references: [id])
+  venues VenueFacility[]
+}
+
+model VenueFacility {
+  id         String @id @default(auto()) @map("_id") @db.ObjectId
+  venueId    String @db.ObjectId
+  facilityId String @db.ObjectId
+
+  venue    Venue    @relation(fields: [venueId], references: [id])
+  facility Facility @relation(fields: [facilityId], references: [id])
+
+  @@unique([venueId, facilityId])
 }
 
 model VenueReview {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   venueId   String   @db.ObjectId
   userId    String   @db.ObjectId
-  rating    Int
-  comment   String?
+  rating    Float
+  comment   String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
