@@ -26,13 +26,11 @@ export default function VenueImages({venues}: VenueImagesProps) {
   const {showImages, setShowImages} = useVenueStore(state => state);
   const imageCount = venues.length;
 
-  console.log('images', venues);
-
   return (
     <section className="grid grid-cols-1 gap-2 md:grid-cols-2">
       <VenueImage venue={venues} setShowImages={setShowImages} />
       <div className="grid grid-cols-4 gap-2 md:grid-cols-2">
-        {venues.map(venue => (
+        {venues.map((venue: { id: string; image: string }) => (
           <VenueImage
             key={venue.id}
             venue={venue.image}
@@ -58,11 +56,6 @@ interface VenueImageProps {
 }
 
 function VenueImage({venue, setShowImages, isLast}: VenueImageProps) {
-
-  console.log('image', venues);
-  console.log('isLast', isLast);
-  console.log('image0', venues.image);
-
   return (
     <div
       className={`${isLast ? 'relative bg-primary/10' : 'shrink-0 grow-0 cursor-pointer'} flex h-full cursor-pointer items-center justify-center overflow-hidden rounded-lg`}
@@ -148,7 +141,7 @@ function VenueCarousel({venues}: VenueCarouselProps) {
     <div className="my-auto flex w-full flex-col gap-8 rounded-none bg-background px-6 py-10">
       <Carousel setApi={setApi} className="w-full">
         <CarouselContent>
-          {venues.map(venue => (
+          {venues.map((venue: { id: string; image: string; name: string }) => (
             <CarouselItem key={venue.id} className="w-full">
               <AspectRatio ratio={16 / 9} className="overflow-hidden rounded-lg">
                 <Image
@@ -165,7 +158,7 @@ function VenueCarousel({venues}: VenueCarouselProps) {
 
       {/* Thumbnail Navigation */}
       <div ref={thumbnailsRef} className="flex gap-2 overflow-hidden p-1 items-center justify-center">
-        {venues.map((venue, index) => (
+        {venues.map((venue: { id: string; image: string; name: string }, index: number) => (
           <VenueCarouselButton
             key={venue.id}
             image={venue.image}

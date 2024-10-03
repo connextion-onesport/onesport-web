@@ -1,14 +1,24 @@
 'use client';
 
-import FilterButtonList from '@/components/FilterList';
 import {Suspense, useCallback, useEffect, useState} from 'react';
 import {usePathname, useRouter, useSearchParams} from 'next/navigation';
-import NavbarBottom from '@/components/navbar/NavbarBottom';
+
 import Searchbar from '@/components/Searchbar';
+import {FilterList} from '@/components/filter';
 import {VenueList} from '@/components/venue';
-import { FilterList } from '@/components/filter';
+import NavbarBottom from '@/components/navbar/NavbarBottom';
 
 export default function VenuesPage() {
+  return (
+    <main className="mx-auto flex w-full max-w-screen-2xl flex-col">
+      <Suspense fallback={<div>Loading venues...</div>}>
+        <VenuesPageContent />
+      </Suspense>
+    </main>
+  );
+}
+
+function VenuesPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathname = usePathname();
@@ -36,19 +46,16 @@ export default function VenuesPage() {
 
   const handleSearch = (newSearchField: string) => {
     setSearchField(newSearchField);
-
     updateURL();
   };
 
   const handleOrder = (newOrderField: string) => {
     setOrderField(newOrderField);
-
     updateURL();
   };
 
   const handleRating = (newRatingField: number) => {
     setRatingField(newRatingField);
-
     updateURL();
   };
 
@@ -58,7 +65,7 @@ export default function VenuesPage() {
   };
 
   return (
-    <main className="mx-auto flex w-full max-w-screen-2xl flex-col">
+    <>
       <section className="flex flex-col gap-4 p-4 md:p-8">
         <Searchbar onSearch={handleSearch} />
         <FilterList onOrder={handleOrder} onRating={handleRating} onCategory={handleCategory} />
@@ -66,12 +73,10 @@ export default function VenuesPage() {
 
       <NavbarBottom />
 
-      <Suspense>
-        <VenueList
-          title="Rekomendasi Tempat Olahraga"
-          description="Daftar tempat olahraga yang ada di OneSport"
-        />
-      </Suspense>
-    </main>
+      <VenueList
+        title="Rekomendasi Tempat Olahraga"
+        description="Daftar tempat olahraga yang ada di OneSport"
+      />
+    </>
   );
 }

@@ -1,29 +1,4 @@
-declare global {
-  interface Window {
-    google: {
-      accounts: {
-        id: {
-          initialize: (options: {
-            client_id: string;
-            callback: (response: CredentialResponse) => void;
-            nonce: string;
-            use_fedcm_for_prompt?: boolean;
-          }) => void;
-          prompt: () => void;
-        };
-      };
-    };
 
-    snap: {
-      embed: (
-        token: string,
-        options: {
-          embedId: string;
-        }
-      ) => void;
-    };
-  }
-}
 
 export interface FieldListProps {
   title: string;

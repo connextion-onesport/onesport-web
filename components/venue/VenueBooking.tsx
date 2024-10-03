@@ -15,7 +15,7 @@ import {
   isAfter,
 } from 'date-fns';
 import {id} from 'date-fns/locale';
-import {cn, convertHourToDate} from '@/libs/utils';
+import {cn, convertHourToDate, formatPrice} from '@/libs/utils';
 
 import {DialogClose} from '@/components/ui/dialog';
 import {formatNumber} from '@/libs/utils';
@@ -176,7 +176,7 @@ function BookingCard({field, user}: BookingCardProps) {
     (schedule: any) => schedule.dayOfWeek === dayOfWeek
   );
   const prices = schedules.map((schedule: any) => schedule.pricePerHour);
-  const minPrice = prices.length > 0 ? Math.min(...prices) : undefined;
+  const minPrice = prices.length > 0 ? Math.min(...prices) : 0;
 
   return (
     <div className="flex flex-col rounded-lg bg-white shadow lg:flex-row lg:items-start lg:gap-8 lg:p-4">
@@ -233,7 +233,7 @@ function BookingCard({field, user}: BookingCardProps) {
           <div className="flex flex-col">
             <p className="text-sm">Mulai dari</p>
             <span className="mb-2 flex items-center gap-1">
-              <p className="text-lg font-bold">Rp{formatNumber(minPrice)}</p>
+              <p className="text-lg font-bold">{formatPrice(minPrice)}</p>
               <p className="text-sm font-medium">/Jam</p>
             </span>
 
@@ -277,8 +277,14 @@ interface BookingFormProps {
   user: any;
 }
 
+interface Slot {
+    startHour: number;
+    endHour: number;
+    price: number;
+  }
+
 function BookingForm({field, user}: BookingFormProps) {
-  const [selectedSlots, setSelectedSlots] = useState([]);
+  const [selectedSlots, setSelectedSlots] = useState<Slot[]>([]);
   const [totalHour, setTotalHour] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -291,7 +297,7 @@ function BookingForm({field, user}: BookingFormProps) {
   const currentHour = currentDate.getHours();
   const isToday = bookingDate.toDateString() === currentDate.toDateString();
 
-  const schedules = field.availableHours.filter(schedule => schedule.dayOfWeek === dayOfWeek);
+  const schedules = field.availableHours.filter((schedule: { dayOfWeek: number }) => schedule.dayOfWeek === dayOfWeek);
 
   const {mutateAsync: createBookingMutation} = useMutation({
     mutationFn: createBookings,
@@ -300,7 +306,7 @@ function BookingForm({field, user}: BookingFormProps) {
     },
   });
 
-  const handleSlotSelection = (schedule, isSelected) => {
+  const handleSlotSelection = (schedule: { hour: number; pricePerHour: number }, isSelected: boolean) => {
     const {hour, pricePerHour} = schedule;
 
     // Update selected slots and total price
@@ -348,7 +354,7 @@ function BookingForm({field, user}: BookingFormProps) {
     setTotalPrice(0);
   };
 
-  const isDisabled = schedule => {
+  const isDisabled = (schedule: { isAvailable: boolean; hour: number }) => {
     return schedule.isAvailable === false || (isToday && currentHour >= schedule.hour);
   };
 
@@ -357,18 +363,18 @@ function BookingForm({field, user}: BookingFormProps) {
       <BookingSchedule />
       <div className="flex h-full flex-col">
         <div className="my-auto grid grid-cols-1 gap-x-4 p-4 pt-4 sm:grid-cols-2 sm:gap-x-6 sm:p-6 md:gap-x-10">
-          {schedules.map(schedule => (
+          {schedules.map((schedule: { id: string; hour: number; pricePerHour: number; isAvailable: boolean }) => (
             <div className="flex justify-between gap-4 border-b p-2 md:p-5" key={schedule.id}>
               <div className="flex gap-3">
                 <Checkbox
-                  id={schedule.hour}
+                  id={schedule.hour.toString()}
                   disabled={isDisabled(schedule)}
-                  onCheckedChange={e => handleSlotSelection(schedule, e)}
+                  onCheckedChange={e => handleSlotSelection(schedule, e === true)}
                   className="aspect-square h-6 w-6 shrink-0 grow-0 self-center"
                 />
                 <div className="flex flex-col">
                   <label
-                    htmlFor={schedule.hour}
+                    htmlFor={schedule.hour.toString()}
                     className={`relative flex gap-3 text-xs sm:text-sm md:text-base ${!isDisabled(schedule) ? 'text-black' : 'text-muted-foreground'}`}
                   >
                     {`${schedule.hour}.00 - ${schedule.hour + 1}.00`}

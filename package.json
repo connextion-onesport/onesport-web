@@ -4,11 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "prisma generate && next build",
     "start": "next start",
     "lint": "next lint --no-cache",
-    "prepare": "husky",
-    "json-server": "json-server --watch ./db/db.json --port 5000"
+    "prepare": "husky"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.5.0",
@@ -26,7 +25,6 @@
     "@radix-ui/react-separator": "^1.1.0",
     "@radix-ui/react-slot": "^1.1.0",
     "@radix-ui/react-switch": "^1.1.0",
-    "@radix-ui/react-toast": "^1.2.1",
     "@radix-ui/react-tooltip": "^1.1.2",
     "@radix-ui/react-visually-hidden": "^1.1.0",
     "@radix-ui/themes": "^3.1.1",

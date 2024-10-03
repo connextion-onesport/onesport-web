@@ -1,6 +1,6 @@
 'use client';
 
-import React, {useState} from 'react';
+import React, {Suspense, useState} from 'react';
 import FieldItem from './VenueCard';
 import {usePathname, useSearchParams} from 'next/navigation';
 import {Button} from '../ui/button';
@@ -242,15 +242,6 @@ interface VenuesCategoryProps {
 }
 
 function VenueCategories({data}: VenuesCategoryProps) {
-  const shuffleArray = (array: any) => {
-    return array.sort(() => Math.random() - 0.5);
-  };
-
-  const shuffledImages = shuffleArray(fieldImages);
-
-  const defaultImage =
-    'https://plus.unsplash.com/premium_photo-1667598736309-1ea3b0fb1afa?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D';
-
   return (
     <div
       className={
@@ -262,15 +253,17 @@ function VenueCategories({data}: VenuesCategoryProps) {
       {data && data.length > 0 ? (
         data.map((field: FieldItemProps) => (
           <React.Fragment key={field.id}>
-            <FieldItem
+            <VenueCard
+              key={field.id}
               id={field.id}
-              ratingAvg={field.ratingAvg}
-              thumbnail={shuffledImages[field.id] || defaultImage}
-              is_indoor={field.is_indoor}
-              locations={field.locations}
-              fields={field.fields}
               name={field.name}
-              price_per_hour={field.price_per_hour}
+              images={field.images}
+              location={field.location}
+              isIndoor={field.isIndoor}
+              ratingAvg={field.ratingAvg}
+              reviewCount={field.reviewCount}
+              openHours={field.openHours}
+              minPrice={field.minPrice}
               category={field.category}
             />
           </React.Fragment>
@@ -306,14 +299,17 @@ function VenuesSearch({data}: VenuesSearchProps) {
       {data && data.length > 0 ? (
         data.map(field => (
           <React.Fragment key={field.id}>
-            <FieldItem
+            <VenueCard
+              key={field.id}
               id={field.id}
-              ratingAvg={field.ratingAvg}
-              thumbnail={shuffledImages[field.id] || defaultImage}
-              is_indoor={field.is_indoor}
-              locations={field.locations}
               name={field.name}
-              price_per_hour={field.price_per_hour}
+              images={field.images}
+              location={field.location}
+              isIndoor={field.isIndoor}
+              ratingAvg={field.ratingAvg}
+              reviewCount={field.reviewCount}
+              openHours={field.openHours}
+              minPrice={field.minPrice}
               category={field.category}
             />
           </React.Fragment>
@@ -340,19 +336,5 @@ function LoadMoreButton({loadMoreItems}: {loadMoreItems: () => void}) {
     >
       Load More
     </Button>
-    // <div className="flex items-center justify-center p-4">
-    //   <Button
-    //     onClick={() => fetchNextPage()}
-    //     disabled={!hasNextPage || isFetchingNextPage}
-    //     variant="outline"
-    //     className="text-primary"
-    //   >
-    //     {isFetchingNextPage
-    //       ? 'Loading more...'
-    //       : hasNextPage
-    //         ? 'Load More'
-    //         : 'Nothing more to load'}
-    //   </Button>
-    // </div>
   );
 }

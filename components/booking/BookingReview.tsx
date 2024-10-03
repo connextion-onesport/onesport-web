@@ -7,7 +7,8 @@ import {useMutation, useQueryClient} from '@tanstack/react-query';
 
 import {deleteBooking} from '@/actions/payment';
 
-import {format, id} from 'date-fns';
+import { format } from 'date-fns';
+import { id } from 'date-fns/locale';
 
 import {formatPrice, getReviewCount} from '@/libs/utils';
 
