@@ -1,5 +1,6 @@
 import * as React from 'react';
 import * as RPNInput from 'react-phone-number-input';
+import {Value as PhoneNumberValue} from 'react-phone-number-input';
 import flags from 'react-phone-number-input/flags';
 import {CaretSortIcon, CheckIcon} from '@radix-ui/react-icons';
 
@@ -34,8 +35,7 @@ const PhoneInput: React.ForwardRefExoticComponent<PhoneInputProps> = React.forwa
       flagComponent={FlagComponent}
       countrySelectComponent={CountrySelect}
       inputComponent={InputComponent}
-      value={value}
-      onChange={value => onChange?.(value || '')}
+      onChange={value => onChange?.(value as PhoneNumberValue)}
       {...props}
     />
   );

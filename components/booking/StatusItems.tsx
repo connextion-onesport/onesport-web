@@ -1,6 +1,7 @@
 'use client';
 
-import {format, id} from 'date-fns';
+import { format } from 'date-fns';
+import { id } from 'date-fns/locale';
 
 import {Separator} from '../ui/separator';
 import {ScrollArea} from '@/components/ui/scroll-area';

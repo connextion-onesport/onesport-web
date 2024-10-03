@@ -96,7 +96,7 @@ export default function VenueReview({data}: VenueReviewProps) {
 
         <Carousel className="flex w-full overflow-hidden">
           <CarouselContent className="h-full">
-            {reviews.map(review => (
+            {reviews.map((review: { id: string; user: { image: string; name: string }; createdAt: Date; rating: number; comment: string }) => (
               <CarouselItem key={review.id} className="min-h-40 min-w-96 md:basis-1/4">
                 <div className="flex h-full w-full flex-col rounded-lg border p-4">
                   <div className="flex w-full justify-between gap-4">

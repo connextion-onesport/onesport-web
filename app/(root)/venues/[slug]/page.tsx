@@ -54,7 +54,7 @@ export default function VenuePage({params}: {params: {slug: string}}) {
   return (
     <>
       <main className="mx-auto flex w-full max-w-screen-2xl flex-col gap-8 p-4 pb-10 pt-8 md:p-8">
-        <VenueBreadcrumb data={data?.name} />
+        <VenueBreadcrumb name={data?.name} />
         <VenueImages venues={data?.images} />
         <VenueDetail data={data} />
         <VenueBooking fields={data?.fields} user={user} />

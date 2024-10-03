@@ -11,10 +11,10 @@ import {
 import {Skeleton} from '../ui/skeleton';
 
 interface VenueBreadcrumbProps {
-  name: string;
+  name: string | undefined;
 }
 
-export default function VenueBreadcrumb({name}: VenueBreadcrumbProps) {
+export default function VenueBreadcrumb({name = 'OneSport'}: VenueBreadcrumbProps) {
   return (
     <Breadcrumb>
       <BreadcrumbList>

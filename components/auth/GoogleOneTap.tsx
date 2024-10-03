@@ -68,7 +68,7 @@ const GoogleOneTap = () => {
     };
     initializeGoogleOneTap();
     return () => window.removeEventListener('load', initializeGoogleOneTap);
-  }, []);
+  }, [router]);
 
   return (
     <>
