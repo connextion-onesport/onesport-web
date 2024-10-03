@@ -1,7 +1,7 @@
 'use client';
 
 import React, {useEffect, useState} from 'react';
-import {formatNumber} from '@/libs/utils';
+import {formatNumber, getDistanceFromLatLonInKm} from '@/libs/utils';
 import {FieldItemProps} from '@/types';
 import Image from 'next/image';
 import {PiStarFill, PiClock} from 'react-icons/pi';
@@ -13,6 +13,8 @@ export default function VenueCard({
   id,
   isIndoor,
   location,
+  latitude,
+  longitude,
   name,
   ratingAvg,
   reviewCount,
@@ -38,32 +40,56 @@ export default function VenueCard({
   const router = useRouter();
   const thumbnails = images?.map(image => image.image);
 
+  const distance =
+    location?.latitude && location?.longitude
+      ? getDistanceFromLatLonInKm(latitude, longitude, location.latitude, location.longitude)
+      : 0;
+
+  console.log('latitude', latitude);
+  console.log('longitude', longitude);
+  console.log('distance', distance);
+
   return (
     <div
       className="h-full max-h-full cursor-pointer rounded-xl border hover:shadow-lg hover:transition hover:duration-700 hover:ease-in-out"
       onClick={() => router.push(`/venues/${id}`)}
     >
-      <Carousel
-        setApi={setApi}
-        opts={{
-          loop: true,
-        }}
-      >
-        <CarouselContent>
-          {thumbnails?.map((thumbnail, index) => (
-            <CarouselItem key={index}>
-              <div className="relative flex h-56 w-full items-center justify-center rounded-t-xl">
-                <Image
-                  src={thumbnail}
-                  alt={name}
-                  fill
-                  className="absolute w-full rounded-t-xl object-cover"
-                />
-              </div>
-            </CarouselItem>
-          ))}
-        </CarouselContent>
-      </Carousel>
+      <div className="relative flex w-full">
+        <Carousel
+          setApi={setApi}
+          opts={{
+            loop: true,
+          }}
+          className="w-full"
+        >
+          <CarouselContent>
+            {thumbnails?.map((thumbnail, index) => (
+              <CarouselItem key={index}>
+                <div className="relative flex h-56 w-full items-center justify-center rounded-t-xl">
+                  <Image
+                    src={thumbnail}
+                    alt={name}
+                    fill
+                    className="absolute w-full rounded-t-xl object-cover"
+                  />
+                </div>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+        </Carousel>
+
+        <div className="absolute right-2 top-2 flex items-center justify-center rounded-full bg-secondary px-2 py-1 text-xs text-white">
+          <p className="text-xs text-white">
+            {currentSlide}/{count}
+          </p>
+        </div>
+
+        {distance > 0 && latitude !== 0 && longitude !== 0 && (
+          <div className="absolute bottom-0 left-0 flex h-8 items-center justify-center rounded-tr-xl bg-[#655581] bg-secondary px-3 py-1">
+            <p className="text-xs text-white">{distance.toFixed(1)} km</p>
+          </div>
+        )}
+      </div>
 
       <div className="flex flex-col justify-between p-4">
         <div className="flex flex-col gap-2">
@@ -112,4 +138,4 @@ export default function VenueCard({
       </div>
     </div>
   );
-};
+}

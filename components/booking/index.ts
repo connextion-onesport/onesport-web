@@ -3,6 +3,7 @@ export {default as BookingReview} from './BookingReview';
 export {default as BookingForm} from './BookingForm';
 export {default as BookingPricing} from './BookingPricing';
 export {default as BookingPayment} from './BookingPayment';
+export {default as BookingStepper} from './BookingStepper';
 
 export {default as StatusDetail} from './StatusDetail';
 export {default as StatusLine} from './StatusLine';

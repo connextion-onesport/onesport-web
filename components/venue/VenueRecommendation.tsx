@@ -1,11 +1,15 @@
-import useGetFieldRecommendation from '@/hooks/useGetFieldRecommendation';
 import {Skeleton} from '../ui/skeleton';
 import {Carousel, CarouselContent, CarouselItem} from '@/components/ui/carousel';
 import VenueCard from './VenueCard';
 import {FieldItemProps} from '@/types';
+import {useLocationStore} from '@/providers/zustand-provider';
 
-export default function VenueRecommendation() {
-  const {data, isError, isSuccess} = useGetFieldRecommendation();
+interface VenueRecommendationProps {
+  data: any;
+}
+
+export default function VenueRecommendation({data}: VenueRecommendationProps) {
+  const {latitude, longitude} = useLocationStore(state => state);
 
   return (
     <section className="flex flex-col gap-8">
@@ -16,29 +20,25 @@ export default function VenueRecommendation() {
         </p>
       </div>
 
-      {isError && (
-        <p className="text-center font-semibold">There was an error processing your request</p>
-      )}
-
-      {isSuccess && (
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {data.map((field: FieldItemProps, index: any) => (
-            <VenueCard
-              key={field.id}
-              id={field.id}
-              name={field.name}
-              images={field.images}
-              location={field.location}
-              isIndoor={field.isIndoor}
-              ratingAvg={field.ratingAvg}
-              reviewCount={field.reviewCount}
-              openHours={field.openHours}
-              minPrice={field.minPrice}
-              category={field.category}
-            />
-          ))}
-        </div>
-      )}
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {data?.map((field: FieldItemProps) => (
+          <VenueCard
+            key={field.id}
+            id={field.id}
+            name={field.name}
+            images={field.images}
+            location={field.location}
+            isIndoor={field.isIndoor}
+            ratingAvg={field.ratingAvg}
+            reviewCount={field.reviewCount}
+            openHours={field.openHours}
+            minPrice={field.minPrice}
+            category={field.category}
+            latitude={latitude}
+            longitude={longitude}
+          />
+        ))}
+      </div>
     </section>
   );
 }
