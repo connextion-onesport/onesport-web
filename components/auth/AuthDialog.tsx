@@ -1,9 +1,12 @@
 'use client';
 
 import {RiUserLine} from 'react-icons/ri';
-import {Dialog, DialogContent, DialogTrigger} from '../ui/dialog';
-import {useAuthStore} from '@/providers/zustand-provider';
+
+import {Dialog, DialogContent, DialogTrigger} from '@/components/ui/dialog';
+
 import AuthForm from './AuthForm';
+
+import {useAuthStore} from '@/providers/zustand-provider';
 
 export default function AuthDialog() {
   const {showAuth, setShowAuth} = useAuthStore(state => state);

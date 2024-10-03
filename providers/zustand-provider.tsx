@@ -3,11 +3,15 @@
 import React, {createContext, ReactNode, useContext, useRef} from 'react';
 import {useStore} from 'zustand';
 import {createAuthStore, type AuthStore} from '@/stores/auth-store';
+import {createVenueStore, type VenueStore} from '@/stores/venue-store';
+import {createPaymentStore, type PaymentStore} from '@/stores/payment-store';
 
 type StoreApi<T extends (...args: any) => any> = ReturnType<T>;
 
 export type StoreContextType = {
   authStore: StoreApi<typeof createAuthStore>;
+  venueStore: StoreApi<typeof createVenueStore>;
+  paymentStore: StoreApi<typeof createPaymentStore>;
 };
 
 const defaultContext = {} as StoreContextType;
@@ -24,6 +28,8 @@ export const StoreProvider = ({children}: StoreProviderProps) => {
   if (!storeRef.current) {
     storeRef.current = {
       authStore: createAuthStore(),
+      venueStore: createVenueStore(),
+      paymentStore: createPaymentStore(),
     };
   }
 
@@ -42,4 +48,14 @@ export const useStoreSelector = <T,>(selector: (stores: StoreContextType) => T):
 export const useAuthStore = <T,>(selector: (state: AuthStore) => T): T => {
   const {authStore} = useStoreSelector(stores => stores);
   return useStore(authStore, selector);
+};
+
+export const useVenueStore = <T,>(selector: (state: VenueStore) => T): T => {
+  const {venueStore} = useStoreSelector(stores => stores);
+  return useStore(venueStore, selector);
+};
+
+export const usePaymentStore = <T,>(selector: (state: PaymentStore) => T): T => {
+  const {paymentStore} = useStoreSelector(stores => stores);
+  return useStore(paymentStore, selector);
 };

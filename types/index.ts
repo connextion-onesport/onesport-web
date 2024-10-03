@@ -1,5 +1,19 @@
 declare global {
   interface Window {
+    google: {
+      accounts: {
+        id: {
+          initialize: (options: {
+            client_id: string;
+            callback: (response: CredentialResponse) => void;
+            nonce: string;
+            use_fedcm_for_prompt?: boolean;
+          }) => void;
+          prompt: () => void;
+        };
+      };
+    };
+
     snap: {
       embed: (
         token: string,
@@ -25,29 +39,29 @@ export interface Location {
 }
 
 export interface Fields {
-  name: string
+  name: string;
 }
 
 export interface FieldItemProps {
   id: number;
   name: string;
-  thumbnail: string;
-  image?: string;
+  images?: Array<{image: string}>;
+  openHours: string;
+  minPrice: number;
   ratingAvg: number;
-  price_per_hour?: number;
-  is_indoor?: boolean;
-  locations: Location[];
-  date?: string;
-  location?: string;
+  reviewCount: number;
+  isIndoor: string;
+  location?: {
+    subDistrict: string;
+    city: string;
+  };
   category?: string;
-  fields?: Fields[]
 }
 
 // The root structure of the data you're receiving
 export interface PagesData {
   data: FieldItemProps[];
 }
-
 
 export interface SearchbarProps {
   onSearch: (searchField: string) => void;

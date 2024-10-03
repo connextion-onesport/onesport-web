@@ -1,12 +1,17 @@
 'use client';
 
-import {useState} from 'react';
-import {ArrowRightIcon} from '@radix-ui/react-icons';
-import {Button} from '../ui/button';
-import {FcGoogle} from 'react-icons/fc';
-import {useAuthStore} from '@/providers/zustand-provider';
-import {useMutation, useQueryClient} from '@tanstack/react-query';
-import {googleAuth} from '@/actions/auth';
+import { useState } from 'react';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+
+import { useAuthStore } from '@/providers/zustand-provider';
+
+import { Button } from '@/components/ui/button';
+
+import { googleAuth } from '@/actions/auth';
+
+import { ArrowRightIcon } from '@radix-ui/react-icons';
+import { FcGoogle } from 'react-icons/fc';
+
 
 export default function AuthSocial() {
   const {currentStep, setShowAuth} = useAuthStore(state => state);

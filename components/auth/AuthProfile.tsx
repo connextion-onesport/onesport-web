@@ -1,15 +1,22 @@
 'use client';
 
-import {Popover, PopoverContent, PopoverTrigger} from '@/components/ui/popover';
-import {Avatar, AvatarFallback, AvatarImage} from '@/components/ui/avatar';
-import {ChevronDownIcon} from '@radix-ui/react-icons';
-import {Button} from '@/components/ui/button';
 import {useState} from 'react';
-import {getInitials} from '@/libs/utils';
-import {Separator} from '@/components/ui/separator';
 import {useMutation, useQueryClient} from '@tanstack/react-query';
+
+import {Avatar, AvatarFallback, AvatarImage} from '@/components/ui/avatar';
+import {Button} from '@/components/ui/button';
+import {Popover, PopoverContent, PopoverTrigger} from '@/components/ui/popover';
+import {Separator} from '@/components/ui/separator';
+
 import {handleSignOut} from '@/actions/auth';
+import {getInitials} from '@/libs/utils';
+
+import Link from 'next/link';
 import {User} from 'next-auth';
+
+import {ChevronDownIcon} from '@radix-ui/react-icons';
+import {PiCourtBasketball} from 'react-icons/pi';
+import {RiLogoutBoxLine, RiUser3Line} from 'react-icons/ri';
 
 export default function AuthProfile({user}: {user: User}) {
   const [isOpen, setIsOpen] = useState(false);
@@ -54,7 +61,37 @@ export default function AuthProfile({user}: {user: User}) {
 
         <Separator />
 
-        <Button className="w-full" onClick={() => signOutUserMutation()}>
+        <div className="flex flex-col">
+          <Button
+            variant="ghost"
+            asChild
+            className="flex min-h-12 w-full justify-start rounded-sm pl-0"
+          >
+            <Link href="#">
+              <RiUser3Line className="mr-2 h-5 w-5" />
+              Profil
+            </Link>
+          </Button>
+          <Button
+            variant="ghost"
+            asChild
+            className="flex min-h-12 w-full justify-start rounded-sm pl-0"
+          >
+            <Link href="/user/venues">
+              <PiCourtBasketball className="mr-2 h-5 w-5" />
+              Lapangan Saya
+            </Link>
+          </Button>
+        </div>
+
+        <Separator />
+
+        <Button
+          variant="ghost"
+          className="flex min-h-12 w-full justify-start rounded-sm pl-0"
+          onClick={() => signOutUserMutation()}
+        >
+          <RiLogoutBoxLine className="mr-2 h-5 w-5" />
           Keluar
         </Button>
       </PopoverContent>

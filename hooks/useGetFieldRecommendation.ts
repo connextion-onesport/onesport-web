@@ -14,8 +14,6 @@ export default function useGetFieldRecommendation() {
 
     // const limitedData = result.slice(0, 4);
 
-    console.log(result)
-
     return result;
   };
 

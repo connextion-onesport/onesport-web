@@ -12,24 +12,16 @@ import NavbarMobileMenu from './NavbarMobileMenu';
 import {AuthProfile} from '../auth';
 import {useQuery} from '@tanstack/react-query';
 import {getUser} from '@/actions/auth';
+import {User} from 'next-auth';
 
 export default function Navbar() {
-  const pathName = usePathname();
-  const isPaymentPage = pathName === '/payment';
-
   return (
     <nav className="mx-auto flex max-w-screen-2xl flex-row justify-between gap-2 p-4 md:px-8 md:py-4">
-      {isPaymentPage ? (
-        <NavbarLogo />
-      ) : (
-        <>
-          <NavbarMobileMenu />
-          <NavbarLogo />
-          <NavbarMenu />
-          <SearchButton />
-          <AuthButton />
-        </>
-      )}
+      <NavbarMobileMenu />
+      <NavbarLogo />
+      <NavbarMenu />
+      <SearchButton />
+      <AuthButton />
     </nav>
   );
 }
@@ -78,7 +70,7 @@ function SearchButton() {
 }
 
 function AuthButton() {
-  const {setCurrentStep, inProgress, setShowAuth} = useAuthStore(state => state);
+  const {setCurrentStep, setShowAuth} = useAuthStore(state => state);
 
   const {data: user} = useQuery({
     queryKey: ['user'],

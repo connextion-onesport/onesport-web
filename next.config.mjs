@@ -9,6 +9,11 @@ const nextConfig = {
       },
       {
         protocol: 'https',
+        hostname: 'asset.ayo.co.id',
+        port: '',
+      },
+      {
+        protocol: 'https',
         hostname: 'images.unsplash.com',
         port: '',
       },
@@ -22,13 +27,6 @@ const nextConfig = {
         hostname: 'unsplash.com',
         port: '',
       },
-    ],
-    domains: [
-      'example.com',
-      'images.unsplash.com',
-      'plus.unsplash.com',
-      'unsplash.com',
-      'lh3.googleusercontent.com',
     ],
   },
 };
