@@ -1,44 +1,33 @@
 'use client';
 
 import * as React from 'react';
-import {format} from 'date-fns';
+import {CalendarIcon} from '@radix-ui/react-icons';
+import {addDays, format, isAfter, isBefore, startOfToday} from 'date-fns';
 
-import {cn} from '@/libs/utils';
-import {Button} from '@/components/ui/button';
 import {Calendar} from '@/components/ui/calendar';
 import {Popover, PopoverContent, PopoverTrigger} from '@/components/ui/popover';
-import {CalendarIcon} from '@radix-ui/react-icons';
-interface DatePickerProps {
-  onDateChange: (date: Date | undefined) => void;
-}
 
-export function DatePicker({onDateChange}: DatePickerProps) {
+type DatePickerProps = {
+  selectedDate: any;
+  onSelect: (date: Date | undefined) => void;
+};
+
+export function DatePicker({selectedDate, onSelect}: DatePickerProps) {
   const [date, setDate] = React.useState<Date>();
-
-  const handleDateSelect = (newDate: Date | undefined) => {
-    setDate(newDate);
-    onDateChange(newDate);
-  };
 
   return (
     <Popover>
-      <PopoverTrigger asChild>
-        <Button
-          className={cn(
-            'flex h-full w-full items-center justify-start rounded-none rounded-r-full border-none bg-background px-4 text-left font-normal text-muted-foreground shadow-none placeholder:text-sm hover:bg-accent hover:text-accent-foreground',
-            !date && 'text-muted-foreground'
-          )}
-        >
-          <CalendarIcon className="mr-2 h-5 w-5 text-primary" />
-          {date ? format(date, 'PPP') : <span>Pick a date</span>}
-        </Button>
+      <PopoverTrigger className="flex aspect-square shrink-0 grow-0 items-center justify-center rounded-md px-3 text-primary hover:bg-accent hover:text-accent-foreground">
+        <CalendarIcon className="h-8 w-8" />
       </PopoverTrigger>
-      <PopoverContent className="w-auto p-0">
+      <PopoverContent className="w-auto p-0" align="start">
         <Calendar
           mode="single"
-          selected={date}
-          // onSelect={setDate}
-          onSelect={handleDateSelect}
+          selected={selectedDate}
+          onSelect={date => date && onSelect(date)}
+          disabled={date =>
+            isBefore(date, startOfToday()) || isAfter(date, addDays(startOfToday(), 30))
+          }
           initialFocus
         />
       </PopoverContent>

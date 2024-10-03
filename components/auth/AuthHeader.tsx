@@ -1,8 +1,10 @@
 'use client';
 
-import {useAuthStore} from '@/providers/zustand-provider';
-import {DialogDescription, DialogHeader, DialogTitle} from '../ui/dialog';
 import {VisuallyHidden} from '@radix-ui/react-visually-hidden';
+
+import {DialogDescription, DialogHeader, DialogTitle} from '../ui/dialog';
+
+import {useAuthStore} from '@/providers/zustand-provider';
 
 export default function AuthHeader() {
   const {currentStep} = useAuthStore(state => state);

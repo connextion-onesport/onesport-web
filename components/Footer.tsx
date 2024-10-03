@@ -1,7 +1,9 @@
-import {Button} from './ui/button';
-import Link from 'next/link';
-import {footerColumnLinks, footerSocialMedia} from '@/libs/constants';
 import Image from 'next/image';
+import Link from 'next/link';
+
+import {Button} from '@/components/ui/button';
+
+import {footerColumnLinks, footerSocialMedia} from '@/libs/constants';
 
 export default function Footer() {
   const year = new Date().getFullYear();
@@ -24,7 +26,7 @@ export default function Footer() {
               className="h-6 w-fit"
             />
           </Link>
-          <p className="text-sm">© {year} OneSport Inc. All rights reserved.</p>
+          <p className="text-sm">© {year} OneSport. All rights reserved.</p>
         </div>
 
         <FooterSocialMedia />

@@ -1,20 +1,41 @@
 'use client';
 
-import {useState} from 'react';
-import {ArrowRightIcon} from '@radix-ui/react-icons';
-import {Button} from '../ui/button';
-import {FcGoogle} from 'react-icons/fc';
-import {useAuthStore} from '@/providers/zustand-provider';
+import { useState } from 'react';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+
+import { useAuthStore } from '@/providers/zustand-provider';
+
+import { Button } from '@/components/ui/button';
+
+import { googleAuth } from '@/actions/auth';
+
+import { ArrowRightIcon } from '@radix-ui/react-icons';
+import { FcGoogle } from 'react-icons/fc';
+
 
 export default function AuthSocial() {
-  const {currentStep} = useAuthStore(state => state);
+  const {currentStep, setShowAuth} = useAuthStore(state => state);
   const [googleHover, setGoogleHover] = useState<boolean>(false);
+
+  const queryClient = useQueryClient();
+
+  const {mutateAsync: googleAuthMutation} = useMutation({
+    mutationFn: googleAuth,
+    onSuccess: () => {
+      queryClient.invalidateQueries({queryKey: ['user']});
+    },
+  });
+
+  const handleGoogleAuth = async () => {
+    await googleAuthMutation();
+    setShowAuth(false);
+  };
 
   return (
     <Button
       variant="outline"
       className="flex h-12 p-5"
-      // onClick={async () => await googleAuth()}
+      onClick={async () => await handleGoogleAuth()}
       onMouseOver={() => setGoogleHover(true)}
       onMouseLeave={() => setGoogleHover(false)}
     >

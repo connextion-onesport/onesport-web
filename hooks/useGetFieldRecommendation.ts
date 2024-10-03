@@ -4,13 +4,15 @@ import {useQuery} from '@tanstack/react-query';
 
 export default function useGetFieldRecommendation() {
   const getFields = async () => {
-    const response = await fetch(`${API_URL}/fields?_start=0&_limit=4`);
+    const response = await fetch(`${API_URL}/venues?_start=0&_limit=4`);
 
     if (!response.ok) {
       throw new Error('Fetching Error');
     }
 
-    const result: FieldItemProps[] = await response.json();
+    const result: any = await response.json();
+
+    // const limitedData = result.slice(0, 4);
 
     return result;
   };

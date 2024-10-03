@@ -10,7 +10,7 @@ import {
   RiTicket2Fill,
 } from 'react-icons/ri';
 
-export const API_URL = 'http://localhost:5000';
+export const API_URL = 'http://cymint.cloud:3000/api';
 
 // NAVBAR
 export const navbarRoutes = [
@@ -20,7 +20,7 @@ export const navbarRoutes = [
   },
   {
     name: 'Sewa Lapangan',
-    path: '/fields',
+    path: '/venues',
   },
 ];
 
@@ -153,6 +153,37 @@ export const orderByModal = [
     htmlFor: 'lowest-price',
     text: 'Lowest Price',
   },
+];
+
+export const fieldImagesOutdoor = [
+  'https://plus.unsplash.com/premium_photo-1667598736309-1ea3b0fb1afa?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  'https://images.unsplash.com/photo-1586428268321-8e067843a113?q=80&w=1776&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  'https://plus.unsplash.com/premium_photo-1684713510655-e6e31536168d?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  'https://plus.unsplash.com/premium_photo-1684106554224-1df87e5c2e29?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  'https://plus.unsplash.com/premium_photo-1684446464405-71867f88356b?q=80&w=1771&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  'https://plus.unsplash.com/premium_photo-1708119178805-321dec8ba9cf?q=80&w=1933&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+];
+
+export const fieldImages = [
+  'https://plus.unsplash.com/premium_photo-1667598736309-1ea3b0fb1afa?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  'https://images.unsplash.com/photo-1586428268321-8e067843a113?q=80&w=1776&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  'https://plus.unsplash.com/premium_photo-1684713510655-e6e31536168d?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  'https://plus.unsplash.com/premium_photo-1684106554224-1df87e5c2e29?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  'https://plus.unsplash.com/premium_photo-1684446464405-71867f88356b?q=80&w=1771&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  'https://plus.unsplash.com/premium_photo-1708119178805-321dec8ba9cf?q=80&w=1933&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  'https://images.unsplash.com/photo-1559369064-c4d65141e408?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  'https://images.unsplash.com/photo-1555688695-bd7b47dd8a8a?q=80&w=1896&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  'https://images.unsplash.com/photo-1695950695168-f4038b55a9ca?q=80&w=1776&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  'https://plus.unsplash.com/premium_photo-1708696237327-5fd6598707ae?q=80&w=1771&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  'https://plus.unsplash.com/premium_photo-1709303662600-1aa5938933e3?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3Ds',
+];
+
+export const fieldImagesIndoor = [
+  'https://images.unsplash.com/photo-1559369064-c4d65141e408?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  'https://images.unsplash.com/photo-1555688695-bd7b47dd8a8a?q=80&w=1896&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  'https://images.unsplash.com/photo-1695950695168-f4038b55a9ca?q=80&w=1776&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  'https://plus.unsplash.com/premium_photo-1708696237327-5fd6598707ae?q=80&w=1771&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  'https://plus.unsplash.com/premium_photo-1709303662600-1aa5938933e3?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3Ds',
 ];
 
 //FASILITAS__DUMMY
@@ -311,110 +342,110 @@ export const footerSocialMedia = [
 
 export const footerColumnLinks = [
   {
-    title: 'Sports',
+    title: 'Olahraga',
     links: [
       {
-        name: 'Football',
-        link: '/football',
+        name: 'Sepak Bola',
+        link: '#',
       },
       {
         name: 'Futsal',
-        link: '/futsal',
+        link: '#',
       },
       {
-        name: 'Badminton',
-        link: '/badminton',
+        name: 'Bulu Tangkis',
+        link: '#',
       },
       {
-        name: 'Basketball',
-        link: '/basketball',
+        name: 'Bola Basket',
+        link: '#',
       },
       {
-        name: 'Volleyball',
-        link: '/volleyball',
+        name: 'Bola Voli',
+        link: '#',
       },
       {
-        name: 'Tennis',
-        link: '/tennis',
+        name: 'Tenis',
+        link: '#',
       },
       {
-        name: 'Ping-pong',
-        link: '/pingpong',
+        name: 'Tenis Meja',
+        link: '#',
       },
     ],
   },
   {
-    title: 'About',
+    title: 'Tentang',
     links: [
       {
-        name: 'Company Info',
-        link: '/about',
+        name: 'Info Perusahaan',
+        link: '#',
       },
       {
-        name: 'Careers',
-        link: '/careers',
+        name: 'Karier',
+        link: '#',
       },
       {
-        name: 'Our Team',
-        link: '/team',
+        name: 'Tim Kami',
+        link: '#',
       },
       {
-        name: 'Terms of Service',
-        link: '/terms',
+        name: 'Syarat Layanan',
+        link: '#',
       },
       {
-        name: 'Privacy Policy',
-        link: '/privacy',
+        name: 'Kebijakan Privasi',
+        link: '#',
       },
     ],
   },
   {
-    title: 'Community',
+    title: 'Komunitas',
     links: [
       {
         name: 'Forum',
-        link: '/forum',
+        link: '#',
       },
       {
         name: 'Local Events',
-        link: '/events',
+        link: '#',
       },
       {
         name: 'Blog',
-        link: '/blog',
+        link: '#',
       },
       {
         name: 'Social Media',
-        link: '/social',
+        link: '#',
       },
       {
         name: 'Join a Team',
-        link: '/join-team',
+        link: '#',
       },
     ],
   },
   {
-    title: 'Support',
+    title: 'Dukungan',
     links: [
       {
-        name: 'Help Center',
-        link: '/help',
+        name: 'Pusat Bantuan',
+        link: '#',
       },
       {
-        name: 'FAQs',
-        link: '/faqs',
+        name: 'FAQ',
+        link: '#',
       },
       {
-        name: 'Contact Us',
-        link: '/contact',
+        name: 'Hubungi Kami',
+        link: '#',
       },
       {
-        name: 'User Guides',
-        link: '/guides',
+        name: 'Panduan Pengguna',
+        link: '#',
       },
       {
-        name: 'Report an Issue',
-        link: '/report',
+        name: 'Laporkan Masalah',
+        link: '#',
       },
     ],
   },

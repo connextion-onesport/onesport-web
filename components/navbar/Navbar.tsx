@@ -9,24 +9,19 @@ import {navbarRoutes} from '@/libs/constants';
 import {RiSearchLine} from 'react-icons/ri';
 import {useAuthStore} from '@/providers/zustand-provider';
 import NavbarMobileMenu from './NavbarMobileMenu';
+import {AuthProfile} from '../auth';
+import {useQuery} from '@tanstack/react-query';
+import {getUser} from '@/actions/auth';
+import {User} from 'next-auth';
 
 export default function Navbar() {
-  const pathName = usePathname();
-  const isPaymentPage = pathName === '/payment';
-
   return (
     <nav className="mx-auto flex max-w-screen-2xl flex-row justify-between gap-2 p-4 md:px-8 md:py-4">
-      {isPaymentPage ? (
-        <NavbarLogo />
-      ) : (
-        <>
-          <NavbarMobileMenu />
-          <NavbarLogo />
-          <NavbarMenu />
-          <SearchButton />
-          <AuthButton />
-        </>
-      )}
+      <NavbarMobileMenu />
+      <NavbarLogo />
+      <NavbarMenu />
+      <SearchButton />
+      <AuthButton />
     </nav>
   );
 }
@@ -75,30 +70,37 @@ function SearchButton() {
 }
 
 function AuthButton() {
-  const {setCurrentStep, inProgress, setShowAuth} = useAuthStore(state => state);
+  const {setCurrentStep, setShowAuth} = useAuthStore(state => state);
+
+  const {data: user} = useQuery({
+    queryKey: ['user'],
+    queryFn: () => getUser(),
+  });
 
   const handleCurrentStep = (currentStep: string) => {
-    if (inProgress) {
-      setShowAuth(true);
-    } else {
-      setShowAuth(true);
-      setCurrentStep(currentStep);
-    }
+    setShowAuth(true);
+    setCurrentStep(currentStep);
   };
 
   return (
     <div className="hidden items-center gap-2 md:flex">
-      <Button
-        variant="outline"
-        size="lg"
-        className="px-4"
-        onClick={() => handleCurrentStep('login')}
-      >
-        Masuk
-      </Button>
-      <Button size="lg" className="px-4" onClick={() => handleCurrentStep('register')}>
-        Daftar
-      </Button>
+      {user ? (
+        <AuthProfile user={user} />
+      ) : (
+        <>
+          <Button
+            variant="outline"
+            size="lg"
+            className="px-4"
+            onClick={() => handleCurrentStep('login')}
+          >
+            Masuk
+          </Button>
+          <Button size="lg" className="px-4" onClick={() => handleCurrentStep('register')}>
+            Daftar
+          </Button>
+        </>
+      )}
     </div>
   );
 }

@@ -1,12 +1,15 @@
 'use client';
 
+import {useRouter} from 'next/navigation';
+import {useState} from 'react';
+
 import Image from 'next/image';
 import Link from 'next/link';
-import {Button} from './ui/button';
+
+import {Button} from '@/components/ui/button';
+import Searchbar from '@/components/Searchbar';
+
 import {heroCategories} from '@/libs/constants';
-import {useState} from 'react';
-import {useRouter} from 'next/navigation';
-import Searchbar from './Searchbar';
 
 export default function Hero() {
   const router = useRouter();
@@ -99,7 +102,7 @@ function HeroCategoryDesktop() {
 
   return (
     <div className="hidden flex-col items-center justify-center gap-4 md:flex">
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-10">
         {firstLineCategories.map(category => (
           <Link
             key={category.name}
@@ -122,7 +125,7 @@ function HeroCategoryDesktop() {
         ))}
       </div>
 
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-10">
         {secondLineCategories.map(category => (
           <Link
             key={category.name}

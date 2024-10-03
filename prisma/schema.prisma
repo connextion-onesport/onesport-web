@@ -1,0 +1,310 @@
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id            String    @id @default(auto()) @map("_id") @db.ObjectId
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  password      String?
+  image         String?
+  phone         String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  accounts     Account[]
+  sessions     Session[]
+  bookings     Booking[]
+  venueReviews VenueReview[]
+}
+
+model Account {
+  id                String  @id @default(auto()) @map("_id") @db.ObjectId
+  userId            String  @db.ObjectId
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.String
+  access_token      String? @db.String
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.String
+  session_state     String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  sessionToken String   @unique
+  userId       String   @db.ObjectId
+  expires      DateTime
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model Venue {
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  description String
+  openHours   String
+  isIndoor    String
+  minPrice    Float
+  ratingAvg   Float
+  reviewCount Int
+
+  ownerId    String @db.ObjectId
+  locationId String @unique @db.ObjectId
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  bookings   Booking[]
+  facilities VenueFacilityLink[]
+  fields     Field[]
+  images     VenueImage[]
+  reviews    VenueReview[]
+
+  owner    Owner    @relation(fields: [ownerId], references: [id])
+  location Location @relation(fields: [locationId], references: [id])
+}
+
+model VenueImage {
+  id    String @id @default(auto()) @map("_id") @db.ObjectId
+  name  String
+  image String
+
+  venueId String? @db.ObjectId
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  Venue Venue? @relation(fields: [venueId], references: [id])
+}
+
+model Field {
+  id          String  @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  description String?
+  isIndoor    Boolean
+  type        String
+
+  venueId    String @db.ObjectId
+  categoryId String @db.ObjectId
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  availableHours AvailableHour[]
+  facilities     FieldFacilityLink[]
+  images         FieldImage[]
+  bookings       Booking[]
+
+  category Category @relation(fields: [categoryId], references: [id])
+  venue    Venue    @relation(fields: [venueId], references: [id])
+}
+
+model FieldImage {
+  id      String @id @default(auto()) @map("_id") @db.ObjectId
+  name    String
+  image   String
+  fieldId String @db.ObjectId
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  field Field @relation(fields: [fieldId], references: [id])
+}
+
+model AvailableHour {
+  id           String  @id @default(auto()) @map("_id") @db.ObjectId
+  fieldId      String  @db.ObjectId
+  dayOfWeek    Int
+  hour         Int
+  isAvailable  Boolean
+  pricePerHour Float
+  dates        DateTime[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  field Field @relation(fields: [fieldId], references: [id])
+}
+
+model Category {
+  id   String @id @default(auto()) @map("_id") @db.ObjectId
+  name String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  fields Field[]
+}
+
+model VenueFacility {
+  id   String @id @default(auto()) @map("_id") @db.ObjectId
+  name String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  venues VenueFacilityLink[]
+}
+
+model FieldFacility {
+  id   String @id @default(auto()) @map("_id") @db.ObjectId
+  name String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  fields FieldFacilityLink[]
+}
+
+model VenueFacilityLink {
+  id         String @id @default(auto()) @map("_id") @db.ObjectId
+  venueId    String @db.ObjectId
+  facilityId String @db.ObjectId
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  venue    Venue         @relation(fields: [venueId], references: [id])
+  facility VenueFacility @relation(fields: [facilityId], references: [id])
+
+  @@unique([venueId, facilityId])
+}
+
+model FieldFacilityLink {
+  id         String @id @default(auto()) @map("_id") @db.ObjectId
+  fieldId    String @db.ObjectId
+  facilityId String @db.ObjectId
+  quantity   Int?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  field    Field         @relation(fields: [fieldId], references: [id])
+  facility FieldFacility @relation(fields: [facilityId], references: [id])
+
+  @@unique([fieldId, facilityId])
+}
+
+model VenueReview {
+  id      String @id @default(auto()) @map("_id") @db.ObjectId
+  venueId String @db.ObjectId
+  userId  String @db.ObjectId
+  rating  Float
+  comment String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user  User  @relation(fields: [userId], references: [id])
+  venue Venue @relation(fields: [venueId], references: [id])
+}
+
+model Location {
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  latitude    Float
+  longitude   Float
+  address     String
+  subDistrict String
+  city        String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  Venue Venue? @relation
+}
+
+model Owner {
+  id   String @id @default(auto()) @map("_id") @db.ObjectId
+  name String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  venues Venue[]
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+}
+
+model Booking {
+  id        String  @id @default(auto()) @map("_id") @db.ObjectId
+  venueId   String  @db.ObjectId
+  fieldId   String  @db.ObjectId
+  userId    String  @db.ObjectId
+  paymentId String? @db.ObjectId
+
+  name      String?
+  email     String?
+  phone     String?
+  isSelf    Boolean?
+  date      DateTime
+  startTime DateTime
+  endTime   DateTime
+  price     Float
+  status    BookingStatus @default(PENDING)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  venue   Venue    @relation(fields: [venueId], references: [id])
+  field   Field    @relation(fields: [fieldId], references: [id])
+  user    User     @relation(fields: [userId], references: [id])
+  payment Payment? @relation(fields: [paymentId], references: [id])
+}
+
+enum PaymentStatus {
+  FAILED
+  PENDING
+  SUCCESS
+  REFUNDED
+}
+
+model Payment {
+  id         String        @id @default(auto()) @map("_id") @db.ObjectId
+  orderId    String        @unique
+  amount     Float
+  currency   String?
+  token      String?
+  date       DateTime
+  type       String?
+  status     PaymentStatus @default(PENDING)
+  expiryTime DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  bookings Booking[]
+}

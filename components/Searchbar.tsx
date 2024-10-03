@@ -1,9 +1,12 @@
 'use client';
 
 import {Dispatch, useState} from 'react';
-import {Input} from './ui/input';
-import {Button} from './ui/button';
+
+import {Input} from '@/components/ui/input';
+import {Button} from '@/components/ui/button';
+
 import {RiMapPinLine, RiSearchLine} from 'react-icons/ri';
+
 import {SearchbarProps} from '@/types';
 
 export default function Searchbar({onSearch}: SearchbarProps) {
