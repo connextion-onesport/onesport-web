@@ -5,6 +5,7 @@ import {useStore} from 'zustand';
 import {createAuthStore, type AuthStore} from '@/stores/auth-store';
 import {createVenueStore, type VenueStore} from '@/stores/venue-store';
 import {createPaymentStore, type PaymentStore} from '@/stores/payment-store';
+import {createLocationStore, type LocationStore} from '@/stores/location-store';
 
 type StoreApi<T extends (...args: any) => any> = ReturnType<T>;
 
@@ -12,6 +13,7 @@ export type StoreContextType = {
   authStore: StoreApi<typeof createAuthStore>;
   venueStore: StoreApi<typeof createVenueStore>;
   paymentStore: StoreApi<typeof createPaymentStore>;
+  locationStore: StoreApi<typeof createLocationStore>;
 };
 
 const defaultContext = {} as StoreContextType;
@@ -30,6 +32,7 @@ export const StoreProvider = ({children}: StoreProviderProps) => {
       authStore: createAuthStore(),
       venueStore: createVenueStore(),
       paymentStore: createPaymentStore(),
+      locationStore: createLocationStore(),
     };
   }
 
@@ -58,4 +61,9 @@ export const useVenueStore = <T,>(selector: (state: VenueStore) => T): T => {
 export const usePaymentStore = <T,>(selector: (state: PaymentStore) => T): T => {
   const {paymentStore} = useStoreSelector(stores => stores);
   return useStore(paymentStore, selector);
+};
+
+export const useLocationStore = <T,>(selector: (state: LocationStore) => T): T => {
+  const {locationStore} = useStoreSelector(stores => stores);
+  return useStore(locationStore, selector);
 };

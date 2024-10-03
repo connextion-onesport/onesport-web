@@ -1,6 +1,9 @@
 import {create} from 'zustand';
 
 export type VenueState = {
+  categoryNearby: string;
+  categoryRating: string;
+  categoryAll: string;
   showImages: boolean;
   showDetails: boolean;
   dayOfWeek: number;
@@ -9,6 +12,9 @@ export type VenueState = {
 };
 
 export type VenueActions = {
+  setCategoryNearby: (categoryNearby: string) => void;
+  setCategoryRating: (categoryRating: string) => void;
+  setCategoryAll: (categoryAll: string) => void;
   setShowImages: (showImages: boolean) => void;
   setShowDetails: (showDetails: boolean) => void;
   setDayOfWeek: (dayOfWeek: number) => void;
@@ -19,6 +25,9 @@ export type VenueActions = {
 export type VenueStore = VenueState & VenueActions;
 
 export const defaultInitState: VenueState = {
+  categoryNearby: 'Futsal',
+  categoryRating: 'Futsal',
+  categoryAll: 'Futsal',
   showImages: false,
   showDetails: false,
   dayOfWeek: 0,
@@ -29,6 +38,9 @@ export const defaultInitState: VenueState = {
 export const createVenueStore = (initState: VenueState = defaultInitState) => {
   return create<VenueStore>()(set => ({
     ...initState,
+    setCategoryNearby: categoryNearby => set(() => ({categoryNearby})),
+    setCategoryRating: categoryRating => set(() => ({categoryRating})),
+    setCategoryAll: categoryAll => set(() => ({categoryAll})),
     setShowImages: showImages => set(() => ({showImages})),
     setShowDetails: showDetails => set(() => ({showDetails})),
     setDayOfWeek: dayOfWeek => set(() => ({dayOfWeek})),

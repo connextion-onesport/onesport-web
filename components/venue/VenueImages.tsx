@@ -63,7 +63,7 @@ function VenueImage({venue, setShowImages, isLast}: VenueImageProps) {
     >
       <AspectRatio ratio={3 / 2} className="overflow-hidden rounded-lg">
         <Image
-          src={venue.image[0]}
+          src={venue.image}
           alt="Main Venue Image"
           fill
           className="object-cover"

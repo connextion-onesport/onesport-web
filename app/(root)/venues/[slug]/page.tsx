@@ -1,7 +1,7 @@
 'use client';
 
 import {useQuery} from '@tanstack/react-query';
-import {getVenueById} from '@/actions/venue';
+import {getVenueById, getVenueRecommendation} from '@/actions/venue';
 import {
   VenueBreadcrumb,
   VenueImages,
@@ -22,7 +22,7 @@ import {getUser} from '@/actions/auth';
 export default function VenuePage({params}: {params: {slug: string}}) {
   const id = params.slug;
 
-  const {data, isLoading, isError, isSuccess} = useQuery({
+  const {data: venue, isLoading, isError} = useQuery({
     queryKey: ['venue', id],
     queryFn: () => getVenueById({id}),
     enabled: !!id,
@@ -33,6 +33,16 @@ export default function VenuePage({params}: {params: {slug: string}}) {
     queryFn: () => getUser(),
     enabled: !!id,
   });
+
+  const venueId = venue?.id;
+  const fields = venue?.fields;
+  const category = fields?.[0].category.name;
+
+  const {data: recommendations} = useQuery({
+    queryKey: ['recommendation', venueId, category],
+    queryFn: () => getVenueRecommendation({id: venueId!, category: category!}),
+    enabled: !!category && !!venueId,
+  })
 
   if (isLoading) {
     return (
@@ -54,15 +64,15 @@ export default function VenuePage({params}: {params: {slug: string}}) {
   return (
     <>
       <main className="mx-auto flex w-full max-w-screen-2xl flex-col gap-8 p-4 pb-10 pt-8 md:p-8">
-        <VenueBreadcrumb name={data?.name} />
-        <VenueImages venues={data?.images} />
-        <VenueDetail data={data} />
-        <VenueBooking fields={data?.fields} user={user} />
-        <VenueReview data={data} />
-        <VenueRecommendation />
+        <VenueBreadcrumb name={venue?.name} />
+        <VenueImages venues={venue?.images} />
+        <VenueDetail data={venue} />
+        <VenueBooking fields={venue?.fields} user={user} />
+        <VenueReview data={venue} />
+        <VenueRecommendation data={recommendations} />
       </main>
 
-      <VenueMobileButton data={data} />
+      <VenueMobileButton data={venue} />
     </>
   );
 }

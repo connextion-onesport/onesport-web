@@ -1,8 +1,8 @@
-"use client"
+'use client';
 
-import { getPaymentStatus } from '@/actions/payment';
+import {getPaymentStatus} from '@/actions/payment';
 import {StatusDetail, StatusHeader, StatusItems, StatusLine} from '@/components/booking';
-import { useQuery } from '@tanstack/react-query';
+import {useQuery} from '@tanstack/react-query';
 import Link from 'next/link';
 import {PiArrowLeft, PiChatCircleDots} from 'react-icons/pi';
 
@@ -13,7 +13,7 @@ export default function StatusPage({params}: {params: {id: string}}) {
     queryKey: ['payment', {id}],
     queryFn: () => getPaymentStatus({id}),
     enabled: !!id,
-  })
+  });
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -26,7 +26,7 @@ export default function StatusPage({params}: {params: {id: string}}) {
   return (
     <div className="mx-auto flex w-full max-w-screen-md flex-col gap-6 px-2 py-6 md:px-6 md:py-10">
       <Link
-        href="/booking"
+        href="/venues"
         className="flex items-center self-end whitespace-nowrap text-sm font-medium text-muted-foreground hover:text-primary"
       >
         <PiArrowLeft className="mr-1 h-4 w-4" />

@@ -29,7 +29,11 @@ export interface FieldItemProps {
   location?: {
     subDistrict: string;
     city: string;
+    latitude: number;
+    longitude: number;
   };
+  latitude: number;
+  longitude: number;
   category?: string;
 }
 
