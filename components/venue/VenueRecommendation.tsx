@@ -14,7 +14,7 @@ export default function VenueRecommendation({data}: VenueRecommendationProps) {
   return (
     <section className="flex flex-col gap-8">
       <div className="flex flex-col">
-        <h2 className="text-2xl font-bold">Rekomendasi tempat lainnya</h2>
+        <h2 className="text-2xl font-bold">Rekomendasi Lapangan</h2>
         <p className="text-base font-medium text-muted-foreground">
           Rekomendasi tempat yang mirip dengan Gelora Bung Karno
         </p>

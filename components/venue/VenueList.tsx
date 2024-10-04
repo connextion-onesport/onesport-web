@@ -33,7 +33,7 @@ export default function VenueList({
 
   if (isLoading) {
     return (
-      <section className="flex flex-col gap-8 p-4 pb-8 md:p-8 md:pb-8">
+      <section className="flex w-full px-4 py-8 md:px-8">
         <LoadingSkeleton />
       </section>
     );
@@ -188,7 +188,7 @@ function List({data, latitude, longitude}: ListProps) {
 
 function LoadingSkeleton() {
   return (
-    <div className="flex flex-col gap-8 px-4 py-8 md:px-8">
+    <div className="flex w-full flex-col gap-8">
       <div className="flex flex-col gap-4">
         <div className="flex flex-col gap-2">
           <Skeleton className="h-6 w-1/2 md:w-1/4" />

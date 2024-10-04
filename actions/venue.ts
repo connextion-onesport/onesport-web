@@ -138,8 +138,6 @@ export async function getNearestVenues({
 
     const sortedVenues = venues.sort((a, b) => a.distance - b.distance);
 
-    console.log('sortedVenues', sortedVenues);
-
     return sortedVenues;
   } catch (error) {
     console.error('Error in getNearestVenues', error);
@@ -357,6 +355,7 @@ export async function getVenueById({id}: {id: string}) {
         fields: {
           include: {
             availableHours: true,
+            images: true,
             category: true,
             facilities: {
               include: {

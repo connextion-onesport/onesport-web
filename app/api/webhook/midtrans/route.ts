@@ -1,8 +1,8 @@
 const midtransClient = require('midtrans-client');
-import { prisma } from '@/libs/prisma';
-import { NextResponse } from 'next/server';
+import {prisma} from '@/libs/prisma';
+import {NextResponse} from 'next/server';
 import crypto from 'crypto';
-import { formatISO, parse } from 'date-fns';
+import {formatISO, parse} from 'date-fns';
 
 let apiClient = new midtransClient.Snap({
   isProduction: false,
@@ -98,6 +98,8 @@ export async function POST(req: Request) {
   const expiryDateISO = formatISO(expiryDate);
 
   const grossAmount = parseFloat(gross_amount);
+
+  console.log('Transaction status:', transaction_status);
 
   switch (transaction_status) {
     case 'capture':

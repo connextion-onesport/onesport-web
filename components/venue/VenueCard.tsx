@@ -5,9 +5,9 @@ import {formatNumber, getDistanceFromLatLonInKm} from '@/libs/utils';
 import {FieldItemProps} from '@/types';
 import Image from 'next/image';
 import {PiStarFill, PiClock} from 'react-icons/pi';
-import {useRouter} from 'next/navigation';
 
 import {Carousel, CarouselContent, CarouselItem, type CarouselApi} from '@/components/ui/carousel';
+import Link from 'next/link';
 
 export default function VenueCard({
   id,
@@ -37,7 +37,6 @@ export default function VenueCard({
     });
   }, [api]);
 
-  const router = useRouter();
   const thumbnails = images?.map(image => image.image);
 
   const distance =
@@ -45,14 +44,10 @@ export default function VenueCard({
       ? getDistanceFromLatLonInKm(latitude, longitude, location.latitude, location.longitude)
       : 0;
 
-  console.log('latitude', latitude);
-  console.log('longitude', longitude);
-  console.log('distance', distance);
-
   return (
-    <div
+    <Link
+      href={`/venues/${id}`}
       className="h-full max-h-full cursor-pointer rounded-xl border hover:shadow-lg hover:transition hover:duration-700 hover:ease-in-out"
-      onClick={() => router.push(`/venues/${id}`)}
     >
       <div className="relative flex w-full">
         <Carousel
@@ -78,14 +73,14 @@ export default function VenueCard({
           </CarouselContent>
         </Carousel>
 
-        <div className="absolute right-2 top-2 flex items-center justify-center rounded-full bg-secondary px-2 py-1 text-xs text-white">
+        <div className="absolute right-2 top-2 flex items-center justify-center rounded-full bg-secondary/50 px-2 py-1 text-xs text-white">
           <p className="text-xs text-white">
             {currentSlide}/{count}
           </p>
         </div>
 
         {distance > 0 && latitude !== 0 && longitude !== 0 && (
-          <div className="absolute bottom-0 left-0 flex h-8 items-center justify-center rounded-tr-xl bg-[#655581] bg-secondary px-3 py-1">
+          <div className="absolute bottom-0 left-0 flex h-8 items-center justify-center rounded-tr-xl bg-[#655581] px-3 py-1">
             <p className="text-xs text-white">{distance.toFixed(1)} km</p>
           </div>
         )}
@@ -136,6 +131,6 @@ export default function VenueCard({
           </span>
         </div>
       </div>
-    </div>
+    </Link>
   );
 }

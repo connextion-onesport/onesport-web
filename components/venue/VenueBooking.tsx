@@ -171,6 +171,9 @@ interface BookingCardProps {
 function BookingCard({field, user}: BookingCardProps) {
   const {dayOfWeek} = useVenueStore(state => state);
 
+  const name = field.name;
+  const image = field.images[0].image
+
   const category = field.category.name;
   const schedules = field.availableHours.filter(
     (schedule: any) => schedule.dayOfWeek === dayOfWeek
@@ -182,8 +185,8 @@ function BookingCard({field, user}: BookingCardProps) {
     <div className="flex flex-col rounded-lg bg-white shadow lg:flex-row lg:items-start lg:gap-8 lg:p-4">
       <div className="relative aspect-video max-h-56 min-w-96 overflow-hidden">
         <Image
-          src="/images/hero_image.webp"
-          alt="Lapangan Generasi Baru"
+          src={image}
+          alt={name}
           fill
           className="rounded-t-xl object-cover lg:rounded-xl"
         />
@@ -278,10 +281,10 @@ interface BookingFormProps {
 }
 
 interface Slot {
-    startHour: number;
-    endHour: number;
-    price: number;
-  }
+  startHour: number;
+  endHour: number;
+  price: number;
+}
 
 function BookingForm({field, user}: BookingFormProps) {
   const [selectedSlots, setSelectedSlots] = useState<Slot[]>([]);
@@ -297,7 +300,9 @@ function BookingForm({field, user}: BookingFormProps) {
   const currentHour = currentDate.getHours();
   const isToday = bookingDate.toDateString() === currentDate.toDateString();
 
-  const schedules = field.availableHours.filter((schedule: { dayOfWeek: number }) => schedule.dayOfWeek === dayOfWeek);
+  const schedules = field.availableHours.filter(
+    (schedule: {dayOfWeek: number}) => schedule.dayOfWeek === dayOfWeek
+  );
 
   const {mutateAsync: createBookingMutation} = useMutation({
     mutationFn: createBookings,
@@ -306,7 +311,10 @@ function BookingForm({field, user}: BookingFormProps) {
     },
   });
 
-  const handleSlotSelection = (schedule: { hour: number; pricePerHour: number }, isSelected: boolean) => {
+  const handleSlotSelection = (
+    schedule: {hour: number; pricePerHour: number},
+    isSelected: boolean
+  ) => {
     const {hour, pricePerHour} = schedule;
 
     // Update selected slots and total price
@@ -354,7 +362,7 @@ function BookingForm({field, user}: BookingFormProps) {
     setTotalPrice(0);
   };
 
-  const isDisabled = (schedule: { isAvailable: boolean; hour: number }) => {
+  const isDisabled = (schedule: {isAvailable: boolean; hour: number}) => {
     return schedule.isAvailable === false || (isToday && currentHour >= schedule.hour);
   };
 
@@ -363,36 +371,38 @@ function BookingForm({field, user}: BookingFormProps) {
       <BookingSchedule />
       <div className="flex h-full flex-col">
         <div className="my-auto grid grid-cols-1 gap-x-4 p-4 pt-4 sm:grid-cols-2 sm:gap-x-6 sm:p-6 md:gap-x-10">
-          {schedules.map((schedule: { id: string; hour: number; pricePerHour: number; isAvailable: boolean }) => (
-            <div className="flex justify-between gap-4 border-b p-2 md:p-5" key={schedule.id}>
-              <div className="flex gap-3">
-                <Checkbox
-                  id={schedule.hour.toString()}
-                  disabled={isDisabled(schedule)}
-                  onCheckedChange={e => handleSlotSelection(schedule, e === true)}
-                  className="aspect-square h-6 w-6 shrink-0 grow-0 self-center"
-                />
-                <div className="flex flex-col">
-                  <label
-                    htmlFor={schedule.hour.toString()}
-                    className={`relative flex gap-3 text-xs sm:text-sm md:text-base ${!isDisabled(schedule) ? 'text-black' : 'text-muted-foreground'}`}
-                  >
-                    {`${schedule.hour}.00 - ${schedule.hour + 1}.00`}
-                  </label>
-                  <p
-                    className={`sm:text-sm md:text-base ${!isDisabled(schedule) ? 'text-black' : 'text-muted-foreground'} text-xs`}
-                  >
-                    {schedule.isAvailable ? 'Kosong' : 'Booked'}
-                  </p>
+          {schedules.map(
+            (schedule: {id: string; hour: number; pricePerHour: number; isAvailable: boolean}) => (
+              <div className="flex justify-between gap-4 border-b p-2 md:p-5" key={schedule.id}>
+                <div className="flex gap-3">
+                  <Checkbox
+                    id={schedule.hour.toString()}
+                    disabled={isDisabled(schedule)}
+                    onCheckedChange={e => handleSlotSelection(schedule, e === true)}
+                    className="aspect-square h-6 w-6 shrink-0 grow-0 self-center"
+                  />
+                  <div className="flex flex-col">
+                    <label
+                      htmlFor={schedule.hour.toString()}
+                      className={`relative flex gap-3 text-xs sm:text-sm md:text-base ${!isDisabled(schedule) ? 'text-black' : 'text-muted-foreground'}`}
+                    >
+                      {`${schedule.hour}.00 - ${schedule.hour + 1}.00`}
+                    </label>
+                    <p
+                      className={`sm:text-sm md:text-base ${!isDisabled(schedule) ? 'text-black' : 'text-muted-foreground'} text-xs`}
+                    >
+                      {schedule.isAvailable ? 'Kosong' : 'Booked'}
+                    </p>
+                  </div>
                 </div>
+                <p
+                  className={`${!isDisabled(schedule) ? 'text-black' : 'text-muted-foreground'} self-center text-xs font-semibold sm:text-sm md:text-base`}
+                >
+                  Rp{formatNumber(schedule.pricePerHour)}
+                </p>
               </div>
-              <p
-                className={`${!isDisabled(schedule) ? 'text-black' : 'text-muted-foreground'} self-center text-xs font-semibold sm:text-sm md:text-base`}
-              >
-                Rp{formatNumber(schedule.pricePerHour)}
-              </p>
-            </div>
-          ))}
+            )
+          )}
         </div>
 
         <div className="flex flex-col gap-4 border-t-2 p-6">
