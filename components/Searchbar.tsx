@@ -7,13 +7,11 @@ import {Button} from '@/components/ui/button';
 
 import {RiMapPinLine, RiSearchLine} from 'react-icons/ri';
 
-import {SearchbarProps} from '@/types';
-
-export default function Searchbar({onSearch}: SearchbarProps) {
+export default function Searchbar() {
   const [searchField, setSearchField] = useState<string>('');
 
   const handleSearch = () => {
-    onSearch(searchField);
+    console.log(searchField);
   };
 
   return (

@@ -19,10 +19,14 @@ import {
 } from '@/components/venue';
 import {getUser} from '@/actions/auth';
 
-export default function VenuePage({params}: {params: {slug: string}}) {
-  const id = params.slug;
+export default function VenuePage({params}: {params: {id: string}}) {
+  const id = params.id;
 
-  const {data: venue, isLoading, isError} = useQuery({
+  const {
+    data: venue,
+    isLoading,
+    isError,
+  } = useQuery({
     queryKey: ['venue', id],
     queryFn: () => getVenueById({id}),
     enabled: !!id,
@@ -42,7 +46,7 @@ export default function VenuePage({params}: {params: {slug: string}}) {
     queryKey: ['recommendation', venueId, category],
     queryFn: () => getVenueRecommendation({id: venueId!, category: category!}),
     enabled: !!category && !!venueId,
-  })
+  });
 
   if (isLoading) {
     return (

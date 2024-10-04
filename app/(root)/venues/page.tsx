@@ -1,8 +1,5 @@
 'use client';
 
-import {Suspense, useCallback, useEffect, useState} from 'react';
-import {usePathname, useRouter, useSearchParams} from 'next/navigation';
-
 import Searchbar from '@/components/Searchbar';
 import {FilterList} from '@/components/filter';
 import {VenueList} from '@/components/venue';
@@ -20,25 +17,23 @@ export default function VenuesPage() {
     queryFn: () => getInfiniteVenues({pageParam: 0, pageSize: 12}),
   });
 
-  console.log(venues);
-
   return (
     <main className="mx-auto flex w-full max-w-screen-2xl flex-col">
-      {/* <section className="flex flex-col gap-4 p-4 md:p-8">
-        <Searchbar onSearch={handleSearch} />
-        <FilterList onOrder={handleOrder} onRating={handleRating} onCategory={handleCategory} />
-      </section> */}
+      <section className="flex flex-col gap-4 p-4 md:p-8">
+        <Searchbar />
+        <FilterList />
+      </section>
 
       <NavbarBottom />
-      {/* 
+
       <VenueList
-        data={venues}
+        data={venues?.data}
         isCategory={false}
         isLoading={isLoading}
         isError={isError}
-        title="Rekomendasi Tempat Olahraga"
-        description="Daftar tempat olahraga yang ada di OneSport"
-      /> */}
+        title="Rekomendasi Lapangan Olahraga"
+        description="Temukan lapangan olahraga terbaik di sekitarmu"
+      />
     </main>
   );
 }

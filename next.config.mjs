@@ -9,22 +9,7 @@ const nextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'asset.ayo.co.id',
-        port: '',
-      },
-      {
-        protocol: 'https',
-        hostname: 'images.unsplash.com',
-        port: '',
-      },
-      {
-        protocol: 'https',
-        hostname: 'plus.unsplash.com',
-        port: '',
-      },
-      {
-        protocol: 'https',
-        hostname: 'unsplash.com',
+        hostname: 'utfs.io',
         port: '',
       },
     ],

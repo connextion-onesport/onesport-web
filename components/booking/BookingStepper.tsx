@@ -9,7 +9,7 @@ export default function BookingStepper() {
   const steps = [
     {label: 'Review', path: '/booking/review', number: 1},
     {label: 'Bayar', path: '/booking/payment', number: 2},
-    {label: 'Status', path: '/booking/status', number: 3},
+    {label: 'Status', path: '/booking/status/[id]', number: 3},
   ];
 
   const currentStep = steps.find(step => pathName === step.path);
