@@ -5,19 +5,37 @@ import {NavbarBottom} from '@/components/navbar';
 import {VenueList} from '@/components/venue';
 import {Separator} from '@/components/ui/separator';
 import CTA from '@/components/CTA';
-import {useQuery} from '@tanstack/react-query';
+import {useQuery, useQueryClient} from '@tanstack/react-query';
 import {getAllVenues, getHighestRatingVenues, getNearestVenues} from '@/actions/venue';
 import {useLocationStore, useVenueStore} from '@/providers/zustand-provider';
 import {useEffect} from 'react';
 import {getCurrentLocation} from '@/libs/utils';
+import {venueListCategoryNames} from '@/libs/constants';
 
 export default function HomePage() {
   const {latitude, setLatitude, longitude, setLongitude} = useLocationStore(state => state);
   const {categoryNearby, categoryRating, categoryAll} = useVenueStore(state => state);
 
+  const queryClient = useQueryClient();
+
   useEffect(() => {
     getCurrentLocation(setLatitude, setLongitude);
-  }, [setLatitude, setLongitude]);
+
+    venueListCategoryNames.forEach(sport => {
+      queryClient.prefetchQuery({
+        queryKey: ['rating', sport],
+        queryFn: () => getHighestRatingVenues({amount: 4, category: sport}),
+      });
+      queryClient.prefetchQuery({
+        queryKey: ['nearby', latitude, longitude, sport],
+        queryFn: () => getNearestVenues({latitude, longitude, amount: 4, category: sport}),
+      });
+      queryClient.prefetchQuery({
+        queryKey: ['nearby', latitude, longitude, sport],
+        queryFn: () => getNearestVenues({latitude, longitude, amount: 4, category: sport}),
+      });
+    });
+  }, [latitude, longitude, setLatitude, setLongitude, queryClient]);
 
   const {
     data: nearbyVenues,
@@ -48,9 +66,6 @@ export default function HomePage() {
     enabled: !latitude && !longitude,
   });
 
-  const isLoading = loadingNearby || loadingHighestRating || loadingAll;
-  const isError = errorNearby || errorHighestRating || errorAll;
-
   return (
     <main className="mx-auto flex w-full max-w-screen-2xl flex-col">
       <Hero />
@@ -59,8 +74,8 @@ export default function HomePage() {
           data={nearbyVenues}
           category="nearby"
           isCategory={true}
-          isLoading={isLoading}
-          isError={isError}
+          isLoading={loadingNearby}
+          isError={errorNearby}
           title="Dekat Kamu 🥳"
           description="Tempat olahraga di sekitarmu."
         />
@@ -69,8 +84,8 @@ export default function HomePage() {
           data={allVenues}
           category="all"
           isCategory={true}
-          isLoading={isLoading}
-          isError={isError}
+          isLoading={loadingAll}
+          isError={errorAll}
           title="Olahraga Seru ⛹🏻"
           description="Cek pilihan tempat yang bisa kamu coba."
         />
@@ -80,8 +95,8 @@ export default function HomePage() {
         data={highestRatingVenues}
         category="rating"
         isCategory={true}
-        isLoading={isLoading}
-        isError={isError}
+        isLoading={loadingHighestRating}
+        isError={errorHighestRating}
         title="Rating Tertinggi ⭐️"
         description="Favorit dengan nilai terbaik dari pengguna."
       />

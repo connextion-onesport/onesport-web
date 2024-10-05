@@ -29,7 +29,7 @@ export default function Hero() {
         <div className="absolute flex h-full w-full flex-col items-center justify-center gap-8 p-4 md:p-8">
           <HeroText />
           <div className="w-full max-w-2xl">
-            <Searchbar onSearch={handleSearch} />
+            <Searchbar />
           </div>
           <HeroCategoryDesktop />
         </div>
