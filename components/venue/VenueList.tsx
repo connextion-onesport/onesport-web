@@ -9,6 +9,8 @@ import Link from 'next/link';
 
 import {Carousel, CarouselContent, CarouselItem} from '@/components/ui/carousel';
 import Image from 'next/image';
+import {getAllVenues, getHighestRatingVenues, getNearestVenues} from '@/actions/venue';
+import {venueListCategoryNames} from '@/libs/constants';
 
 interface VenueListProps {
   title: string;
@@ -70,11 +72,9 @@ interface VenueListHeaderProps {
 function Header({title, description, category, isCategory}: VenueListHeaderProps) {
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex flex-col gap-1">
-        <h3 className="text-xl font-bold sm:text-2xl md:text-3xl">{title}</h3>
-        <p className="text-sm font-medium text-muted-foreground sm:text-base md:text-lg">
-          {description}
-        </p>
+      <div className="flex flex-col">
+        <h3 className="text-xl font-bold sm:text-2xl">{title}</h3>
+        <p className="text-sm font-medium text-muted-foreground sm:text-base">{description}</p>
       </div>
 
       {isCategory && <Category category={category} />}
@@ -92,8 +92,6 @@ function Category({category}: {category?: string}) {
     setCategoryAll,
   } = useVenueStore(state => state);
 
-  const sports = ['Futsal', 'Basket', 'Sepak Bola', 'Badminton', 'Tenis'];
-
   const handleCategory = (sport: string) => {
     if (category === 'nearby') {
       setCategoryNearby(sport);
@@ -108,7 +106,7 @@ function Category({category}: {category?: string}) {
     <div className="flex items-center justify-between gap-8">
       <Carousel className="flex overflow-hidden lg:w-full">
         <CarouselContent>
-          {sports.map((sport, index) => (
+          {venueListCategoryNames.map((sport, index) => (
             <CarouselItem key={index} className="min-w-fit basis-0 pl-4">
               <Button
                 onClick={() => handleCategory(sport)}

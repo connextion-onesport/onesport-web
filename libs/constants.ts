@@ -70,6 +70,8 @@ export const heroCategories = [
   },
 ];
 
+export const venueListCategoryNames = ['Futsal', 'Basket', 'Sepak Bola', 'Badminton', 'Tenis'];
+
 //CATEGORY__FILTER__MODAL
 export const categoryFilter = [
   {
