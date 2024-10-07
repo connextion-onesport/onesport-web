@@ -12,23 +12,52 @@ import {useState} from 'react';
 import {VisuallyHidden} from '@radix-ui/react-visually-hidden';
 import {Button} from '../ui/button';
 import {Input} from '../ui/input';
-import {LuFilter} from 'react-icons/lu';
-import {PiCurrencyDollar} from 'react-icons/pi';
+
+import {usePathname, useSearchParams, useRouter} from 'next/navigation';
 
 export default function FilterPrice() {
+  const [minimumPrice, setMinimumPrice] = useState<number | undefined>(undefined);
+  const [maximumPrice, setMaximumPrice] = useState<number | undefined>(undefined);
   const [isOpen, setIsOpen] = useState<boolean>(false);
+
+  const searchParams = useSearchParams();
+  const pathName = usePathname();
+  const {replace} = useRouter();
+
+  const handleFilter = () => {
+    const params = new URLSearchParams(searchParams);
+
+    if (minimumPrice) {
+      params.set('min_price', minimumPrice.toString());
+    } else {
+      params.delete('min_price');
+    }
+
+    if (maximumPrice) {
+      params.set('max_price', maximumPrice.toString());
+    } else {
+      params.delete('max_price');
+    }
+
+    replace(`${pathName}?${params.toString()}`);
+
+    setIsOpen(false);
+  };
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger aria-label="Open Filter Price" asChild>
-        <Button variant="outline" className="rounded-full text-muted-foreground">
-          <span className="mr-2 flex aspect-square h-4 w-4 shrink-0 grow-0 items-center justify-center">
-            <p className="text-sm font-bold text-muted-foreground">Rp</p>
+        <Button
+          variant="outline"
+          className="h-8 rounded-full px-3 text-xs text-muted-foreground md:h-9 md:px-4 md:py-2 md:text-sm"
+        >
+          <span className="mr-1 flex aspect-square h-3 w-3 shrink-0 grow-0 items-center justify-center md:mr-2 md:h-4 md:w-4">
+            <p className="text-xs font-bold text-muted-foreground md:text-sm">Rp</p>
           </span>
           Harga
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-w-lg gap-0 p-0">
+      <DialogContent className="flex h-1/2 max-w-lg flex-col gap-0 p-0">
         <DialogHeader className="w-full border-b-2 p-6">
           <DialogTitle>Harga</DialogTitle>
           <VisuallyHidden>
@@ -38,48 +67,69 @@ export default function FilterPrice() {
           </VisuallyHidden>
         </DialogHeader>
 
-        <FilterPriceContent />
-        <FilterPriceFooter />
+        <FilterPriceContent
+          minimumPrice={minimumPrice}
+          setMinimumPrice={setMinimumPrice}
+          maximumPrice={maximumPrice}
+          setMaximumPrice={setMaximumPrice}
+        />
+        <FilterPriceFooter handleFilter={handleFilter} />
       </DialogContent>
     </Dialog>
   );
 }
 
-export function FilterPriceContent() {
-  const [priceRange, setPriceRange] = useState<{
-    minimum: number | undefined;
-    maximum: number | undefined;
-  }>({
-    minimum: undefined,
-    maximum: undefined,
-  });
+interface FilterPriceContentProps {
+  minimumPrice: number | undefined;
+  setMinimumPrice: (price: number | undefined) => void;
+  maximumPrice: number | undefined;
+  setMaximumPrice: (price: number | undefined) => void;
+}
 
-  //the function to set minimum price to 250
-  const setPriceMinimum250 = () => {
-    setPriceRange({minimum: 250000, maximum: 0});
+export function FilterPriceContent({
+  minimumPrice,
+  setMinimumPrice,
+  maximumPrice,
+  setMaximumPrice,
+}: FilterPriceContentProps) {
+  const [activePriceRange, setActivePriceRange] = useState<string | undefined>(undefined);
+
+  const setPriceMinimum300 = () => {
+    setMinimumPrice(300000);
+    setMaximumPrice(undefined);
+    setActivePriceRange('above300');
   };
 
-  const setPriceMaximum150 = () => {
-    setPriceRange({minimum: 0, maximum: 150000});
+  const setPriceRange200to300 = () => {
+    setMinimumPrice(200000);
+    setMaximumPrice(300000);
+    setActivePriceRange('200to300');
   };
 
-  const setPriceRange150to250 = () => {
-    setPriceRange({minimum: 150000, maximum: 250000});
+  const setPriceRange100to200 = () => {
+    setMinimumPrice(100000);
+    setMaximumPrice(200000);
+    setActivePriceRange('100to200');
   };
 
-  // the function to handle price change in minimum input elements
+  const setPriceMaximum100 = () => {
+    setMinimumPrice(undefined);
+    setMaximumPrice(100000);
+    setActivePriceRange('below100');
+  };
+
   const handleMinimumPriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value ? Math.max(0, parseInt(e.target.value, 10)) : undefined;
-    setPriceRange({...priceRange, minimum: value});
+    setMinimumPrice(value);
+    setActivePriceRange(undefined);
   };
 
-  // the function to handle price change in maximum input elements
   const handleMaximumPriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value ? Math.max(0, parseInt(e.target.value, 10)) : undefined;
-    setPriceRange({...priceRange, maximum: value});
+    setMaximumPrice(value);
+    setActivePriceRange(undefined);
   };
 
-  // function to prevent users input minus value
   const preventMinus = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === '-') {
       e.preventDefault();
@@ -87,68 +137,80 @@ export function FilterPriceContent() {
   };
 
   return (
-    <div className="grid grid-cols-2 gap-3 p-6">
+    <div className="mb-auto grid grid-cols-2 gap-4 p-6">
       <div className="flex rounded-md border focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring">
-        <div className="h-full self-center bg-muted px-3 py-1 text-center text-base text-muted-foreground">
-          Rp
+        <div className="flex h-10 items-center justify-center bg-secondary p-3">
+          <p className="text-sm font-bold text-muted-foreground">Rp</p>
         </div>
         <Input
-          placeholder="Minimum Price"
+          placeholder="Harga Minimum"
           type="number"
-          className="border-none shadow-none"
+          className="h-10 rounded-l-none border-none shadow-none"
           onChange={handleMinimumPriceChange}
           onKeyDown={preventMinus}
-          value={priceRange.minimum !== undefined ? priceRange.minimum : ''}
+          value={minimumPrice !== undefined ? minimumPrice : ''}
           min="0"
-        ></Input>
+        />
       </div>
       <div className="flex rounded-md border focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring">
-        <div className="h-full self-center bg-muted px-3 py-1 text-center text-base text-muted-foreground">
-          Rp
+        <div className="flex h-10 items-center justify-center bg-secondary p-3">
+          <p className="text-sm font-bold text-muted-foreground">Rp</p>
         </div>
         <Input
-          placeholder="Maximum Price"
+          placeholder="Harga Maksimum"
           type="number"
-          className="border-none shadow-none"
+          className="h-10 rounded-l-none border-none shadow-none"
           onChange={handleMaximumPriceChange}
           onKeyDown={preventMinus}
-          value={priceRange.maximum !== undefined ? priceRange.maximum : ''}
-        ></Input>
+          value={maximumPrice !== undefined ? maximumPrice : ''}
+        />
       </div>
+
       <Button
-        variant="outline"
-        className="rounded-full font-normal text-muted-foreground"
-        onClick={setPriceMaximum150}
+        variant={activePriceRange === 'below100' ? 'default' : 'outline'}
+        size="lg"
+        className="font-normal"
+        onClick={setPriceMaximum100}
       >
-        Dibawah 150 rb
+        Dibawah 100 rb
       </Button>
       <Button
-        variant="outline"
-        className="rounded-full font-normal text-muted-foreground"
-        onClick={setPriceRange150to250}
+        variant={activePriceRange === '100to200' ? 'default' : 'outline'}
+        size="lg"
+        className="font-normal"
+        onClick={setPriceRange100to200}
       >
-        150 Sampai 250 rb
+        100 Sampai 200 rb
       </Button>
       <Button
-        variant="outline"
-        className="rounded-full font-normal text-muted-foreground"
-        onClick={setPriceMinimum250}
+        variant={activePriceRange === '200to300' ? 'default' : 'outline'}
+        size="lg"
+        className="font-normal"
+        onClick={setPriceRange200to300}
       >
-        Diatas 250 rb
+        200 Sampai 300 rb
+      </Button>
+      <Button
+        variant={activePriceRange === 'above300' ? 'default' : 'outline'}
+        size="lg"
+        className="font-normal"
+        onClick={setPriceMinimum300}
+      >
+        Diatas 300 rb
       </Button>
     </div>
   );
 }
 
-function FilterPriceFooter() {
+function FilterPriceFooter({handleFilter}: {handleFilter: () => void}) {
   return (
     <div className="flex items-center gap-4 border-t p-6">
       <DialogClose asChild>
-        <Button variant="outline" className="w-full rounded-full">
+        <Button variant="outline" size="lg" className="w-full">
           Kembali
         </Button>
       </DialogClose>
-      <Button variant="default" className="w-full rounded-full">
+      <Button variant="default" size="lg" className="w-full" onClick={handleFilter}>
         Terapkan
       </Button>
     </div>

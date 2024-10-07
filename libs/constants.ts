@@ -1,3 +1,6 @@
+import {PiBasketball, PiSoccerBall, PiTennisBall, PiVolleyball} from 'react-icons/pi';
+import {GiShuttlecock, GiSoccerKick} from 'react-icons/gi';
+import {FaTableTennisPaddleBall} from 'react-icons/fa6';
 import {
   RiDiscordFill,
   RiFacebookFill,
@@ -41,32 +44,39 @@ export const navbarMobileRoutes = [
 
 export const heroCategories = [
   {
-    name: 'Basket',
+    name: 'Badminton',
     image: '/images/icons/basketball.svg',
+    icon: GiShuttlecock,
   },
   {
-    name: 'Pingpong',
+    name: 'Basket',
     image: '/images/icons/pingpong.svg',
+    icon: PiBasketball,
   },
   {
-    name: 'Softball',
+    name: 'Futsal',
     image: '/images/icons/softball.svg',
+    icon: GiSoccerKick,
   },
   {
-    name: 'Track',
+    name: 'Sepak Bola',
     image: '/images/icons/track.svg',
+    icon: PiSoccerBall,
   },
   {
-    name: 'Soccer',
+    name: 'Tenis',
     image: '/images/icons/soccer.svg',
+    icon: PiTennisBall,
   },
   {
-    name: 'Baseball',
+    name: 'Tenis Meja',
     image: '/images/icons/baseball.svg',
+    icon: FaTableTennisPaddleBall,
   },
   {
-    name: 'Volley',
+    name: 'Voli',
     image: '/images/icons/volleyball.svg',
+    icon: PiVolleyball,
   },
 ];
 
@@ -74,118 +84,41 @@ export const venueListCategoryNames = ['Futsal', 'Basket', 'Sepak Bola', 'Badmin
 
 //CATEGORY__FILTER__MODAL
 export const categoryFilter = [
-  {
-    name: 'Basket',
-    id: 'Basket',
-    value: 'Basket',
-    htmlFor: 'Basket',
-    text: 'Basket',
-  },
-  {
-    name: 'Baseball',
-    id: 'Baseball',
-    value: 'Baseball',
-    htmlFor: 'Baseball',
-    text: 'Baseball',
-  },
-  {
-    name: 'Pingpong',
-    id: 'Pingpong',
-    value: 'Pingpong',
-    htmlFor: 'Pingpong',
-    text: 'Pingpong',
-  },
-  {
-    name: 'Soccer',
-    id: 'Soccer',
-    value: 'Soccer',
-    htmlFor: 'Soccer',
-    text: 'Soccer',
-  },
-  {
-    name: 'Softball',
-    id: 'Softball',
-    value: 'Softball',
-    htmlFor: 'Softball',
-    text: 'Softball',
-  },
-  {
-    name: 'Track',
-    id: 'Track',
-    value: 'Track',
-    htmlFor: 'Track',
-    text: 'Track',
-  },
-  {
-    name: 'Volley',
-    id: 'Volley',
-    value: 'Volley',
-    htmlFor: 'Volley',
-    text: 'Volley',
-  },
+  'Badminton',
+  'Basket',
+  'Futsal',
+  'Sepak Bola',
+  'Tenis Meja',
+  'Tenis',
+  'Voli',
 ];
 
-//ORDER_BY__MODAL
-export const orderByModal = [
+//ORDER_BY__DIALOG
+export const orderFilter = [
   {
-    name: 'recommendation',
-    id: 'recommendation',
+    id: 'rekomendasi',
     value: 'recommendation',
-    htmlFor: 'recommendation',
-    text: 'Recommendation',
+    htmlFor: 'rekomendasi',
+    text: 'Rekomendasi',
   },
   {
-    name: 'highest-price',
-    id: 'highest-price',
+    id: 'harga-tertinggi',
     value: 'highest-price',
-    htmlFor: 'highest-price',
-    text: 'Highest Price',
+    htmlFor: 'harga-tertinggi',
+    text: 'Harga Tertinggi',
   },
   {
-    name: 'highest-rating',
-    id: 'highest-rating',
+    id: 'rating-tertinggi',
     value: 'highest-rating',
-    htmlFor: 'highest-rating',
-    text: 'Highest Rating',
+    htmlFor: 'rating-tertinggi',
+    text: 'Rating Tertinggi',
   },
   {
-    name: 'lowest-price',
-    id: 'lowest-price',
+    id: 'harga-terendah',
     value: 'lowest-price',
-    htmlFor: 'lowest-price',
-    text: 'Lowest Price',
+    htmlFor: 'harga-terendah',
+    text: 'Harga Terendah',
   },
-];
-
-export const fieldImagesOutdoor = [
-  'https://plus.unsplash.com/premium_photo-1667598736309-1ea3b0fb1afa?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-  'https://images.unsplash.com/photo-1586428268321-8e067843a113?q=80&w=1776&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-  'https://plus.unsplash.com/premium_photo-1684713510655-e6e31536168d?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-  'https://plus.unsplash.com/premium_photo-1684106554224-1df87e5c2e29?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-  'https://plus.unsplash.com/premium_photo-1684446464405-71867f88356b?q=80&w=1771&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-  'https://plus.unsplash.com/premium_photo-1708119178805-321dec8ba9cf?q=80&w=1933&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-];
-
-export const fieldImages = [
-  'https://plus.unsplash.com/premium_photo-1667598736309-1ea3b0fb1afa?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-  'https://images.unsplash.com/photo-1586428268321-8e067843a113?q=80&w=1776&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-  'https://plus.unsplash.com/premium_photo-1684713510655-e6e31536168d?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-  'https://plus.unsplash.com/premium_photo-1684106554224-1df87e5c2e29?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-  'https://plus.unsplash.com/premium_photo-1684446464405-71867f88356b?q=80&w=1771&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-  'https://plus.unsplash.com/premium_photo-1708119178805-321dec8ba9cf?q=80&w=1933&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-  'https://images.unsplash.com/photo-1559369064-c4d65141e408?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-  'https://images.unsplash.com/photo-1555688695-bd7b47dd8a8a?q=80&w=1896&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-  'https://images.unsplash.com/photo-1695950695168-f4038b55a9ca?q=80&w=1776&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-  'https://plus.unsplash.com/premium_photo-1708696237327-5fd6598707ae?q=80&w=1771&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-  'https://plus.unsplash.com/premium_photo-1709303662600-1aa5938933e3?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3Ds',
-];
-
-export const fieldImagesIndoor = [
-  'https://images.unsplash.com/photo-1559369064-c4d65141e408?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-  'https://images.unsplash.com/photo-1555688695-bd7b47dd8a8a?q=80&w=1896&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-  'https://images.unsplash.com/photo-1695950695168-f4038b55a9ca?q=80&w=1776&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-  'https://plus.unsplash.com/premium_photo-1708696237327-5fd6598707ae?q=80&w=1771&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-  'https://plus.unsplash.com/premium_photo-1709303662600-1aa5938933e3?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3Ds',
 ];
 
 //FASILITAS__DUMMY

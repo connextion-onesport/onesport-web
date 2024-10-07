@@ -47,6 +47,7 @@ import {Skeleton} from '../ui/skeleton';
 import {ReloadIcon} from '@radix-ui/react-icons';
 import {useMutation, useQueryClient} from '@tanstack/react-query';
 import {createBookings} from '@/actions/venue';
+import {ScrollArea} from '../ui/scroll-area';
 
 interface VenueBookingProps {
   fields: any;
@@ -70,9 +71,7 @@ export default function VenueBooking({fields, user}: VenueBookingProps) {
         </div>
       </div>
 
-      {fields.map((field: any) => (
-        <BookingCard key={field.id} field={field} user={user} />
-      ))}
+      <BookingList fields={fields} user={user} />
     </section>
   );
 }
@@ -138,26 +137,55 @@ function BookingSchedule() {
   );
 }
 
-function BookingCategory({categories}: {categories: any}) {
-  const sortedCategories = categories.sort((a: any, b: any) => a.name.localeCompare(b.name));
+function BookingCategory({categories}: {categories: string[]}) {
+  const {categoryBooking, setCategoryBooking} = useVenueStore(state => state);
+
+  const uniqueCategories = Array.from(new Set(categories.map((category: any) => category.name)));
+
+  const handleSelectCategory = (category: string) => {
+    setCategoryBooking(category);
+  };
 
   return (
     <div className="flex flex-wrap gap-2">
       <Button
-        variant="outline"
-        className="rounded-full text-primary hover:bg-primary hover:text-white"
+        variant={categoryBooking === 'Semua' ? 'default' : 'outline'}
+        onClick={() => handleSelectCategory('Semua')}
+        className={`${categoryBooking === 'Semua' && 'text-white'} h-8 rounded-full px-3 text-xs md:h-9 md:px-4 md:py-2 md:text-sm`}
       >
         Semua
       </Button>
 
-      {sortedCategories.map((category: any) => (
+      {uniqueCategories.map((category: string, index: number) => (
         <Button
-          key={category.id}
-          variant="outline"
-          className="rounded-full text-muted-foreground hover:bg-primary hover:text-white"
+          key={index}
+          variant={categoryBooking === category ? 'default' : 'outline'}
+          onClick={() => handleSelectCategory(category)}
+          className={`${categoryBooking === category && 'text-white'} h-8 rounded-full px-3 text-xs md:h-9 md:px-4 md:py-2 md:text-sm`}
         >
-          {category.name}
+          {category}
         </Button>
+      ))}
+    </div>
+  );
+}
+
+interface BookingListProps {
+  fields: any;
+  user: any;
+}
+
+function BookingList({fields, user}: BookingListProps) {
+  const {categoryBooking} = useVenueStore(state => state);
+
+  const filteredFields = fields.filter(
+    (field: any) => categoryBooking === 'Semua' || field.category.name === categoryBooking
+  );
+
+  return (
+    <div className="flex flex-col gap-8">
+      {filteredFields.map((field: any) => (
+        <BookingCard key={field.id} field={field} user={user} />
       ))}
     </div>
   );
@@ -169,10 +197,12 @@ interface BookingCardProps {
 }
 
 function BookingCard({field, user}: BookingCardProps) {
+  const [showBooking, setShowBooking] = useState(false);
+  const {setShowAuth} = useAuthStore(state => state);
   const {dayOfWeek} = useVenueStore(state => state);
 
   const name = field.name;
-  const image = field.images[0].image
+  const image = field.images[0].image;
 
   const category = field.category.name;
   const schedules = field.availableHours.filter(
@@ -181,87 +211,97 @@ function BookingCard({field, user}: BookingCardProps) {
   const prices = schedules.map((schedule: any) => schedule.pricePerHour);
   const minPrice = prices.length > 0 ? Math.min(...prices) : 0;
 
-  return (
-    <div className="flex flex-col rounded-lg bg-white shadow lg:flex-row lg:items-start lg:gap-8 lg:p-4">
-      <div className="relative aspect-video max-h-56 min-w-96 overflow-hidden">
-        <Image
-          src={image}
-          alt={name}
-          fill
-          className="rounded-t-xl object-cover lg:rounded-xl"
-        />
-        <span className="absolute left-4 top-4 flex h-8 items-center justify-center rounded-full bg-white px-3 text-sm text-muted-foreground">
-          {field.isIndoor ? 'Indoor' : 'Outdoor'}
-        </span>
-      </div>
+  const handleBooking = () => {
+    if (user) {
+      setShowBooking(true);
+    } else {
+      setShowAuth(true);
+    }
+  };
 
-      <div className="flex w-full flex-col justify-center p-4 lg:p-0">
-        <div className="flex flex-col gap-2">
-          <h3 className="line-clamp-1 text-lg font-semibold">{field.name}</h3>
-          <div className="flex w-fit items-center gap-1 whitespace-nowrap rounded-full bg-secondary px-3 py-1">
-            <span className="flex aspect-square h-4 w-4 items-center justify-center">
-              <PiSoccerBallFill className="h-full w-full" />
-            </span>
-            <p className="text-xs">{category}</p>
-          </div>
-          <div className="flex items-center gap-1 whitespace-nowrap">
-            <span className="flex aspect-square h-5 w-5 items-center justify-center">
-              <PiCourtBasketball className="h-full w-full" />
-            </span>
-            <p className="text-sm">Lapangan {field.type}</p>
-          </div>
+  return (
+    <>
+      <div className="flex flex-col rounded-lg bg-white shadow lg:flex-row lg:items-start lg:gap-8 lg:p-4">
+        <div className="relative aspect-video max-h-56 w-full overflow-hidden lg:max-w-96">
+          <Image src={image} alt={name} fill className="rounded-t-xl object-cover lg:rounded-xl" />
+          <span className="absolute left-4 top-4 flex h-8 items-center justify-center rounded-full bg-white px-3 text-sm text-muted-foreground">
+            {field.isIndoor ? 'Indoor' : 'Outdoor'}
+          </span>
         </div>
 
-        <Separator className="my-4" />
-
-        <div className="flex flex-col justify-between gap-4 sm:flex-col md:flex-row">
-          <div className="flex flex-col gap-2 whitespace-nowrap">
-            <p className="text-sm font-semibold">Fasilitas Lapangan</p>
-            <div className="grid grid-cols-2 grid-rows-2 gap-2">
-              <div className="flex gap-2">
-                <Image src="/images/icons/bola.svg" alt="ball icon" width={15} height={15} />
-                <p className="text-sm">3x Bola</p>
-              </div>
-              <div className="flex gap-2">
-                <Image src="/images/icons/peluit.svg" alt="peluit icon" width={15} height={15} />
-                <p className="text-sm">Wasit</p>
-              </div>
-              <div className="flex gap-2">
-                <Image src="/images/icons/orang.svg" alt="people icon" width={15} height={15} />
-                <p className="text-sm">10 Orang</p>
-              </div>
+        <div className="flex w-full flex-col justify-center p-4 lg:p-0">
+          <div className="flex flex-col gap-2">
+            <h3 className="line-clamp-1 text-lg font-semibold">{field.name}</h3>
+            <div className="flex w-fit items-center gap-1 whitespace-nowrap rounded-full bg-secondary px-3 py-1">
+              <span className="flex aspect-square h-4 w-4 items-center justify-center">
+                <PiSoccerBallFill className="h-full w-full" />
+              </span>
+              <p className="text-xs">{category}</p>
+            </div>
+            <div className="flex items-center gap-1 whitespace-nowrap">
+              <span className="flex aspect-square h-5 w-5 items-center justify-center">
+                <PiCourtBasketball className="h-full w-full" />
+              </span>
+              <p className="text-sm">Lapangan {field.type}</p>
             </div>
           </div>
 
-          <div className="flex flex-col">
-            <p className="text-sm">Mulai dari</p>
-            <span className="mb-2 flex items-center gap-1">
-              <p className="text-lg font-bold">{formatPrice(minPrice)}</p>
-              <p className="text-sm font-medium">/Jam</p>
-            </span>
+          <Separator className="my-4" />
 
-            <BookingDialog field={field} user={user} />
+          <div className="flex flex-col justify-between gap-4 sm:flex-col md:flex-row">
+            <div className="flex flex-col gap-2 whitespace-nowrap">
+              <p className="text-sm font-semibold">Fasilitas Lapangan</p>
+              <div className="grid grid-cols-2 grid-rows-2 gap-2">
+                <div className="flex gap-2">
+                  <Image src="/images/icons/bola.svg" alt="ball icon" width={15} height={15} />
+                  <p className="text-sm">3x Bola</p>
+                </div>
+                <div className="flex gap-2">
+                  <Image src="/images/icons/peluit.svg" alt="peluit icon" width={15} height={15} />
+                  <p className="text-sm">Wasit</p>
+                </div>
+                <div className="flex gap-2">
+                  <Image src="/images/icons/orang.svg" alt="people icon" width={15} height={15} />
+                  <p className="text-sm">10 Orang</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex flex-col">
+              <p className="text-sm">Mulai dari</p>
+              <span className="mb-2 flex items-center gap-1">
+                <p className="text-lg font-bold">{formatPrice(minPrice)}</p>
+                <p className="text-sm font-medium">/Jam</p>
+              </span>
+
+              <Button size="lg" onClick={handleBooking}>
+                Pesan Sekarang
+              </Button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+      <BookingDialog
+        field={field}
+        user={user}
+        showBooking={showBooking}
+        setShowBooking={setShowBooking}
+      />
+    </>
   );
 }
 
 interface BookingDialogProps {
   field: any;
   user: any;
+  showBooking: boolean;
+  setShowBooking: (showBooking: boolean) => void;
 }
 
-function BookingDialog({field, user}: BookingDialogProps) {
+function BookingDialog({field, user, showBooking, setShowBooking}: BookingDialogProps) {
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <Button size="lg" className="w-full">
-          Pesan Sekarang
-        </Button>
-      </DialogTrigger>
-      <DialogContent className="flex h-dvh flex-col items-center justify-center gap-0 rounded-none p-0 md:h-fit md:max-w-3xl md:rounded-xl">
+    <Dialog open={showBooking} onOpenChange={setShowBooking}>
+      <DialogContent className="flex h-dvh max-w-lg flex-col gap-0 p-0 md:h-3/4 md:max-w-3xl md:rounded-xl">
         <DialogHeader className="w-full border-b-2 p-6">
           <DialogTitle>Pilih Jadwal</DialogTitle>
           <VisuallyHidden>
@@ -304,6 +344,21 @@ function BookingForm({field, user}: BookingFormProps) {
     (schedule: {dayOfWeek: number}) => schedule.dayOfWeek === dayOfWeek
   );
 
+  const sortedSchedules = schedules.sort((a: {hour: number}, b: {hour: number}) =>
+    a.hour > b.hour ? 1 : -1
+  );
+
+  const bookings = sortedSchedules.map((schedule: {bookings: any}) => schedule.bookings).flat();
+
+  const isAvailable = ({date, hour}: {date: Date; hour: number}) => {
+    const isBooked = bookings.some(
+      (booking: {startTime: Date; endTime: Date}) =>
+        isSameDay(booking.startTime, date) && booking.startTime.getHours() === hour
+    );
+
+    return !isBooked;
+  };
+
   const {mutateAsync: createBookingMutation} = useMutation({
     mutationFn: createBookings,
     onSuccess: () => {
@@ -317,7 +372,6 @@ function BookingForm({field, user}: BookingFormProps) {
   ) => {
     const {hour, pricePerHour} = schedule;
 
-    // Update selected slots and total price
     if (isSelected) {
       setSelectedSlots(prev => [
         ...prev,
@@ -334,6 +388,7 @@ function BookingForm({field, user}: BookingFormProps) {
 
   const handleBooking = async () => {
     setIsSubmitting(true);
+
     try {
       const bookings = selectedSlots.map(slot => ({
         fieldId: field.id,
@@ -345,8 +400,8 @@ function BookingForm({field, user}: BookingFormProps) {
         price: slot.price,
       }));
 
-      console.log('Bookings to create:', bookings);
       await createBookingMutation({venueId: field.venueId, userId: user.id, bookings});
+
       resetForm();
       router.push('/booking/review');
     } catch (error) {
@@ -362,72 +417,83 @@ function BookingForm({field, user}: BookingFormProps) {
     setTotalPrice(0);
   };
 
-  const isDisabled = (schedule: {isAvailable: boolean; hour: number}) => {
-    return schedule.isAvailable === false || (isToday && currentHour >= schedule.hour);
+  const isDisabled = (schedule: {hour: number}) => {
+    const {hour} = schedule;
+    const isPastHour = isToday && currentHour >= hour;
+
+    return isPastHour || !isAvailable({date: bookingDate, hour});
   };
 
+  useEffect(() => {
+    resetForm();
+  }, [bookingDate]);
+
   return (
-    <div className="flex h-full w-full flex-col rounded-none">
+    <div className="flex h-full w-full flex-col overflow-hidden rounded-none">
       <BookingSchedule />
-      <div className="flex h-full flex-col">
-        <div className="my-auto grid grid-cols-1 gap-x-4 p-4 pt-4 sm:grid-cols-2 sm:gap-x-6 sm:p-6 md:gap-x-10">
-          {schedules.map(
-            (schedule: {id: string; hour: number; pricePerHour: number; isAvailable: boolean}) => (
-              <div className="flex justify-between gap-4 border-b p-2 md:p-5" key={schedule.id}>
-                <div className="flex gap-3">
-                  <Checkbox
-                    id={schedule.hour.toString()}
-                    disabled={isDisabled(schedule)}
-                    onCheckedChange={e => handleSlotSelection(schedule, e === true)}
-                    className="aspect-square h-6 w-6 shrink-0 grow-0 self-center"
-                  />
-                  <div className="flex flex-col">
-                    <label
-                      htmlFor={schedule.hour.toString()}
-                      className={`relative flex gap-3 text-xs sm:text-sm md:text-base ${!isDisabled(schedule) ? 'text-black' : 'text-muted-foreground'}`}
-                    >
-                      {`${schedule.hour}.00 - ${schedule.hour + 1}.00`}
-                    </label>
-                    <p
-                      className={`sm:text-sm md:text-base ${!isDisabled(schedule) ? 'text-black' : 'text-muted-foreground'} text-xs`}
-                    >
-                      {schedule.isAvailable ? 'Kosong' : 'Booked'}
-                    </p>
-                  </div>
+
+      <ScrollArea className="mb-auto">
+        <div className="grid grid-cols-1 gap-y-4 p-4 md:grid-cols-2 md:gap-x-6 md:gap-y-6 md:p-6">
+          {sortedSchedules.map((schedule: {id: string; hour: number; pricePerHour: number}) => (
+            <div className="flex justify-between gap-4 border-b p-4" key={schedule.id}>
+              <div className="flex gap-3">
+                <Checkbox
+                  id={schedule.hour.toString()}
+                  disabled={isDisabled(schedule)}
+                  checked={selectedSlots.some(slot => slot.startHour === schedule.hour)}
+                  onCheckedChange={e => handleSlotSelection(schedule, e === true)}
+                  className="aspect-square h-6 w-6 shrink-0 grow-0 self-center"
+                />
+                <div className="flex flex-col">
+                  <label
+                    htmlFor={schedule.hour.toString()}
+                    className={`relative flex gap-3 text-sm md:text-base ${!isDisabled(schedule) ? 'text-black' : 'text-muted-foreground'}`}
+                  >
+                    {schedule.hour === 24
+                      ? '00.00 - 01.00'
+                      : schedule.hour === 23
+                        ? '23.00 - 00.00'
+                        : `${schedule.hour}.00 - ${schedule.hour + 1}.00`}
+                  </label>
+                  <p
+                    className={`${!isDisabled(schedule) ? 'text-black' : 'text-muted-foreground'} text-sm md:text-base`}
+                  >
+                    {isAvailable({date: bookingDate, hour: schedule.hour}) ? 'Kosong' : 'Booked'}
+                  </p>
                 </div>
-                <p
-                  className={`${!isDisabled(schedule) ? 'text-black' : 'text-muted-foreground'} self-center text-xs font-semibold sm:text-sm md:text-base`}
-                >
-                  Rp{formatNumber(schedule.pricePerHour)}
-                </p>
               </div>
-            )
-          )}
+              <p
+                className={`${!isDisabled(schedule) ? 'text-black' : 'text-muted-foreground'} self-center text-sm font-semibold md:text-base`}
+              >
+                Rp{formatNumber(schedule.pricePerHour)}
+              </p>
+            </div>
+          ))}
+        </div>
+      </ScrollArea>
+
+      <div className="flex flex-col gap-4 border-t p-6">
+        <div className="flex flex-col gap-1">
+          <p className="font-medium text-muted-foreground">Total</p>
+          <p className="text-xl font-semibold">
+            Rp{formatNumber(totalPrice)}
+            <span className="ml-1 font-medium text-muted-foreground">/ {totalHour} Jam</span>
+          </p>
         </div>
 
-        <div className="flex flex-col gap-4 border-t-2 p-6">
-          <div className="flex flex-col gap-1">
-            <p className="font-medium text-muted-foreground">Total</p>
-            <p className="text-xl font-semibold">
-              Rp{formatNumber(totalPrice)}
-              <span className="ml-1 font-medium text-muted-foreground">/ {totalHour} Jam</span>
-            </p>
-          </div>
-
-          <div className="grid grid-cols-2 gap-4">
-            <DialogClose asChild>
-              <Button
-                size="lg"
-                variant="outline"
-                className="w-full border-primary text-primary hover:text-primary"
-              >
-                Batal
-              </Button>
-            </DialogClose>
-            <Button size="lg" disabled={isSubmitting || totalHour === 0} onClick={handleBooking}>
-              {isSubmitting ? <ReloadIcon className="h-4 w-4 animate-spin" /> : 'Pesan Sekarang'}
+        <div className="grid grid-cols-2 gap-4">
+          <DialogClose asChild>
+            <Button
+              size="lg"
+              variant="outline"
+              className="w-full border-primary text-primary hover:text-primary"
+            >
+              Batal
             </Button>
-          </div>
+          </DialogClose>
+          <Button size="lg" disabled={isSubmitting || totalHour === 0} onClick={handleBooking}>
+            {isSubmitting ? <ReloadIcon className="h-4 w-4 animate-spin" /> : 'Pesan Sekarang'}
+          </Button>
         </div>
       </div>
     </div>

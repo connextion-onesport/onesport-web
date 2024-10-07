@@ -17,21 +17,21 @@ interface VenueBreadcrumbProps {
 export default function VenueBreadcrumb({name = 'OneSport'}: VenueBreadcrumbProps) {
   return (
     <Breadcrumb>
-      <BreadcrumbList>
-        <BreadcrumbItem>
+      <BreadcrumbList className="flex-nowrap">
+        <BreadcrumbItem className="whitespace-nowrap">
           <BreadcrumbLink asChild>
             <Link href="/">Beranda</Link>
           </BreadcrumbLink>
         </BreadcrumbItem>
         <BreadcrumbSeparator />
-        <BreadcrumbItem>
+        <BreadcrumbItem className="whitespace-nowrap">
           <BreadcrumbLink asChild>
             <Link href="/venues">Sewa Lapangan</Link>
           </BreadcrumbLink>
         </BreadcrumbItem>
         <BreadcrumbSeparator />
         <BreadcrumbItem>
-          <BreadcrumbPage>{name}</BreadcrumbPage>
+          <BreadcrumbPage className="line-clamp-1">{name}</BreadcrumbPage>
         </BreadcrumbItem>
       </BreadcrumbList>
     </Breadcrumb>

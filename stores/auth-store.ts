@@ -31,8 +31,8 @@ export const createAuthStore = (initState: AuthState = defaultInitState) => {
         setInProgress: inProgress => set(() => ({inProgress})),
       }),
       {
-        name: 'auth-session-storage',
-        storage: createJSONStorage(() => sessionStorage),
+        name: 'auth-storage',
+        storage: createJSONStorage(() => localStorage),
       } as PersistOptions<AuthStore>
     )
   );

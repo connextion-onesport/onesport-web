@@ -1,6 +1,7 @@
 import {create} from 'zustand';
 
 export type VenueState = {
+  categoryBooking: string;
   categoryNearby: string;
   categoryRating: string;
   categoryAll: string;
@@ -12,6 +13,7 @@ export type VenueState = {
 };
 
 export type VenueActions = {
+  setCategoryBooking: (categoryBooking: string) => void;
   setCategoryNearby: (categoryNearby: string) => void;
   setCategoryRating: (categoryRating: string) => void;
   setCategoryAll: (categoryAll: string) => void;
@@ -25,6 +27,7 @@ export type VenueActions = {
 export type VenueStore = VenueState & VenueActions;
 
 export const defaultInitState: VenueState = {
+  categoryBooking: 'Semua',
   categoryNearby: 'Futsal',
   categoryRating: 'Futsal',
   categoryAll: 'Futsal',
@@ -38,6 +41,7 @@ export const defaultInitState: VenueState = {
 export const createVenueStore = (initState: VenueState = defaultInitState) => {
   return create<VenueStore>()(set => ({
     ...initState,
+    setCategoryBooking: categoryBooking => set(() => ({categoryBooking})),
     setCategoryNearby: categoryNearby => set(() => ({categoryNearby})),
     setCategoryRating: categoryRating => set(() => ({categoryRating})),
     setCategoryAll: categoryAll => set(() => ({categoryAll})),

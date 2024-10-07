@@ -8,34 +8,44 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 
-import {useState, useEffect} from 'react';
+import {useState} from 'react';
 import {VisuallyHidden} from '@radix-ui/react-visually-hidden';
 import {Button} from '../ui/button';
-import {LuFilter} from 'react-icons/lu';
 import {PiStarFill} from 'react-icons/pi';
 
-export default function FilterRating({
-  onRating,
-  rating,
-}: {
-  onRating: (value: number) => void;
-  rating: number;
-}) {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [selectedRating, setSelectedRating] = useState<number | null>(rating || null);
+import {usePathname, useSearchParams, useRouter} from 'next/navigation';
 
-  const handleApplyFilter = () => {
-    if (selectedRating !== null) {
-      onRating(selectedRating);
-      setIsOpen(false);
+export default function FilterRating() {
+  const [selectedRating, setSelectedRating] = useState<number | undefined>(undefined);
+
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+
+  const searchParams = useSearchParams();
+  const pathName = usePathname();
+  const {replace} = useRouter();
+
+  const handleFilter = () => {
+    const params = new URLSearchParams(searchParams);
+
+    if (selectedRating) {
+      params.set('rating', selectedRating.toString());
+    } else {
+      params.delete('rating');
     }
+
+    replace(`${pathName}?${params.toString()}`);
+
+    setIsOpen(false);
   };
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger aria-label="Open Filter Rating" asChild>
-        <Button variant="outline" className="rounded-full text-muted-foreground">
-          <PiStarFill className="mr-2 h-4 w-4" />
+        <Button
+          variant="outline"
+          className="h-8 rounded-full px-3 text-xs text-muted-foreground md:h-9 md:px-4 md:py-2 md:text-sm"
+        >
+          <PiStarFill className="mr-1 h-3 w-3 md:mr-2 md:h-4 md:w-4" />
           Rating
         </Button>
       </DialogTrigger>
@@ -53,61 +63,38 @@ export default function FilterRating({
           selectedRating={selectedRating}
           setSelectedRating={setSelectedRating}
         />
-        <FilterRatingFooter onApply={handleApplyFilter} />
+        <FilterRatingFooter handleFilter={handleFilter} />
       </DialogContent>
     </Dialog>
   );
 }
 
-export function FilterRatingContent({
-  selectedRating,
-  setSelectedRating,
-}: {
-  selectedRating: number | null;
-  setSelectedRating: (value: number | null) => void;
-}) {
-  const [activeButton, setActiveButton] = useState<number | null>(null);
+interface FilterRatingContentProps {
+  selectedRating: number | undefined;
+  setSelectedRating: (rating: number | undefined) => void;
+}
 
-  useEffect(() => {
-    // Update activeButton when selectedRating changes
-    if (selectedRating === 4.0) {
-      setActiveButton(1);
-    } else if (selectedRating === 4.5) {
-      setActiveButton(2);
-    } else {
-      setActiveButton(null);
-    }
-  }, [selectedRating]);
-
-  const handleClick = (buttonNumber: number, rating: number) => {
-    if (activeButton === buttonNumber) {
-      // Deactivate if clicked again
-      setActiveButton(null);
-      setSelectedRating(null);
-    } else {
-      setActiveButton(buttonNumber);
-      setSelectedRating(rating);
-    }
+export function FilterRatingContent({selectedRating, setSelectedRating}: FilterRatingContentProps) {
+  const handleRating = (rating: number) => {
+    setSelectedRating(rating);
   };
 
   return (
     <div className="grid grid-cols-2 p-6">
       <Button
-        variant={activeButton === 1 ? 'default' : 'outline'}
-        className={`rounded-l-full border-r-white font-normal ${
-          activeButton === 1 ? 'text-white' : 'text-muted-foreground'
-        }`}
-        onClick={() => handleClick(1, 4.0)}
+        variant={selectedRating === 4 ? 'default' : 'outline'}
+        size="lg"
+        className="rounded-l-full"
+        onClick={() => handleRating(4)}
       >
         <PiStarFill className="mr-1 h-4 w-4" />
         4.0 +
       </Button>
       <Button
-        variant={activeButton === 2 ? 'default' : 'outline'}
-        className={`rounded-r-full font-normal ${
-          activeButton === 2 ? 'text-white' : 'text-muted-foreground'
-        }`}
-        onClick={() => handleClick(2, 4.5)}
+        variant={selectedRating === 4.5 ? 'default' : 'outline'}
+        size="lg"
+        className="rounded-r-full"
+        onClick={() => handleRating(4.5)}
       >
         <PiStarFill className="mr-1 h-4 w-4" />
         4.5 +
@@ -116,15 +103,15 @@ export function FilterRatingContent({
   );
 }
 
-function FilterRatingFooter({onApply}: {onApply: () => void}) {
+function FilterRatingFooter({handleFilter}: {handleFilter: () => void}) {
   return (
     <div className="flex items-center gap-4 border-t p-6">
       <DialogClose asChild>
-        <Button variant="outline" className="w-full rounded-full">
+        <Button variant="outline" size="lg" className="w-full">
           Kembali
         </Button>
       </DialogClose>
-      <Button variant="default" className="w-full rounded-full" onClick={onApply}>
+      <Button variant="default" size="lg" className="w-full" onClick={handleFilter}>
         Terapkan
       </Button>
     </div>

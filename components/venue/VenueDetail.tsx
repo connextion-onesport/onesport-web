@@ -5,8 +5,8 @@ import {MdLocalParking, MdSportsSoccer} from 'react-icons/md';
 import {PiClock, PiSoccerBallFill} from 'react-icons/pi';
 import {Separator} from '../ui/separator';
 import {Button} from '../ui/button';
-import {useVenueStore} from '@/providers/zustand-provider';
-import {formatNumber, getReviewCount} from '@/libs/utils';
+import {useLocationStore, useVenueStore} from '@/providers/zustand-provider';
+import {formatNumber, getDistanceFromLatLonInKm, getReviewCount} from '@/libs/utils';
 import Link from 'next/link';
 
 import {
@@ -26,6 +26,7 @@ interface VenueDetailProps {
 
 export default function VenueDetail({data}: VenueDetailProps) {
   const {scrollToSection, showDetails, setShowDetails} = useVenueStore(state => state);
+  const {latitude, longitude} = useLocationStore(state => state);
 
   const handleClick = () => {
     scrollToSection('booking-field');
@@ -34,12 +35,27 @@ export default function VenueDetail({data}: VenueDetailProps) {
   const {name, ratingAvg, reviewCount, minPrice, openHours, facilities, description, location} =
     data;
 
+  const distance =
+    location?.latitude && location?.longitude
+      ? getDistanceFromLatLonInKm(latitude, longitude, location.latitude, location.longitude)
+      : 0;
+
   return (
     <>
-      <section className="flex flex-col gap-8 rounded-2xl border px-4 py-8 md:px-8">
+      <section className="flex flex-col gap-8 rounded-2xl border p-4 md:p-8">
         <div className="flex justify-between gap-8">
           <div className="flex w-full flex-col gap-4">
-            <h1 className="text-2xl font-bold">{name}</h1>
+            <h1 className="text-xl font-bold">{name}</h1>
+
+            {distance > 0 && latitude !== 0 && longitude !== 0 && (
+              <div className="flex items-center gap-2">
+                <div className="flex items-center justify-center whitespace-nowrap rounded-full bg-[#655581] px-3 py-1">
+                  <p className="text-sm text-white">{distance.toFixed(1)} km</p>
+                </div>
+
+                <p className="line-clamp-1 text-base">{`${location.subDistrict}, ${location.city}`}</p>
+              </div>
+            )}
 
             <div className="flex items-center">
               <span className="flex aspect-square h-6 w-6 items-center justify-center">

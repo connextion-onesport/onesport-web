@@ -31,8 +31,8 @@ export default function HomePage() {
         queryFn: () => getNearestVenues({latitude, longitude, amount: 4, category: sport}),
       });
       queryClient.prefetchQuery({
-        queryKey: ['nearby', latitude, longitude, sport],
-        queryFn: () => getNearestVenues({latitude, longitude, amount: 4, category: sport}),
+        queryKey: ['all', sport],
+        queryFn: () => getAllVenues({amount: 4, category: sport}),
       });
     });
   }, [latitude, longitude, setLatitude, setLongitude, queryClient]);
@@ -73,6 +73,7 @@ export default function HomePage() {
         <VenueList
           data={nearbyVenues}
           category="nearby"
+          isHeading={true}
           isCategory={true}
           isLoading={loadingNearby}
           isError={errorNearby}
@@ -83,6 +84,7 @@ export default function HomePage() {
         <VenueList
           data={allVenues}
           category="all"
+          isHeading={true}
           isCategory={true}
           isLoading={loadingAll}
           isError={errorAll}
@@ -94,6 +96,7 @@ export default function HomePage() {
       <VenueList
         data={highestRatingVenues}
         category="rating"
+        isHeading={true}
         isCategory={true}
         isLoading={loadingHighestRating}
         isError={errorHighestRating}
