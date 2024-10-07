@@ -41,20 +41,40 @@ import {PiCaretRight, PiPaperPlaneRight, PiQuestion, PiTicket} from 'react-icons
 interface PaymentFormProps {
   fields: any;
   user: any;
+  isLoading: boolean;
+  isError: boolean;
 }
 
-export default function BookingForm({fields, user}: PaymentFormProps) {
+export default function BookingForm({fields, user, isLoading, isError}: PaymentFormProps) {
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (isError) {
+    return <div>Error...</div>;
+  }
+
+  return (
+    <section className="flex flex-col gap-4">
+      <FormSection fields={fields} user={user} />
+      <VoucherDialog />
+      <ConfirmationPrice fields={fields} />
+    </section>
+  );
+}
+
+interface FormProps {
+  fields: any;
+  user: any;
+}
+
+function FormSection({fields, user}: FormProps) {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [radioValue, setRadioValue] = useState<boolean>(true);
+
   const router = useRouter();
 
   const bookingId = fields.map((booking: any) => booking.id);
-
-  const price = fields.map((booking: any) => booking.price);
-  const rentPrice = price.reduce((acc: number, curr: number) => acc + curr, 0);
-  const serviceFee = 10000;
-  const tax = (rentPrice + serviceFee) * 0.11;
-  const totalPrice = rentPrice + serviceFee + tax;
 
   const paymentForm = useForm<z.infer<typeof paymentFormSchema>>({
     resolver: zodResolver(paymentFormSchema),
@@ -84,158 +104,146 @@ export default function BookingForm({fields, user}: PaymentFormProps) {
   }
 
   return (
-    <section className="flex flex-col gap-4">
-      <div className="flex flex-col rounded-xl bg-background">
-        <div className="flex flex-col gap-4 px-4 pb-0 pt-4 lg:gap-6 lg:px-6 lg:pt-6">
-          <div className="flex flex-col">
-            <h2 className="text-lg font-semibold leading-none tracking-tight">Data Penyewa</h2>
-            <p className="text-sm text-muted-foreground">
-              Detail kontak ini untuk pengiriman e-tiket.
-            </p>
-          </div>
-
-          <Separator />
+    <div className="flex flex-col rounded-xl bg-background">
+      <div className="flex flex-col gap-4 px-4 pb-0 pt-4 lg:gap-6 lg:px-6 lg:pt-6">
+        <div className="flex flex-col">
+          <h2 className="text-lg font-semibold leading-none tracking-tight">Data Penyewa</h2>
+          <p className="text-sm text-muted-foreground">
+            Detail kontak ini untuk pengiriman e-tiket.
+          </p>
         </div>
 
-        <div className="flex flex-col gap-10 px-4 py-6 lg:px-6">
-          <Form {...paymentForm}>
-            <form
-              id="payment-form"
-              onSubmit={paymentForm.handleSubmit(onPayment)}
-              className="space-y-2"
-            >
+        <Separator />
+      </div>
+
+      <div className="flex flex-col gap-10 px-4 py-6 lg:px-6">
+        <Form {...paymentForm}>
+          <form
+            id="payment-form"
+            onSubmit={paymentForm.handleSubmit(onPayment)}
+            className="space-y-2"
+          >
+            <FormField
+              control={paymentForm.control}
+              name="name"
+              render={({field}) => (
+                <FormItem className="h-[68px] space-y-0">
+                  <FormControl>
+                    <FloatingLabelInput
+                      type="text"
+                      id="name"
+                      label="Nama"
+                      className="h-12"
+                      required
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={paymentForm.control}
+              name="phone"
+              render={({field}) => (
+                <FormItem className="h-[68px] space-y-0">
+                  <FormControl>
+                    <PhoneInput
+                      international
+                      defaultCountry="ID"
+                      countryCallingCodeEditable={false}
+                      className="h-12"
+                      required
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={paymentForm.control}
+              name="email"
+              render={({field}) => (
+                <FormItem className="h-[68px] space-y-0">
+                  <FormControl>
+                    <FloatingLabelInput
+                      type="email"
+                      id="email"
+                      label="Email"
+                      className="h-12"
+                      required
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <div className="flex flex-col gap-6">
               <FormField
                 control={paymentForm.control}
-                name="name"
+                name="isSelf"
                 render={({field}) => (
-                  <FormItem className="h-[68px] space-y-0">
+                  <FormItem className="space-y-3">
                     <FormControl>
-                      <FloatingLabelInput
-                        type="text"
-                        id="name"
-                        label="Nama"
-                        className="h-12"
-                        required
-                        {...field}
-                      />
+                      <RadioGroup
+                        onValueChange={value => {
+                          const boolValue = value === 'true' ? true : false;
+                          setRadioValue(boolValue);
+                          field.onChange(boolValue);
+                          paymentForm.resetField('otherName');
+                        }}
+                        defaultValue={radioValue.toString()}
+                        className="flex items-center gap-8"
+                      >
+                        <FormItem className="flex items-center space-x-3 space-y-0">
+                          <FormControl>
+                            <RadioGroupItem value="true" />
+                          </FormControl>
+                          <FormLabel className="font-normal">Saya sendiri</FormLabel>
+                        </FormItem>
+                        <FormItem className="flex items-center space-x-3 space-y-0">
+                          <FormControl>
+                            <RadioGroupItem value="false" />
+                          </FormControl>
+                          <FormLabel className="font-normal">Orang lain</FormLabel>
+                        </FormItem>
+                      </RadioGroup>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
 
-              <FormField
-                control={paymentForm.control}
-                name="phone"
-                render={({field}) => (
-                  <FormItem className="h-[68px] space-y-0">
-                    <FormControl>
-                      <PhoneInput
-                        international
-                        defaultCountry="ID"
-                        countryCallingCodeEditable={false}
-                        className="h-12"
-                        required
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={paymentForm.control}
-                name="email"
-                render={({field}) => (
-                  <FormItem className="h-[68px] space-y-0">
-                    <FormControl>
-                      <FloatingLabelInput
-                        type="email"
-                        id="email"
-                        label="Email"
-                        className="h-12"
-                        required
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <div className="flex flex-col gap-6">
+              {!radioValue && (
                 <FormField
                   control={paymentForm.control}
-                  name="isSelf"
+                  name="otherName"
                   render={({field}) => (
-                    <FormItem className="space-y-3">
+                    <FormItem className="h-[68px] space-y-0">
                       <FormControl>
-                        <RadioGroup
-                          onValueChange={value => {
-                            const boolValue = value === 'true' ? true : false;
-                            setRadioValue(boolValue);
-                            field.onChange(boolValue);
-                            paymentForm.resetField('otherName');
-                          }}
-                          defaultValue={radioValue.toString()}
-                          className="flex items-center gap-8"
-                        >
-                          <FormItem className="flex items-center space-x-3 space-y-0">
-                            <FormControl>
-                              <RadioGroupItem value="true" />
-                            </FormControl>
-                            <FormLabel className="font-normal">Saya sendiri</FormLabel>
-                          </FormItem>
-                          <FormItem className="flex items-center space-x-3 space-y-0">
-                            <FormControl>
-                              <RadioGroupItem value="false" />
-                            </FormControl>
-                            <FormLabel className="font-normal">Orang lain</FormLabel>
-                          </FormItem>
-                        </RadioGroup>
+                        <FloatingLabelInput
+                          type="text"
+                          id="otherName"
+                          label="Nama orang lain"
+                          className="h-12"
+                          {...field}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
-
-                {!radioValue && (
-                  <FormField
-                    control={paymentForm.control}
-                    name="otherName"
-                    render={({field}) => (
-                      <FormItem className="h-[68px] space-y-0">
-                        <FormControl>
-                          <FloatingLabelInput
-                            type="text"
-                            id="otherName"
-                            label="Nama orang lain"
-                            className="h-12"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                )}
-              </div>
-            </form>
-          </Form>
-        </div>
+              )}
+            </div>
+          </form>
+        </Form>
       </div>
-
-      <VoucherDialog />
-
-      <ConfirmationPrice
-        rentPrice={rentPrice}
-        tax={tax}
-        serviceFee={serviceFee}
-        totalPrice={totalPrice}
-        isSubmitting={isSubmitting}
-      />
-    </section>
+    </div>
   );
 }
 
@@ -328,20 +336,18 @@ function VoucherDialog() {
 }
 
 interface ConfirmationPriceProps {
-  rentPrice: number;
-  tax: number;
-  serviceFee: number;
-  totalPrice: number;
-  isSubmitting: boolean;
+  fields: any;
 }
 
-function ConfirmationPrice({
-  rentPrice,
-  tax,
-  serviceFee,
-  totalPrice,
-  isSubmitting,
-}: ConfirmationPriceProps) {
+function ConfirmationPrice({fields}: ConfirmationPriceProps) {
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+
+  const price = fields.map((booking: any) => booking.price);
+  const rentPrice = price.reduce((acc: number, curr: number) => acc + curr, 0);
+  const serviceFee = 10000;
+  const tax = (rentPrice + serviceFee) * 0.11;
+  const totalPrice = rentPrice + serviceFee + tax;
+
   return (
     <div className="flex flex-col rounded-xl bg-background">
       <div className="flex flex-col gap-4 p-4 lg:gap-6 lg:p-6">

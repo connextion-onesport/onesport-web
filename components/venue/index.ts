@@ -15,3 +15,4 @@ export {VenueDetailSkeleton} from './VenueDetail';
 export {VenueBookingSkeleton} from './VenueBooking';
 export {VenueReviewSkeleton} from './VenueReview';
 export {VenueRecommendationSkeleton} from './VenueRecommendation';
+export {VenueListSkeleton} from './VenueList';

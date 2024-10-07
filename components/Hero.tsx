@@ -1,10 +1,8 @@
 'use client';
 
 import {useRouter} from 'next/navigation';
-import {useState} from 'react';
 
 import Image from 'next/image';
-import Link from 'next/link';
 
 import {Button} from '@/components/ui/button';
 import Searchbar from '@/components/Searchbar';
@@ -13,11 +11,9 @@ import {heroCategories} from '@/libs/constants';
 
 export default function Hero() {
   const router = useRouter();
-  const [searchField, setSearchField] = useState<string>('');
 
-  const handleSearch = (newSearchField: string) => {
-    setSearchField(newSearchField);
-    router.push(`/fields?search=${newSearchField}`);
+  const handleCategory = (category: string) => {
+    router.push(`/venues?category=${category}`);
   };
 
   return (
@@ -31,11 +27,11 @@ export default function Hero() {
           <div className="w-full max-w-2xl">
             <Searchbar />
           </div>
-          <HeroCategoryDesktop />
+          <HeroCategoryDesktop handleCategory={handleCategory} />
         </div>
       </div>
 
-      <HeroCategoryMobile />
+      <HeroCategoryMobile handleCategory={handleCategory} />
     </div>
   );
 }
@@ -91,95 +87,79 @@ function HeroText() {
   );
 }
 
-function HeroCategoryDesktop() {
+function HeroCategoryDesktop({handleCategory}: {handleCategory: (category: string) => void}) {
   const firstLineCategories = heroCategories.filter(category =>
-    ['Basket', 'Pingpong', 'Softball', 'Track'].includes(category.name)
+    ['Badminton', 'Basket', 'Futsal', 'Sepak Bola'].includes(category.name)
   );
 
   const secondLineCategories = heroCategories.filter(category =>
-    ['Soccer', 'Baseball', 'Volley'].includes(category.name)
+    ['Tenis', 'Tenis Meja', 'Voli'].includes(category.name)
   );
 
   return (
     <div className="hidden flex-col items-center justify-center gap-4 md:flex">
       <div className="flex items-center gap-10">
-        {firstLineCategories.map(category => (
-          <Link
-            key={category.name}
-            href="#"
-            className="flex flex-col items-center justify-center gap-1"
-          >
-            <Button className="h-12 w-12 rounded-full bg-[#F3ECEC] p-0 hover:bg-[#E6E6EF] md:h-16 md:w-16">
+        {firstLineCategories.map((category, index) => (
+          <div key={index} className="flex flex-col items-center justify-center gap-1">
+            <Button
+              onClick={() => handleCategory(category.name)}
+              className="h-12 w-12 rounded-full bg-[#F3ECEC] p-0 hover:bg-[#E6E6EF] md:h-16 md:w-16"
+            >
               <span className="rounded-full border-4 border-[#E6E6EF] bg-background p-[1px]">
-                <Image
-                  src={category.image}
-                  height={32}
-                  width={32}
-                  alt={category.name}
-                  className="h-8 w-8 text-primary md:h-10 md:w-10"
-                />
+                {category.icon && (
+                  <category.icon className="h-8 w-8 text-black/75 hover:text-primary md:h-10 md:w-10" />
+                )}
               </span>
             </Button>
             <span className="text-sm text-white md:text-base">{category.name}</span>
-          </Link>
+          </div>
         ))}
       </div>
 
       <div className="flex items-center gap-10">
-        {secondLineCategories.map(category => (
-          <Link
-            key={category.name}
-            href="#"
-            className="flex flex-col items-center justify-center gap-1"
-          >
-            <Button className="h-12 w-12 rounded-full bg-[#F3ECEC] p-0 hover:bg-[#E6E6EF] md:h-16 md:w-16">
+        {secondLineCategories.map((category, index) => (
+          <div key={index} className="flex flex-col items-center justify-center gap-1">
+            <Button
+              onClick={() => handleCategory(category.name)}
+              className="h-12 w-12 rounded-full bg-[#F3ECEC] p-0 hover:bg-[#E6E6EF] md:h-16 md:w-16"
+            >
               <span className="rounded-full border-4 border-[#E6E6EF] bg-background p-[1px]">
-                <Image
-                  src={category.image}
-                  height={40}
-                  width={40}
-                  alt={category.name}
-                  className="h-8 w-8 md:h-10 md:w-10"
-                />
+                {category.icon && (
+                  <category.icon className="h-8 w-8 text-black/75 hover:text-primary md:h-10 md:w-10" />
+                )}
               </span>
             </Button>
             <span className="text-sm text-white md:text-base">{category.name}</span>
-          </Link>
+          </div>
         ))}
       </div>
     </div>
   );
 }
 
-function HeroCategoryMobile() {
+function HeroCategoryMobile({handleCategory}: {handleCategory: (category: string) => void}) {
   const categories = heroCategories.filter(category =>
-    ['Basket', 'Pingpong', 'Track', 'Soccer', 'Baseball', 'Volley'].includes(category.name)
+    ['Badminton', 'Basket', 'Futsal', 'Sepak Bola', 'Tenis Meja', 'Voli'].includes(category.name)
   );
 
   return (
     <div className="grid w-full grid-cols-3 items-center justify-center gap-x-4 gap-y-6 p-6 md:hidden">
-      {categories.map(category => (
-        <Link
-          key={category.name}
-          href="#"
+      {categories.map((category, index) => (
+        <div
+          key={index}
           className="mx-auto flex h-full min-h-28 w-full max-w-[100px] flex-col items-center gap-3 bg-background sm:max-w-full sm:gap-4 sm:rounded-md sm:p-6 sm:shadow sm:hover:bg-accent"
         >
           <Button
             size="icon"
+            onClick={() => handleCategory(category.name)}
             className="flex aspect-square h-full w-full items-center justify-center rounded-xl bg-background p-0 shadow hover:bg-accent sm:aspect-auto sm:justify-start sm:rounded-none sm:bg-transparent sm:p-0 sm:shadow-none sm:hover:bg-transparent"
           >
-            <Image
-              src={category.image}
-              height={48}
-              width={48}
-              alt={category.name}
-              className="h-11 w-11 sm:h-7 sm:w-7"
-            />
+            {category.icon && <category.icon className="h-11 w-11 text-black/75 sm:h-7 sm:w-7" />}
           </Button>
           <p className="w-full text-center text-sm font-medium sm:text-start sm:text-base">
             {category.name}
           </p>
-        </Link>
+        </div>
       ))}
     </div>
   );

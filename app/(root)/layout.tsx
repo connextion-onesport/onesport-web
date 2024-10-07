@@ -1,6 +1,6 @@
 import {Navbar} from '@/components/navbar';
 import Footer from '@/components/Footer';
-import {GoogleOneTap} from '@/components/auth';
+import {AuthDialog} from '@/components/auth';
 
 export default function RootLayout({children}: {children: React.ReactNode}) {
   return (
@@ -12,7 +12,7 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
       <footer className="mb-[68px] bg-slate-950 px-6 pt-10 md:mb-0 md:px-8 md:pt-12">
         <Footer />
       </footer>
-      <GoogleOneTap />
+      <AuthDialog />
     </>
   );
 }

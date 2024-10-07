@@ -17,6 +17,7 @@ interface VenueListProps {
   description: string;
   data: any;
   category?: string;
+  isHeading?: boolean;
   isCategory?: boolean;
   isLoading: boolean;
   isError: boolean;
@@ -27,6 +28,7 @@ export default function VenueList({
   description,
   data,
   category,
+  isHeading,
   isCategory,
   isLoading,
   isError,
@@ -36,7 +38,7 @@ export default function VenueList({
   if (isLoading) {
     return (
       <section className="flex w-full px-4 py-8 md:px-8">
-        <LoadingSkeleton />
+        <VenueListSkeleton isHeading={isHeading} isCategory={isCategory} />
       </section>
     );
   }
@@ -56,7 +58,14 @@ export default function VenueList({
 
   return (
     <section className="flex flex-col gap-8 px-4 py-8 md:px-8">
-      <Header title={title} description={description} category={category} isCategory={isCategory} />
+      {isHeading && (
+        <Header
+          title={title}
+          description={description}
+          category={category}
+          isCategory={isCategory}
+        />
+      )}
       <List data={data} latitude={latitude} longitude={longitude} />
     </section>
   );
@@ -184,29 +193,38 @@ function List({data, latitude, longitude}: ListProps) {
   );
 }
 
-function LoadingSkeleton() {
+interface LoadingSkeletonProps {
+  isHeading?: boolean;
+  isCategory?: boolean;
+}
+
+export function VenueListSkeleton({isHeading, isCategory}: LoadingSkeletonProps) {
   return (
     <div className="flex w-full flex-col gap-8">
-      <div className="flex flex-col gap-4">
-        <div className="flex flex-col gap-2">
-          <Skeleton className="h-6 w-1/2 md:w-1/4" />
-          <Skeleton className="h-6 w-3/4 md:w-2/4" />
-        </div>
+      {isHeading && (
+        <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-2">
+            <Skeleton className="h-6 w-1/2 md:w-1/4" />
+            <Skeleton className="h-6 w-3/4 md:w-2/4" />
+          </div>
 
-        <div className="flex items-center justify-between gap-8">
-          <Carousel className="flex overflow-hidden lg:w-full">
-            <CarouselContent>
-              {[1, 2, 3, 4, 5].map(index => (
-                <CarouselItem key={index} className="min-w-fit basis-0 pl-4">
-                  <Skeleton className="h-8 w-24 rounded-full px-3 md:h-9 md:px-4 md:py-2" />
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-          </Carousel>
+          {isCategory && (
+            <div className="flex items-center justify-between gap-8">
+              <Carousel className="flex overflow-hidden lg:w-full">
+                <CarouselContent>
+                  {[1, 2, 3, 4, 5].map(index => (
+                    <CarouselItem key={index} className="min-w-fit basis-0 pl-4">
+                      <Skeleton className="h-8 w-24 rounded-full px-3 md:h-9 md:px-4 md:py-2" />
+                    </CarouselItem>
+                  ))}
+                </CarouselContent>
+              </Carousel>
 
-          <Skeleton className="h-8 w-24 rounded-full px-3 md:h-9 md:px-4 md:py-2" />
+              <Skeleton className="h-8 w-24 rounded-full px-3 md:h-9 md:px-4 md:py-2" />
+            </div>
+          )}
         </div>
-      </div>
+      )}
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         {[1, 2, 3, 4].map(index => (

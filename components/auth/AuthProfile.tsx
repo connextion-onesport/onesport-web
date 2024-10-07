@@ -77,7 +77,7 @@ export default function AuthProfile({user}: {user: User}) {
             asChild
             className="flex min-h-12 w-full justify-start rounded-sm pl-0"
           >
-            <Link href="/user/venues">
+            <Link href="#">
               <PiCourtBasketball className="mr-2 h-5 w-5" />
               Lapangan Saya
             </Link>

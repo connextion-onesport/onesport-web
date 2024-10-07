@@ -1,6 +1,5 @@
 'use client';
 
-import {fieldImages} from '@/libs/constants';
 import Image from 'next/image';
 import {
   Dialog,
@@ -130,7 +129,6 @@ interface VenueImageDialogProps {
 }
 
 function VenueImageDialog({imageCount, venues, showImages, setShowImages}: VenueImageDialogProps) {
-  console.log('VenueImageDialog', {venues});
   return (
     <Dialog open={showImages} onOpenChange={setShowImages}>
       <DialogContent className="flex h-dvh flex-col items-center justify-center gap-0 rounded-none p-0 md:h-fit md:max-w-5xl md:rounded-xl">

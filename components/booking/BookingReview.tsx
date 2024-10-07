@@ -7,8 +7,8 @@ import {useMutation, useQueryClient} from '@tanstack/react-query';
 
 import {deleteBooking} from '@/actions/payment';
 
-import { format } from 'date-fns';
-import { id } from 'date-fns/locale';
+import {format} from 'date-fns';
+import {id} from 'date-fns/locale';
 
 import {formatPrice, getReviewCount} from '@/libs/utils';
 
@@ -19,9 +19,11 @@ import {PiArrowLeft, PiArrowRight, PiStarFill, PiTrash, PiTrashSimple} from 'rea
 interface BookingReviewProps {
   fields: any;
   venue: any;
+  isLoading: boolean;
+  isError: boolean;
 }
 
-export default function BookingReview({fields, venue}: BookingReviewProps) {
+export default function BookingReview({fields, venue, isLoading, isError}: BookingReviewProps) {
   const queryClient = useQueryClient();
 
   const {mutateAsync: deleteBookingMutation} = useMutation({
@@ -30,6 +32,14 @@ export default function BookingReview({fields, venue}: BookingReviewProps) {
       queryClient.invalidateQueries({queryKey: ['fields']});
     },
   });
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (isError) {
+    return <div>Error...</div>;
+  }
 
   return (
     <section className="flex max-h-[774px] flex-col rounded-xl bg-background">

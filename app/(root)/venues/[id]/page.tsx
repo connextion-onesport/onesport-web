@@ -18,6 +18,7 @@ import {
   VenueRecommendationSkeleton,
 } from '@/components/venue';
 import {getUser} from '@/actions/auth';
+import {AuthDialog} from '@/components/auth';
 
 export default function VenuePage({params}: {params: {id: string}}) {
   const id = params.id;
@@ -56,7 +57,7 @@ export default function VenuePage({params}: {params: {id: string}}) {
         <VenueDetailSkeleton />
         <VenueBookingSkeleton />
         <VenueReviewSkeleton />
-        <VenueRecommendationSkeleton />
+        {/* <VenueRecommendationSkeleton /> */}
       </main>
     );
   }
@@ -73,7 +74,7 @@ export default function VenuePage({params}: {params: {id: string}}) {
         <VenueDetail data={venue} />
         <VenueBooking fields={venue?.fields} user={user} />
         <VenueReview data={venue} />
-        <VenueRecommendation data={recommendations} />
+        {/* <VenueRecommendation data={recommendations} /> */}
       </main>
 
       <VenueMobileButton data={venue} />
