@@ -15,13 +15,18 @@ import {getUser} from '@/actions/auth';
 import {User} from 'next-auth';
 
 export default function Navbar() {
+  const {data: user} = useQuery({
+    queryKey: ['user'],
+    queryFn: () => getUser(),
+  });
+
   return (
     <nav className="mx-auto flex max-w-screen-2xl flex-row justify-between gap-2 p-4 md:px-8 md:py-4">
-      <NavbarMobileMenu />
+      <NavbarMobileMenu user={user} />
       <NavbarLogo />
       <NavbarMenu />
       <SearchButton />
-      <AuthButton />
+      <AuthButton user={user} />
     </nav>
   );
 }
@@ -69,13 +74,12 @@ function SearchButton() {
   );
 }
 
-function AuthButton() {
-  const {setCurrentStep, setShowAuth} = useAuthStore(state => state);
+interface AuthButtonProps {
+  user: any;
+}
 
-  const {data: user} = useQuery({
-    queryKey: ['user'],
-    queryFn: () => getUser(),
-  });
+function AuthButton({user}: AuthButtonProps) {
+  const {setCurrentStep, setShowAuth} = useAuthStore(state => state);
 
   const handleCurrentStep = (currentStep: string) => {
     setShowAuth(true);

@@ -35,7 +35,17 @@ export default function VenuesPage({
     isLoading,
     isError,
   } = useQuery({
-    queryKey: ['venues', search, order, category, min_price, max_price, rating, latitude, longitude],
+    queryKey: [
+      'venues',
+      search,
+      order,
+      category,
+      min_price,
+      max_price,
+      rating,
+      latitude,
+      longitude,
+    ],
     queryFn: () =>
       getInfiniteVenues({
         pageParam: 0,
@@ -60,7 +70,10 @@ export default function VenuesPage({
 
       <NavbarBottom />
 
-      <Suspense key={search} fallback={<VenueListSkeleton isHeading={false} isCategory={false} />}>
+      <Suspense
+        key={search + order + category + min_price + max_price + rating}
+        fallback={<VenueListSkeleton isHeading={false} isCategory={false} />}
+      >
         <VenueList
           data={venues?.data}
           isHeading={false}
