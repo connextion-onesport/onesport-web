@@ -748,12 +748,15 @@ export async function createBookings({
       });
     }
 
-    await prisma.booking.deleteMany({
+    await prisma.booking.updateMany({
       where: {
         date: {
-          lte: today,
+          lt: today,
         },
         status: 'PENDING',
+      },
+      data: {
+        status: 'CANCELLED',
       },
     });
 

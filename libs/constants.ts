@@ -36,7 +36,7 @@ export const navbarMobileRoutes = [
   },
   {
     name: 'Pesanan',
-    path: '#',
+    path: '/user/venues',
     icon: RiTicket2Line,
     activeIcon: RiTicket2Fill,
   },
@@ -81,6 +81,8 @@ export const heroCategories = [
 ];
 
 export const venueListCategoryNames = ['Futsal', 'Basket', 'Sepak Bola', 'Badminton', 'Tenis'];
+
+export const bookingStatusNames = ['Semua', 'Pending', 'Konfirmasi', 'Dibatalkan'];
 
 //CATEGORY__FILTER__MODAL
 export const categoryFilter = [

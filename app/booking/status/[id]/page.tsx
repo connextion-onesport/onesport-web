@@ -26,7 +26,7 @@ export default function StatusPage({params}: {params: {id: string}}) {
   return (
     <div className="mx-auto flex w-full max-w-screen-md flex-col gap-6 px-2 py-6 md:px-6 md:py-10">
       <Link
-        href="/venues"
+        href="/user/venues"
         className="flex items-center self-end whitespace-nowrap text-sm font-medium text-muted-foreground hover:text-primary"
       >
         <PiArrowLeft className="mr-1 h-4 w-4" />

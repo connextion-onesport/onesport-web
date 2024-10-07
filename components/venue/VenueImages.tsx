@@ -19,15 +19,17 @@ import {Skeleton} from '../ui/skeleton';
 import {PiImages} from 'react-icons/pi';
 
 interface VenueImagesProps {
-  venues: any;
+  data: any
 }
 
-export default function VenueImages({venues}: VenueImagesProps) {
+export default function VenueImages({data}: VenueImagesProps) {
   const {showImages, setShowImages} = useVenueStore(state => state);
-  const imageCount = venues.length;
 
-  const mainImage = venues[0].image;
-  const venueImages = venues.slice(1);
+  const images = data.images;
+  const imageCount = images.length;
+
+  const mainImage = images[0].image;
+  const venueImages = images.slice(1);
 
   return (
     <section
@@ -56,10 +58,10 @@ export default function VenueImages({venues}: VenueImagesProps) {
       )}
 
       <VenueImageDialog
+        data={data}
         imageCount={imageCount}
         showImages={showImages}
         setShowImages={setShowImages}
-        venues={venues}
       />
     </section>
   );
@@ -122,24 +124,28 @@ function VenueImage({image, setShowImages, isLast}: VenueImageProps) {
 }
 
 interface VenueImageDialogProps {
+  data: any;
   imageCount: number;
-  venues: any;
   showImages: boolean;
   setShowImages: (value: boolean) => void;
 }
 
-function VenueImageDialog({imageCount, venues, showImages, setShowImages}: VenueImageDialogProps) {
+function VenueImageDialog({data, imageCount, showImages, setShowImages}: VenueImageDialogProps) {
+  const name = data.name
+  const description = data.description
+  const images = data.images;
+
   return (
     <Dialog open={showImages} onOpenChange={setShowImages}>
       <DialogContent className="flex h-dvh flex-col items-center justify-center gap-0 rounded-none p-0 md:h-fit md:max-w-5xl md:rounded-xl">
         <DialogHeader className="w-full border-b-2 p-6">
-          <DialogTitle>Lapangan Generasi Baru</DialogTitle>
+          <DialogTitle>{name}</DialogTitle>
           <VisuallyHidden>
-            <DialogDescription>Lapangan Generasi Baru</DialogDescription>
+            <DialogDescription>{description}</DialogDescription>
           </VisuallyHidden>
         </DialogHeader>
 
-        <VenueCarousel venues={venues} imageCount={imageCount} />
+        <VenueCarousel venues={images} imageCount={imageCount} />
       </DialogContent>
     </Dialog>
   );

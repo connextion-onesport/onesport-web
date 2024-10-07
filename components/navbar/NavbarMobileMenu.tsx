@@ -66,8 +66,8 @@ function MobileMenuHeader() {
 function MobileMenu() {
   const menuItems = [
     {name: 'Jadi Partner OneSport', path: '#'},
-    {name: 'Sewa Lapangan', path: '#'},
-    {name: 'Cek Pesanan', path: '#'},
+    {name: 'Sewa Lapangan', path: '/venues'},
+    {name: 'Cek Pesanan', path: '/user/venues'},
     {name: 'Bahasa', path: '#'},
   ];
 

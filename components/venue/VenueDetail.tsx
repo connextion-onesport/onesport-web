@@ -1,12 +1,15 @@
 'use client';
 
 import {RiArrowRightSLine, RiStarFill} from 'react-icons/ri';
-import {MdLocalParking, MdSportsSoccer} from 'react-icons/md';
-import {PiClock, PiSoccerBallFill} from 'react-icons/pi';
 import {Separator} from '../ui/separator';
 import {Button} from '../ui/button';
 import {useLocationStore, useVenueStore} from '@/providers/zustand-provider';
-import {formatNumber, getDistanceFromLatLonInKm, getReviewCount} from '@/libs/utils';
+import {
+  formatNumber,
+  getDistanceFromLatLonInKm,
+  getFacilityImage,
+  getReviewCount,
+} from '@/libs/utils';
 import Link from 'next/link';
 
 import {
@@ -19,6 +22,23 @@ import {
 } from '@/components/ui/dialog';
 import {VisuallyHidden} from '@radix-ui/react-visually-hidden';
 import {Skeleton} from '../ui/skeleton';
+import Image from 'next/image';
+
+import {
+  PiClock,
+  PiTShirt,
+  PiCourtBasketball,
+  PiSoccerBallFill,
+  PiTennisBall,
+  PiCardsThree,
+  PiPlusCircle,
+  PiBasketball,
+  PiSoccerBall,
+  PiVolleyball,
+} from 'react-icons/pi';
+import {GiWhistle, GiStopwatch, GiRunningShoe, GiShuttlecock, GiSoccerKick} from 'react-icons/gi';
+import {FaClipboardList} from 'react-icons/fa';
+import {FaTableTennisPaddleBall} from 'react-icons/fa6';
 
 interface VenueDetailProps {
   data: any;
@@ -32,8 +52,21 @@ export default function VenueDetail({data}: VenueDetailProps) {
     scrollToSection('booking-field');
   };
 
-  const {name, ratingAvg, reviewCount, minPrice, openHours, facilities, description, location} =
-    data;
+  const {
+    name,
+    ratingAvg,
+    reviewCount,
+    minPrice,
+    openHours,
+    facilities,
+    description,
+    location,
+    fields,
+  } = data;
+
+  const categories = fields.map((field: {category: {name: string}}) => field.category.name);
+
+  const uniqueCategories: string[] = [...new Set(categories as string[])];
 
   const distance =
     location?.latitude && location?.longitude
@@ -77,12 +110,16 @@ export default function VenueDetail({data}: VenueDetailProps) {
             </div>
 
             <div className="flex items-center gap-2">
-              <span className="flex cursor-pointer items-center gap-1 rounded-full bg-secondary px-3 py-1 hover:bg-accent hover:text-accent-foreground">
-                <span className="flex aspect-square h-5 w-5 items-center justify-center">
-                  <PiSoccerBallFill className="h-full w-full" />
-                </span>
-                <p className="text-sm">Futsal</p>
-              </span>
+              {uniqueCategories.map((category: string, index: number) => (
+                <div key={index} className="flex items-center gap-2">
+                  <span className="flex cursor-pointer items-center gap-1 rounded-full bg-secondary px-3 py-1 hover:bg-accent hover:text-accent-foreground">
+                    <span className="flex aspect-square h-5 w-5 items-center justify-center">
+                      {getCategoryIcon(category)}
+                    </span>
+                    <p className="text-sm">{category}</p>
+                  </span>
+                </div>
+              ))}
             </div>
           </div>
 
@@ -137,13 +174,20 @@ export default function VenueDetail({data}: VenueDetailProps) {
                 </Button>
               </div>
 
-              <div className="grid grid-cols-3 gap-2">
-                <div className="flex items-start gap-2">
-                  <span className="flex aspect-square h-6 w-6 items-center justify-center">
-                    <MdLocalParking className="h-full w-full text-primary" />
-                  </span>
-                  <p className="line-clamp-2 leading-tight">Parking</p>
-                </div>
+              <div className="grid grid-cols-2 gap-4 lg:grid-cols-3">
+                {facilities.map((facility: {id: string; name: string}) => (
+                  <div key={facility.id} className="flex items-start gap-2">
+                    <span className="relative flex aspect-square h-6 w-6 shrink-0 grow-0 items-center justify-center">
+                      <Image
+                        src={getFacilityImage(facility.name)}
+                        alt={facility.name}
+                        fill
+                        className="object-cover"
+                      />
+                    </span>
+                    <p className="line-clamp-2 leading-tight">{facility.name}</p>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
@@ -174,7 +218,7 @@ interface VenueDetailDialogProps {
 }
 
 function VenueDetailDialog({showDetails, setShowDetails, data}: VenueDetailDialogProps) {
-  const {name, description} = data;
+  const {name, description, facilities} = data;
   return (
     <Dialog open={showDetails} onOpenChange={setShowDetails}>
       <DialogContent className="flex h-dvh flex-col items-center justify-center gap-0 rounded-none p-0 md:h-fit md:max-w-3xl md:rounded-xl">
@@ -185,7 +229,7 @@ function VenueDetailDialog({showDetails, setShowDetails, data}: VenueDetailDialo
           </VisuallyHidden>
         </DialogHeader>
 
-        <div className="flex w-full flex-col gap-8 px-6 py-10">
+        <div className="flex h-full w-full flex-col gap-8 px-6 py-10">
           <div className="flex flex-col gap-4">
             <p className="text-lg font-semibold">Deskripsi</p>
             <p className="text-pretty">{description}</p>
@@ -194,13 +238,20 @@ function VenueDetailDialog({showDetails, setShowDetails, data}: VenueDetailDialo
           <div className="flex flex-col gap-4">
             <p className="text-lg font-semibold">Fasilitas</p>
 
-            <div className="grid grid-cols-3 gap-2">
-              <div className="flex items-start gap-2">
-                <span className="flex aspect-square h-6 w-6 items-center justify-center">
-                  <MdLocalParking className="h-full w-full text-primary" />
-                </span>
-                <p className="line-clamp-2 leading-tight">Parking</p>
-              </div>
+            <div className="grid grid-cols-2 gap-4 lg:grid-cols-3">
+              {facilities.map((facility: {id: string; name: string}) => (
+                <div key={facility.id} className="flex items-start gap-2">
+                  <span className="relative flex aspect-square h-6 w-6 shrink-0 grow-0 items-center justify-center">
+                    <Image
+                      src={getFacilityImage(facility.name)}
+                      alt={facility.name}
+                      fill
+                      className="object-cover"
+                    />
+                  </span>
+                  <p className="line-clamp-2 leading-tight">{facility.name}</p>
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -238,4 +289,25 @@ export function VenueDetailSkeleton() {
       </div>
     </section>
   );
+}
+
+function getCategoryIcon(name: string) {
+  switch (name) {
+    case 'Badminton':
+      return <GiShuttlecock className="h-full w-full" />;
+    case 'Basket':
+      return <PiBasketball className="h-full w-full" />;
+    case 'Futsal':
+      return <GiSoccerKick className="h-full w-full" />;
+    case 'Sepak Bola':
+      return <PiSoccerBall className="h-full w-full" />;
+    case 'Tenis Meja':
+      return <FaTableTennisPaddleBall className="h-full w-full" />;
+    case 'Tenis':
+      return <PiTennisBall className="h-full w-full" />;
+    case 'Voli':
+      return <PiVolleyball className="h-full w-full" />;
+    default:
+      return <PiPlusCircle className="h-full w-full" />;
+  }
 }

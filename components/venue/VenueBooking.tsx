@@ -42,12 +42,26 @@ import {
 import {VisuallyHidden} from '@radix-ui/react-visually-hidden';
 import {useAuthStore, useVenueStore} from '@/providers/zustand-provider';
 import {AspectRatio} from '../ui/aspect-ratio';
-import {PiCourtBasketball, PiSoccerBallFill} from 'react-icons/pi';
 import {Skeleton} from '../ui/skeleton';
 import {ReloadIcon} from '@radix-ui/react-icons';
 import {useMutation, useQueryClient} from '@tanstack/react-query';
 import {createBookings} from '@/actions/venue';
 import {ScrollArea} from '../ui/scroll-area';
+
+import {
+  PiTShirt,
+  PiCourtBasketball,
+  PiSoccerBallFill,
+  PiTennisBall,
+  PiCardsThree,
+  PiPlusCircle,
+  PiBasketball,
+  PiSoccerBall,
+  PiVolleyball,
+} from 'react-icons/pi';
+import { GiWhistle, GiStopwatch, GiRunningShoe, GiShuttlecock, GiSoccerKick} from "react-icons/gi";
+import {FaClipboardList} from 'react-icons/fa';
+import { FaTableTennisPaddleBall } from 'react-icons/fa6';
 
 interface VenueBookingProps {
   fields: any;
@@ -211,6 +225,8 @@ function BookingCard({field, user}: BookingCardProps) {
   const prices = schedules.map((schedule: any) => schedule.pricePerHour);
   const minPrice = prices.length > 0 ? Math.min(...prices) : 0;
 
+  const facilities = field.facilities.map((facility: any) => facility.facility.name);
+
   const handleBooking = () => {
     if (user) {
       setShowBooking(true);
@@ -234,7 +250,7 @@ function BookingCard({field, user}: BookingCardProps) {
             <h3 className="line-clamp-1 text-lg font-semibold">{field.name}</h3>
             <div className="flex w-fit items-center gap-1 whitespace-nowrap rounded-full bg-secondary px-3 py-1">
               <span className="flex aspect-square h-4 w-4 items-center justify-center">
-                <PiSoccerBallFill className="h-full w-full" />
+                {getCategoryIcon(category)}
               </span>
               <p className="text-xs">{category}</p>
             </div>
@@ -252,18 +268,12 @@ function BookingCard({field, user}: BookingCardProps) {
             <div className="flex flex-col gap-2 whitespace-nowrap">
               <p className="text-sm font-semibold">Fasilitas Lapangan</p>
               <div className="grid grid-cols-2 grid-rows-2 gap-2">
-                <div className="flex gap-2">
-                  <Image src="/images/icons/bola.svg" alt="ball icon" width={15} height={15} />
-                  <p className="text-sm">3x Bola</p>
-                </div>
-                <div className="flex gap-2">
-                  <Image src="/images/icons/peluit.svg" alt="peluit icon" width={15} height={15} />
-                  <p className="text-sm">Wasit</p>
-                </div>
-                <div className="flex gap-2">
-                  <Image src="/images/icons/orang.svg" alt="people icon" width={15} height={15} />
-                  <p className="text-sm">10 Orang</p>
-                </div>
+                {facilities.map((facility: string, index: number) => (
+                  <div key={index} className="flex gap-2 items-center">
+                    {getFacilityIcon(facility)}
+                    <p className="text-sm">{facility}</p>
+                  </div>
+                ))}
               </div>
             </div>
 
@@ -524,4 +534,50 @@ export function VenueBookingSkeleton() {
       ))}
     </section>
   );
+}
+
+function getCategoryIcon(name: string) {
+  switch (name) {
+    case 'Badminton':
+      return <GiShuttlecock className="h-full w-full" />;
+    case 'Basket':
+      return <PiBasketball className="h-full w-full" />;
+    case 'Futsal':
+      return <GiSoccerKick className="h-full w-full" />;
+    case 'Sepak Bola':
+      return <PiSoccerBall className="h-full w-full" />;
+    case 'Tenis Meja':
+      return <FaTableTennisPaddleBall className="h-full w-full" />;
+    case 'Tenis':
+      return <PiTennisBall className="h-full w-full" />;
+    case 'Voli':
+      return <PiVolleyball className="h-full w-full" />;
+    default:
+      return <PiPlusCircle className="h-full w-full" />;
+  }
+}
+
+function getFacilityIcon(name: string) {
+  switch (name) {
+    case 'Baju':
+      return <PiTShirt className="h-4 w-4" />;
+    case 'Sepatu':
+      return <GiRunningShoe className="h-4 w-4" />;
+    case 'Bola':
+      return <PiSoccerBallFill className="h-4 w-4" />;
+    case 'Shuttlecock':
+      return <GiShuttlecock className="h-4 w-4" />;
+    case 'Raket':
+      return <PiTennisBall className="h-4 w-4" />;
+    case 'Kartu':
+      return <PiCardsThree className="h-4 w-4" />;
+    case 'Papan Skor':
+      return <FaClipboardList className="h-4 w-4" />;
+    case 'Stopwatch':
+      return <GiStopwatch className="h-4 w-4" />;
+    case 'Wasit':
+      return <GiWhistle className="h-4 w-4" />;
+    default:
+      return <PiPlusCircle className="h-4 w-4" />;
+  }
 }

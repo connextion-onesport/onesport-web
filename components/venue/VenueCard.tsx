@@ -21,6 +21,8 @@ export default function VenueCard({
   images,
   openHours,
   minPrice,
+  status,
+  paymentId,
 }: FieldItemProps) {
   const [api, setApi] = useState<CarouselApi>();
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -46,7 +48,7 @@ export default function VenueCard({
 
   return (
     <Link
-      href={`/venues/${id}`}
+      href={status === 'PENDING' ? '/booking/review' : status === "CONFIRMED" ? `/booking/status/${paymentId}` : `/venues/${id}`}
       className="h-full max-h-full cursor-pointer rounded-xl border hover:shadow-lg hover:transition hover:duration-700 hover:ease-in-out"
     >
       <div className="relative flex w-full">
@@ -72,6 +74,24 @@ export default function VenueCard({
             ))}
           </CarouselContent>
         </Carousel>
+
+        {status === "PENDING" && (
+          <div className="absolute top-2 left-2 flex items-center justify-center rounded-full bg-yellow-500 px-2 py-1">
+            <p className="text-xs text-white">Pending</p>
+          </div>
+        )}
+
+        {status === "CONFIRMED" && (
+          <div className="absolute top-2 left-2 flex items-center justify-center rounded-full bg-green-500 px-2 py-1">
+            <p className="text-xs text-white">Konfirmasi</p>
+          </div>
+        )}
+
+        {status === "CANCELLED" && (
+          <div className="absolute top-2 left-2 flex items-center justify-center rounded-full bg-red-500 px-2 py-1">
+            <p className="text-xs text-white">Dibatalkan</p>
+          </div>
+        )}
 
         <div className="absolute right-2 top-2 flex items-center justify-center rounded-full bg-secondary/50 px-2 py-1 text-xs text-white">
           <p className="text-xs text-white">

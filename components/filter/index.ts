@@ -12,3 +12,5 @@ export {FilterPriceContent} from './FilterPrice';
 
 export {default as FilterCategory} from './FilterCategory';
 export {FilterCategoryContent} from './FilterCategory';
+
+export {default as FilterReset} from './FilterReset'

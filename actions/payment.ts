@@ -1,9 +1,10 @@
 'use server';
 
-import { prisma } from '@/libs/prisma';
-import { paymentFormSchema } from '@/libs/validators';
-import { splitFullName } from '@/libs/utils';
-import { z } from 'zod';
+import {prisma} from '@/libs/prisma';
+import {paymentFormSchema} from '@/libs/validators';
+import {splitFullName} from '@/libs/utils';
+import {z} from 'zod';
+import {min} from 'date-fns';
 
 const midtransClient = require('midtrans-client');
 
@@ -28,16 +29,16 @@ interface ItemDetail {
   url: string;
 }
 
-export async function createPayment({ bookingId, values }: PaymentParameter) {
+export async function createPayment({bookingId, values}: PaymentParameter) {
   try {
-    const { name, email, phone, isSelf, otherName } = await paymentFormSchema.parseAsync(values);
+    const {name, email, phone, isSelf, otherName} = await paymentFormSchema.parseAsync(values);
 
     const today = new Date();
     const order_id = `ONESPORT-${new Date().toISOString().replace(/[-:T.]/g, '')}`;
 
     const bookings = await prisma.booking.findMany({
       where: {
-        id: { in: bookingId },
+        id: {in: bookingId},
       },
       include: {
         venue: true,
@@ -53,16 +54,16 @@ export async function createPayment({ bookingId, values }: PaymentParameter) {
     if (!bookings || bookings.length === 0) throw new Error('Booking not found');
 
     const user = bookings[0].user;
-    const venue = bookings[0].venue
+    const venue = bookings[0].venue;
 
     if (!user) throw new Error('User not found');
 
-    const { firstName, lastName } = splitFullName(user.name || '');
+    const {firstName, lastName} = splitFullName(user.name || '');
 
     if (isSelf) {
       await prisma.user.update({
-        where: { id: user.id },
-        data: { phone },
+        where: {id: user.id},
+        data: {phone},
       });
     }
 
@@ -96,7 +97,7 @@ export async function createPayment({ bookingId, values }: PaymentParameter) {
     };
 
     const items = [...itemDetails, serviceItem];
-    
+
     const payment = await prisma.payment.create({
       data: {
         orderId: order_id,
@@ -131,7 +132,7 @@ export async function createPayment({ bookingId, values }: PaymentParameter) {
     });
 
     await prisma.payment.update({
-      where: { id: payment.id },
+      where: {id: payment.id},
       data: {
         token: paymentToken,
       },
@@ -142,12 +143,12 @@ export async function createPayment({ bookingId, values }: PaymentParameter) {
         date: {
           lte: today,
         },
-        status: 'PENDING' || 'FAILED',
+        status: {in: ['PENDING', 'FAILED']},
       },
     });
 
     await prisma.booking.updateMany({
-      where: { id: { in: bookingId } },
+      where: {id: {in: bookingId}},
       data: {
         paymentId: payment.id,
         name: isSelf ? name : otherName,
@@ -164,12 +165,12 @@ export async function createPayment({ bookingId, values }: PaymentParameter) {
   }
 }
 
-export async function getPaymentToken({ id }: { id: string }) {
+export async function getPaymentToken({id}: {id: string}) {
   try {
     if (!id) {
       throw new Error('User ID is required');
     }
-    
+
     const user = await prisma.user.findUnique({
       where: {
         id,
@@ -204,14 +205,14 @@ interface GetBookingPriceProps {
   id: string;
 }
 
-export async function getBookingPrice({ id }: GetBookingPriceProps) {
+export async function getBookingPrice({id}: GetBookingPriceProps) {
   try {
     if (!id) {
       throw new Error('User ID is required');
     }
 
     const user = await prisma.user.findUnique({
-      where: { id },
+      where: {id},
       include: {
         bookings: {
           include: {
@@ -248,7 +249,7 @@ export async function getBookingPrice({ id }: GetBookingPriceProps) {
 export async function deleteBooking(bookingId: string) {
   try {
     const booking = await prisma.booking.findUnique({
-      where: { id: bookingId },
+      where: {id: bookingId},
     });
 
     if (!booking) {
@@ -256,7 +257,7 @@ export async function deleteBooking(bookingId: string) {
     }
 
     await prisma.booking.delete({
-      where: { id: bookingId },
+      where: {id: bookingId},
     });
 
     return booking;
@@ -350,7 +351,7 @@ export async function getAllBookingFields(id: string) {
             name: user.name,
             email: user.email,
             phone: user.phone,
-          }
+          },
         };
       })
     );
@@ -362,10 +363,10 @@ export async function getAllBookingFields(id: string) {
   }
 }
 
-export async function getPaymentStatus({ id }: { id: string }) {
+export async function getPaymentStatus({id}: {id: string}) {
   try {
     const response = await prisma.payment.findUnique({
-      where: { id },
+      where: {id},
       include: {
         bookings: {
           include: {
@@ -373,8 +374,8 @@ export async function getPaymentStatus({ id }: { id: string }) {
             field: true,
             user: true,
           },
-        }
-      }
+        },
+      },
     });
 
     if (!response) {
@@ -440,11 +441,9 @@ export async function getPaymentStatus({ id }: { id: string }) {
             name: booking.name,
             email: booking.email,
             phone: booking.phone,
-          }
+          },
         };
-      }
-      )
-
+      })
     );
 
     return {
@@ -458,7 +457,6 @@ export async function getPaymentStatus({ id }: { id: string }) {
       expiryTime: response.expiryTime,
       bookings: bookings,
     };
-
   } catch (error) {
     console.error('Error in getPaymentStatus:', error);
     throw new Error('Failed to get payment status. Please try again later.');
@@ -470,16 +468,75 @@ interface UpdatePaymentStatusProps {
   status: 'FAILED' | 'PENDING' | 'SUCCESS' | 'REFUNDED';
 }
 
-export async function updatePaymentStatus({ id, status }: UpdatePaymentStatusProps) {
+export async function updatePaymentStatus({id, status}: UpdatePaymentStatusProps) {
   try {
     const response = await prisma.payment.update({
-      where: { id },
-      data: { status },
+      where: {id},
+      data: {status},
     });
 
     return response;
   } catch (error) {
     console.error('Error in updatePaymentStatus:', error);
     throw new Error('Failed to update payment status. Please try again later.');
+  }
+}
+
+export async function getUserVenues({id, status}: {id: string; status?: string}) {
+  try {
+    if (!id) {
+      throw new Error('User ID is required');
+    }
+
+    const user = await prisma.user.findUnique({
+      where: {id},
+      include: {
+        bookings: {
+          include: {
+            venue: {
+              include: {
+                images: true,
+                location: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    if (!user) {
+      throw new Error('User not found');
+    }
+
+    const bookings = user.bookings.filter(booking => {
+      if (status === 'ALL') return true;
+      return booking.status === status;
+    });
+
+    if (!bookings || bookings.length === 0) {
+      return [];
+    }
+
+    const venues = bookings.map(booking => {
+      const venue = booking.venue;
+
+      return {
+        id: venue.id,
+        name: venue.name,
+        images: venue.images,
+        minPrice: venue.minPrice,
+        openHours: venue.openHours,
+        location: venue.location,
+        ratingAvg: venue.ratingAvg,
+        reviewCount: venue.reviewCount,
+        status: booking.status,
+        paymentId: booking.paymentId,
+      };
+    });
+
+    return venues;
+  } catch (error) {
+    console.error('Error in getUserVenues:', error);
+    throw new Error('Failed to get user venues. Please try again later.');
   }
 }

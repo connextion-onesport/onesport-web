@@ -4,13 +4,13 @@ import {useQueryClient} from '@tanstack/react-query';
 import {Button} from '../ui/button';
 import {Skeleton} from '../ui/skeleton';
 import VenueCard from './VenueCard';
-import {useLocationStore, useVenueStore} from '@/providers/zustand-provider';
+import {useLocationStore, usePaymentStore, useVenueStore} from '@/providers/zustand-provider';
 import Link from 'next/link';
 
 import {Carousel, CarouselContent, CarouselItem} from '@/components/ui/carousel';
 import Image from 'next/image';
 import {getAllVenues, getHighestRatingVenues, getNearestVenues} from '@/actions/venue';
-import {venueListCategoryNames} from '@/libs/constants';
+import {bookingStatusNames, venueListCategoryNames} from '@/libs/constants';
 
 interface VenueListProps {
   title: string;
@@ -19,6 +19,7 @@ interface VenueListProps {
   category?: string;
   isHeading?: boolean;
   isCategory?: boolean;
+  isStatus?: boolean;
   isLoading: boolean;
   isError: boolean;
 }
@@ -30,6 +31,7 @@ export default function VenueList({
   category,
   isHeading,
   isCategory,
+  isStatus,
   isLoading,
   isError,
 }: VenueListProps) {
@@ -38,7 +40,7 @@ export default function VenueList({
   if (isLoading) {
     return (
       <section className="flex w-full px-4 py-8 md:px-8">
-        <VenueListSkeleton isHeading={isHeading} isCategory={isCategory} />
+        <VenueListSkeleton isHeading={isHeading} isCategory={isCategory} isStatus={isStatus} />
       </section>
     );
   }
@@ -64,6 +66,7 @@ export default function VenueList({
           description={description}
           category={category}
           isCategory={isCategory}
+          isStatus={isStatus}
         />
       )}
       <List data={data} latitude={latitude} longitude={longitude} />
@@ -76,9 +79,10 @@ interface VenueListHeaderProps {
   description: string;
   category?: string;
   isCategory?: boolean;
+  isStatus?: boolean;
 }
 
-function Header({title, description, category, isCategory}: VenueListHeaderProps) {
+function Header({title, description, category, isCategory, isStatus}: VenueListHeaderProps) {
   return (
     <div className="flex flex-col gap-4">
       <div className="flex flex-col">
@@ -86,12 +90,13 @@ function Header({title, description, category, isCategory}: VenueListHeaderProps
         <p className="text-sm font-medium text-muted-foreground sm:text-base">{description}</p>
       </div>
 
-      {isCategory && <Category category={category} />}
+      {isStatus && <VenueStatus />}
+      {isCategory && <VenueCategory category={category} />}
     </div>
   );
 }
 
-function Category({category}: {category?: string}) {
+function VenueCategory({category}: {category?: string}) {
   const {
     categoryNearby,
     setCategoryNearby,
@@ -152,6 +157,51 @@ function Category({category}: {category?: string}) {
   );
 }
 
+function VenueStatus() {
+  const {selectedStatus, setSelectedStatus} = usePaymentStore(state => state);
+
+  const handleStatus = (status: string) => {
+    const statusMap: {[key: string]: string} = {
+      Semua: 'ALL',
+      Pending: 'PENDING',
+      Konfirmasi: 'CONFIRMED',
+      Dibatalkan: 'CANCELLED',
+    };
+
+    const statusValue = statusMap[status];
+    setSelectedStatus(statusValue);
+  };
+
+  console.log('selectedStatus', selectedStatus);
+
+  return (
+    <div className="flex items-center justify-between gap-8">
+      <Carousel className="flex overflow-hidden lg:w-full">
+        <CarouselContent>
+          {bookingStatusNames.map((status, index) => (
+            <CarouselItem key={index} className="min-w-fit basis-0 pl-4">
+              <Button
+                onClick={() => handleStatus(status)}
+                className="h-8 rounded-full px-3 text-xs md:h-9 md:px-4 md:py-2 md:text-sm"
+                variant={
+                  (status === 'Semua' && selectedStatus === 'ALL') ||
+                  (status === 'Pending' && selectedStatus === 'PENDING') ||
+                  (status === 'Konfirmasi' && selectedStatus === 'CONFIRMED') ||
+                  (status === 'Dibatalkan' && selectedStatus === 'CANCELLED')
+                    ? 'default'
+                    : 'secondary'
+                }
+              >
+                {status}
+              </Button>
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+      </Carousel>
+    </div>
+  );
+}
+
 interface ListProps {
   data: any;
   latitude: number;
@@ -187,6 +237,8 @@ function List({data, latitude, longitude}: ListProps) {
           openHours={field.openHours}
           minPrice={field.minPrice}
           category={field.category}
+          status={field.status}
+          paymentId={field.paymentId}
         />
       ))}
     </div>
@@ -196,9 +248,10 @@ function List({data, latitude, longitude}: ListProps) {
 interface LoadingSkeletonProps {
   isHeading?: boolean;
   isCategory?: boolean;
+  isStatus?: boolean;
 }
 
-export function VenueListSkeleton({isHeading, isCategory}: LoadingSkeletonProps) {
+export function VenueListSkeleton({isHeading, isCategory, isStatus}: LoadingSkeletonProps) {
   return (
     <div className="flex w-full flex-col gap-8">
       {isHeading && (
@@ -208,21 +261,22 @@ export function VenueListSkeleton({isHeading, isCategory}: LoadingSkeletonProps)
             <Skeleton className="h-6 w-3/4 md:w-2/4" />
           </div>
 
-          {isCategory && (
-            <div className="flex items-center justify-between gap-8">
-              <Carousel className="flex overflow-hidden lg:w-full">
-                <CarouselContent>
-                  {[1, 2, 3, 4, 5].map(index => (
-                    <CarouselItem key={index} className="min-w-fit basis-0 pl-4">
-                      <Skeleton className="h-8 w-24 rounded-full px-3 md:h-9 md:px-4 md:py-2" />
-                    </CarouselItem>
-                  ))}
-                </CarouselContent>
-              </Carousel>
+          {isCategory ||
+            (isStatus && (
+              <div className="flex items-center justify-between gap-8">
+                <Carousel className="flex overflow-hidden lg:w-full">
+                  <CarouselContent>
+                    {[1, 2, 3, 4, 5].map(index => (
+                      <CarouselItem key={index} className="min-w-fit basis-0 pl-4">
+                        <Skeleton className="h-8 w-24 rounded-full px-3 md:h-9 md:px-4 md:py-2" />
+                      </CarouselItem>
+                    ))}
+                  </CarouselContent>
+                </Carousel>
 
-              <Skeleton className="h-8 w-24 rounded-full px-3 md:h-9 md:px-4 md:py-2" />
-            </div>
-          )}
+                <Skeleton className="h-8 w-24 rounded-full px-3 md:h-9 md:px-4 md:py-2" />
+              </div>
+            ))}
         </div>
       )}
 
