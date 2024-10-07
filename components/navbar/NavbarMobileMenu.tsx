@@ -19,7 +19,11 @@ import {
 } from '@/components/ui/drawer';
 import {useAuthStore} from '@/providers/zustand-provider';
 
-export default function NavbarMobileMenu() {
+interface NavbarMobileMenuProps {
+  user: any;
+}
+
+export default function NavbarMobileMenu({user}: NavbarMobileMenuProps) {
   return (
     <Drawer>
       <DrawerTrigger className="flex h-10 w-10 items-center justify-center rounded-md hover:bg-accent hover:text-accent-foreground md:hidden">
@@ -31,7 +35,7 @@ export default function NavbarMobileMenu() {
 
           <div className="flex flex-col gap-6 px-4 pb-6">
             <MobileMenu />
-            <MobileMenuFooter />
+            {!user && <MobileMenuFooter />}
           </div>
         </section>
       </DrawerContent>

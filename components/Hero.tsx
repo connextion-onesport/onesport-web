@@ -8,6 +8,8 @@ import {Button} from '@/components/ui/button';
 import Searchbar from '@/components/Searchbar';
 
 import {heroCategories} from '@/libs/constants';
+import {Suspense} from 'react';
+import {Skeleton} from './ui/skeleton';
 
 export default function Hero() {
   const router = useRouter();
@@ -25,7 +27,9 @@ export default function Hero() {
         <div className="absolute flex h-full w-full flex-col items-center justify-center gap-8 p-4 md:p-8">
           <HeroText />
           <div className="w-full max-w-2xl">
-            <Searchbar />
+            <Suspense fallback={<Skeleton className="h-12 w-full rounded-full" />}>
+              <Searchbar />
+            </Suspense>
           </div>
           <HeroCategoryDesktop handleCategory={handleCategory} />
         </div>

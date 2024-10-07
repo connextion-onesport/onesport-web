@@ -2,13 +2,13 @@
 
 import Hero from '@/components/Hero';
 import {NavbarBottom} from '@/components/navbar';
-import {VenueList} from '@/components/venue';
+import {VenueList, VenueListSkeleton} from '@/components/venue';
 import {Separator} from '@/components/ui/separator';
 import CTA from '@/components/CTA';
 import {useQuery, useQueryClient} from '@tanstack/react-query';
 import {getAllVenues, getHighestRatingVenues, getNearestVenues} from '@/actions/venue';
 import {useLocationStore, useVenueStore} from '@/providers/zustand-provider';
-import {useEffect} from 'react';
+import {Suspense, useEffect} from 'react';
 import {getCurrentLocation} from '@/libs/utils';
 import {venueListCategoryNames} from '@/libs/constants';
 
@@ -69,6 +69,7 @@ export default function HomePage() {
   return (
     <main className="mx-auto flex w-full max-w-screen-2xl flex-col">
       <Hero />
+
       {latitude && longitude ? (
         <VenueList
           data={nearbyVenues}
@@ -92,7 +93,9 @@ export default function HomePage() {
           description="Cek pilihan tempat yang bisa kamu coba."
         />
       )}
+
       <Separator />
+
       <VenueList
         data={highestRatingVenues}
         category="rating"
@@ -103,6 +106,7 @@ export default function HomePage() {
         title="Rating Tertinggi ⭐️"
         description="Favorit dengan nilai terbaik dari pengguna."
       />
+
       {/* <CTA /> */}
       <NavbarBottom />
     </main>
