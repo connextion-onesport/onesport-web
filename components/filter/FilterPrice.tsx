@@ -57,7 +57,7 @@ export default function FilterPrice() {
           Harga
         </Button>
       </DialogTrigger>
-      <DialogContent className="flex h-1/2 max-w-lg flex-col gap-0 p-0">
+      <DialogContent className="flex max-w-lg flex-col gap-0 p-0">
         <DialogHeader className="w-full border-b-2 p-6">
           <DialogTitle>Harga</DialogTitle>
           <VisuallyHidden>

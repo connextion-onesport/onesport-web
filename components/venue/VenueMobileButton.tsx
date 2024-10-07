@@ -16,7 +16,7 @@ export default function VenueMobileButton({data}: VenueMobileButtonProps) {
   };
 
   return (
-    <div className="fixed bottom-0 z-10 flex w-full flex-col gap-4 border-t bg-background p-6 md:hidden">
+    <div className="fixed bottom-0 z-10 flex w-full flex-col gap-4 border-t bg-background p-4 md:hidden">
       <div className="flex flex-col">
         <p className="text-sm text-muted-foreground">Harga dari</p>
         <p className="text-lg font-semibold">

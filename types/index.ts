@@ -35,6 +35,8 @@ export interface FieldItemProps {
   latitude: number;
   longitude: number;
   category?: string;
+  status?: string;
+  paymentId?: string;
 }
 
 // The root structure of the data you're receiving

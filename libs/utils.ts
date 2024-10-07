@@ -114,3 +114,50 @@ export function getDistanceFromLatLonInKm(lat1: number, lon1: number, lat2: numb
 function deg2rad(deg: number) {
   return deg * (Math.PI / 180);
 }
+
+export function getFacilityImage(name: string) {
+  switch (name) {
+    case 'Cafe & Resto': {
+      return '/images/venues/cafe&resto.png';
+    }
+    case 'Hot Shower': {
+      return '/images/venues/hot_shower.png';
+    }
+    case 'Jual Makanan Ringan': {
+      return '/images/venues/jual_makanan_ringan.png';
+    }
+    case "Jual Minuman": {
+      return '/images/venues/jual_minuman.png';
+    }
+    case "Musholla": {
+      return '/images/venues/musholla.png';
+    }
+    case "Parkir Mobil": {
+      return '/images/venues/parkir_mobil.png';
+    }
+    case "Parkir Motor": {
+      return '/images/venues/parkir_motor.png';
+    }
+    case "Ruang Ganti": {
+      return '/images/venues/ruang_ganti.png';
+    }
+    case "Shower": {
+      return '/images/venues/shower.png';
+    }
+    case "Toko Olahraga": {
+      return '/images/venues/toko_olahraga.png';
+    }
+    case "Toilet": {
+      return '/images/venues/toilet.png';
+    }
+    case "Tribun Penonton": {
+      return '/images/venues/tribun_penonton.png';
+    }
+    case "Wi-Fi": {
+      return '/images/venues/wifi.png';
+    }
+    default: {
+      return '/images/venues/others.png';
+    }
+  }
+}

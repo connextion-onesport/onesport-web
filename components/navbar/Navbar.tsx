@@ -67,7 +67,7 @@ function NavbarMenu() {
 function SearchButton() {
   return (
     <Button asChild size="icon" variant="ghost" className="h-10 w-10 md:hidden">
-      <Link href="/fields">
+      <Link href="/venues">
         <RiSearchLine className="h-6 w-6" />
       </Link>
     </Button>
