@@ -360,17 +360,6 @@ function BookingForm({field, user}: BookingFormProps) {
     a.hour > b.hour ? 1 : -1
   );
 
-  const bookings = sortedSchedules.map((schedule: {bookings: any}) => schedule.bookings).flat();
-
-  const isAvailable = ({date, hour}: {date: Date; hour: number}) => {
-    const isBooked = bookings.some(
-      (booking: {startTime: Date; endTime: Date}) =>
-        isSameDay(booking.startTime, date) && booking.startTime.getHours() === hour
-    );
-
-    return !isBooked;
-  };
-
   const {mutateAsync: createBookingMutation} = useMutation({
     mutationFn: createBookings,
     onSuccess: () => {
@@ -437,7 +426,7 @@ function BookingForm({field, user}: BookingFormProps) {
     const {hour} = schedule;
     const isPastHour = isToday && currentHour >= hour;
 
-    return isPastHour || !isAvailable({date: bookingDate, hour});
+    return isPastHour
   };
 
   useEffect(() => {
@@ -476,7 +465,7 @@ function BookingForm({field, user}: BookingFormProps) {
                   <p
                     className={`${!isDisabled(schedule) ? 'text-black' : 'text-muted-foreground'} text-sm md:text-base`}
                   >
-                    {isAvailable({date: bookingDate, hour: schedule.hour}) ? 'Kosong' : 'Booked'}
+                    {isDisabled(schedule) ? 'Booked' : 'Kosong'}
                   </p>
                 </div>
               </div>
