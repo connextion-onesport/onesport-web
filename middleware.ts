@@ -33,9 +33,9 @@ export default middleware(req => {
   return NextResponse.next();
 });
 
-// export const config = {
-//   matcher: ['/((?!.+\\.[\\w]+$|_next).*)', '/', '/(api|trpc)(.*)'],
-// };
+export const config = {
+  matcher: ['/((?!.+\\.[\\w]+$|_next).*)', '/', '/(api|trpc)(.*)'],
+};
 
 function matchRoute(pathname: string, routes: string[]): boolean {
   return routes.some(route => {
