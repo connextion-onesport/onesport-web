@@ -402,9 +402,9 @@ function BookingForm({field, user}: BookingFormProps) {
   };
 
   const handleBooking = async () => {
-    try {
-      setIsSubmitting(true);
+    setIsSubmitting(true);
 
+    try {
       const bookings = selectedSlots.map(slot => ({
         fieldId: field.id,
         venueId: field.venueId,
@@ -415,16 +415,15 @@ function BookingForm({field, user}: BookingFormProps) {
         price: slot.price,
       }));
       
-      setTimeout(async () => {
-        await createBookingMutation({venueId: field.venueId, userId: user.id, bookings});
-
-        resetForm();
-        setIsSubmitting(false);
-        router.push('/booking/review');
-      }, 1000);
+      
+      await createBookingMutation({venueId: field.venueId, userId: user.id, bookings});
+      resetForm();
+      router.push('/booking/review');
     } catch (error) {
       console.error('Failed to book field', error);
       throw new Error('Failed to book field. Please try again later.');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 

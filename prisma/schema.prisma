@@ -149,8 +149,6 @@ model AvailableHour {
   hour         Int
   pricePerHour Float
 
-  bookings Booking[]
-
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -266,7 +264,6 @@ model Booking {
   fieldId         String  @db.ObjectId
   userId          String  @db.ObjectId
   paymentId       String? @db.ObjectId
-  availableHourId String? @db.ObjectId
 
   name      String?
   email     String?
@@ -285,7 +282,6 @@ model Booking {
   field         Field          @relation(fields: [fieldId], references: [id])
   user          User           @relation(fields: [userId], references: [id])
   payment       Payment?       @relation(fields: [paymentId], references: [id])
-  availableHour AvailableHour? @relation(fields: [availableHourId], references: [id])
 }
 
 enum PaymentStatus {
