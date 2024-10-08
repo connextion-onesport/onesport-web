@@ -15,6 +15,7 @@ import {formatPrice, getReviewCount} from '@/libs/utils';
 import Link from 'next/link';
 
 import {PiArrowLeft, PiArrowRight, PiStarFill, PiTrash, PiTrashSimple} from 'react-icons/pi';
+import { Skeleton } from '../ui/skeleton';
 
 interface BookingReviewProps {
   fields: any;
@@ -34,7 +35,7 @@ export default function BookingReview({fields, venue, isLoading, isError}: Booki
   });
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Skeleton className='h-[774px] bg-white' />;
   }
 
   if (isError) {

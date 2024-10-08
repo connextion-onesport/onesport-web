@@ -2,6 +2,7 @@
 
 import {getPaymentStatus} from '@/actions/payment';
 import {StatusDetail, StatusHeader, StatusItems, StatusLine} from '@/components/booking';
+import { Skeleton } from '@/components/ui/skeleton';
 import {useQuery} from '@tanstack/react-query';
 import Link from 'next/link';
 import {PiArrowLeft, PiChatCircleDots} from 'react-icons/pi';
@@ -16,7 +17,11 @@ export default function StatusPage({params}: {params: {id: string}}) {
   });
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="mx-auto flex w-full max-w-screen-md flex-col gap-6 px-2 py-6 md:px-6 md:py-10">
+        <Skeleton className="h-dvh bg-white" />
+      </div>
+    );
   }
 
   if (isError) {

@@ -10,8 +10,8 @@ import {PiArrowLeft} from 'react-icons/pi';
 export default function PaymentPage() {
   const {
     data: user,
-    isLoading,
-    isError,
+    isLoading: userLoading,
+    isError: userError,
   } = useQuery({
     queryKey: ['user'],
     queryFn: () => getUser(),
@@ -19,23 +19,15 @@ export default function PaymentPage() {
 
   const id = user?.id as string;
 
-  const {data: token} = useQuery({
+  const {data: token, isLoading: tokenLoading, isError: tokenError} = useQuery({
     queryKey: ['token', id],
     queryFn: () => getPaymentToken({id}),
   });
 
-  const {data: price} = useQuery({
+  const {data: price, isLoading: priceLoading, isError: priceError} = useQuery({
     queryKey: ['price', id],
     queryFn: () => getBookingPrice({id}),
   });
-
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
-  if (isError) {
-    return <div>Error...</div>;
-  }
 
   return (
     <div className="mx-auto flex w-full max-w-screen-xl flex-col gap-6 px-2 py-6 md:px-6 md:py-10">
@@ -49,11 +41,11 @@ export default function PaymentPage() {
 
       <div className="grid h-full w-full grid-cols-1 gap-4 lg:grid-cols-2">
         <div className="order-2 flex flex-col gap-4 lg:order-1">
-          <BookingPayment token={token as string} />
+          <BookingPayment token={token as string} isLoading={tokenLoading || userLoading} isError={tokenError || userError} />
         </div>
 
         <div className="order-1 flex flex-col gap-4 lg:order-2">
-          <BookingPricing price={price} />
+          <BookingPricing price={price} isLoading={priceLoading || userLoading} isError={priceError || userError} />
         </div>
       </div>
     </div>

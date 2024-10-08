@@ -8,4 +8,4 @@ export const authRoutes = [
   '/booking/status/[id]',
 ];
 
-export const apiAuthPrefix = '/api/auth';
+export const apiRoutes = ['/api/auth', '/api/webhook'];

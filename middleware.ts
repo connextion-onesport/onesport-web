@@ -2,7 +2,7 @@ import NextAuth from 'next-auth';
 import authConfig from '@/auth.config';
 
 import {NextResponse} from 'next/server';
-import {apiAuthPrefix, authRoutes, publicRoutes} from '@/routes';
+import {apiRoutes, authRoutes, publicRoutes} from '@/routes';
 
 const {auth: middleware} = NextAuth(authConfig);
 
@@ -10,11 +10,11 @@ export default middleware(req => {
   const {nextUrl} = req;
   const isLoggedIn = !!req.auth;
 
-  const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
+  const isApiRoute = matchRoute(nextUrl.pathname, apiRoutes);
   const isPublicRoute = matchRoute(nextUrl.pathname, publicRoutes);
   const isAuthRoute = matchRoute(nextUrl.pathname, authRoutes);
 
-  if (isApiAuthRoute) {
+  if (isApiRoute) {
     return NextResponse.next();
   }
 
