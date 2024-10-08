@@ -722,40 +722,14 @@ export async function createBookings({
         throw new Error(`Field ${booking.fieldId} not found`);
       }
 
-      const dayOfWeek = ((booking.startTime.getDay() + 6) % 7) + 1;
-      const hour = booking.startTime.getHours();
-
-      const availableHour = field.availableHours.find(
-        availableHour => availableHour.dayOfWeek === dayOfWeek && availableHour.hour === hour
-      );
-
-      if (!availableHour) {
-        throw new Error(`Field ${booking.fieldId} is not available at ${booking.startTime}`);
-      }
-
-      const bookingsForDate = await prisma.booking.findMany({
-        where: {
-          fieldId: booking.fieldId,
-          date: booking.date,
-          status: 'PENDING',
-        },
-      });
-
-      const bookedHours = bookingsForDate.map(booking => booking.startTime.getHours());
-
-      if (bookedHours.includes(hour)) {
-        throw new Error(`Field ${booking.fieldId} is already booked at ${booking.startTime}`);
-      }
-
       bookingData.push({
         venueId,
         fieldId: booking.fieldId,
         userId,
-        availableHourId: availableHour.id,
         date: booking.date,
         startTime: booking.startTime,
         endTime: booking.endTime,
-        price: availableHour.pricePerHour,
+        price: booking.price,
       });
     }
 
