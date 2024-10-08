@@ -24,6 +24,8 @@ export default function UserVenuesPage() {
 
   const userId = user?.id as string;
 
+  console.log('selectedStatus', selectedStatus)
+
   const {
     data: venues,
     isLoading: venuesLoading,
@@ -44,6 +46,8 @@ export default function UserVenuesPage() {
       };
 
       const statusValue = statusMap[status];
+
+      console.log('statusValue', statusValue);
 
       queryClient.prefetchQuery({
         queryKey: ['bookings', userId, statusValue],

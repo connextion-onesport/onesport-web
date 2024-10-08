@@ -126,8 +126,8 @@ export async function createPayment({bookingId, values}: PaymentParameter) {
         duration: 60,
       },
       callbacks: {
-        finish: `http://localhost:3000/booking/status/${payment.id}`,
-        error: `http://localhost:3000/booking/status/${payment.id}`,
+        finish: `https://onesport-web.vercel.app/booking/status/${payment.id}`,
+        error: `https://onesport-web.vercel.app/booking/status/${payment.id}`,
       },
     });
 
@@ -135,15 +135,6 @@ export async function createPayment({bookingId, values}: PaymentParameter) {
       where: {id: payment.id},
       data: {
         token: paymentToken,
-      },
-    });
-
-    await prisma.payment.deleteMany({
-      where: {
-        date: {
-          lte: today,
-        },
-        status: {in: ['PENDING', 'FAILED']},
       },
     });
 
@@ -517,10 +508,12 @@ export async function getUserVenues({id, status}: {id: string; status?: string})
       return [];
     }
 
-    const venues = bookings.map(booking => {
+    const venueMap = new Map();
+
+    bookings.map(booking => {
       const venue = booking.venue;
 
-      return {
+      venueMap.set(venue.id, {
         id: venue.id,
         name: venue.name,
         images: venue.images,
@@ -531,8 +524,10 @@ export async function getUserVenues({id, status}: {id: string; status?: string})
         reviewCount: venue.reviewCount,
         status: booking.status,
         paymentId: booking.paymentId,
-      };
+      });
     });
+
+    const venues = Array.from(venueMap.values());
 
     return venues;
   } catch (error) {

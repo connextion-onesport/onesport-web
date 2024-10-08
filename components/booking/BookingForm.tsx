@@ -37,6 +37,7 @@ import {VisuallyHidden} from '@radix-ui/react-visually-hidden';
 import {ArrowRightIcon, ReloadIcon} from '@radix-ui/react-icons';
 import {RiInformationLine, RiPlaneFill} from 'react-icons/ri';
 import {PiCaretRight, PiPaperPlaneRight, PiQuestion, PiTicket} from 'react-icons/pi';
+import {Skeleton} from '../ui/skeleton';
 
 interface PaymentFormProps {
   fields: any;
@@ -47,7 +48,13 @@ interface PaymentFormProps {
 
 export default function BookingForm({fields, user, isLoading, isError}: PaymentFormProps) {
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <section className="flex flex-col gap-4">
+        <Skeleton className="h-[379px] bg-white" />
+        <Skeleton className="h-12 bg-white" />
+        <Skeleton className="h-[461px] bg-white" />
+      </section>
+    );
   }
 
   if (isError) {

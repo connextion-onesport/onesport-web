@@ -1,14 +1,25 @@
 'use client';
 
 import {useEffect, useState} from 'react';
+import { Skeleton } from '../ui/skeleton';
 
 const snapScript = 'https://app.sandbox.midtrans.com/snap/snap.js';
 
 interface BookingPaymentProps {
   token: string;
+  isLoading: boolean;
+  isError: boolean
 }
 
-export default function BookingPayment({token}: BookingPaymentProps) {
+export default function BookingPayment({token, isLoading, isError}: BookingPaymentProps) {
+  if (isLoading) {
+    <Skeleton className='h-[774px] bg-white'  />
+  }
+
+  if (isError) {
+    <div>error</div>
+  }
+
   const [snapShown, setSnapShown] = useState<boolean>(false);
   const clientKey = process.env.MIDTRANS_CLIENT_KEY as string;
 

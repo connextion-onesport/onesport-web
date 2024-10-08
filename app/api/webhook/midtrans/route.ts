@@ -34,6 +34,61 @@ async function updatePaymentStatus(
       },
     });
 
+    const payment = await prisma.payment.findUnique({
+      where: {
+        orderId,
+      },
+      include: {
+        bookings: true,
+      }
+    });
+
+    if (!payment) {
+      return NextResponse.json({
+        message: 'Payment not found',
+        status: 404,
+      });
+    }
+
+    if (status === 'PENDING' && payment) {
+      for (const booking of payment.bookings) {
+        await prisma.booking.update({
+          where: {
+            id: booking.id,
+          },
+          data: {
+            status: 'PENDING',
+          },
+        });
+      }
+    }
+
+    if (status === 'SUCCESS' && payment) {
+      for (const booking of payment.bookings) {
+        await prisma.booking.update({
+          where: {
+            id: booking.id,
+          },
+          data: {
+            status: 'CONFIRMED',
+          },
+        });
+      }
+    }
+
+    if ((status === 'FAILED' || status === 'REFUNDED') && payment) {
+      for (const booking of payment.bookings) {
+        await prisma.booking.update({
+          where: {
+            id: booking.id,
+          },
+          data: {
+            status: 'CANCELLED',
+          },
+        });
+      }
+    }
+
     return NextResponse.json({
       message: 'Success',
       status: 200,
@@ -98,8 +153,6 @@ export async function POST(req: Request) {
   const expiryDateISO = formatISO(expiryDate);
 
   const grossAmount = parseFloat(gross_amount);
-
-  console.log('Transaction status:', transaction_status);
 
   switch (transaction_status) {
     case 'capture':

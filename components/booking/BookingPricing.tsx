@@ -5,13 +5,25 @@ import { Separator } from '../ui/separator';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
 import { PiQuestion } from 'react-icons/pi';
+import { Skeleton } from '../ui/skeleton';
 
 
 interface BookingPricingProps {
   price: any;
+  isLoading: boolean;
+  isError: boolean;
 }
 
-export default function BookingPricing({price}: BookingPricingProps) {
+export default function BookingPricing({price, isLoading, isError}: BookingPricingProps) {
+
+  if (isLoading) {
+    return <Skeleton className='bg-white h-96' />
+  }
+
+  if (isError) {
+    <div>error</div>
+  }
+
   return (
     <section className="flex flex-col rounded-xl bg-background">
       <div className="flex flex-col">
