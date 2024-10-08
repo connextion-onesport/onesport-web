@@ -12,11 +12,7 @@ export async function getAllVenues({amount = 4, category}: {amount?: number; cat
         },
       },
       include: {
-        availableHours: {
-          include: {
-            bookings: true,
-          },
-        },
+        availableHours: true,
         venue: {
           include: {
             images: true,
@@ -600,11 +596,7 @@ export async function getVenueById({id}: {id: string}) {
       include: {
         fields: {
           include: {
-            availableHours: {
-              include: {
-                bookings: true,
-              },
-            },
+            availableHours: true,
             images: true,
             category: true,
             facilities: {
