@@ -346,6 +346,8 @@ function BookingForm({field, user}: BookingFormProps) {
   const queryClient = useQueryClient();
   const router = useRouter();
 
+  const category = field.category.name;
+
   const currentDate = new Date();
   const currentHour = currentDate.getHours();
   const isToday = bookingDate.toDateString() === currentDate.toDateString();
@@ -382,24 +384,27 @@ function BookingForm({field, user}: BookingFormProps) {
   ) => {
     const {hour, pricePerHour} = schedule;
 
+    const isSepakBola = category === 'Sepak Bola';
+    const duration = isSepakBola ? 2 : 1;
+
     if (isSelected) {
       setSelectedSlots(prev => [
         ...prev,
-        {startHour: hour, endHour: hour + 1, price: pricePerHour},
+        {startHour: hour, endHour: hour + duration, price: pricePerHour},
       ]);
       setTotalPrice(prev => prev + pricePerHour);
-      setTotalHour(prev => prev + 1);
+      setTotalHour(prev => prev + duration);
     } else {
       setSelectedSlots(prev => prev.filter(slot => slot.startHour !== hour));
       setTotalPrice(prev => prev - pricePerHour);
-      setTotalHour(prev => prev - 1);
+      setTotalHour(prev => prev - duration);
     }
   };
 
   const handleBooking = async () => {
-    setIsSubmitting(true);
-
     try {
+      setIsSubmitting(true);
+
       const bookings = selectedSlots.map(slot => ({
         fieldId: field.id,
         venueId: field.venueId,
@@ -409,15 +414,17 @@ function BookingForm({field, user}: BookingFormProps) {
         endTime: convertHourToDate(bookingDate, slot.endHour),
         price: slot.price,
       }));
+      
+      setTimeout(async () => {
+        await createBookingMutation({venueId: field.venueId, userId: user.id, bookings});
 
-      await createBookingMutation({venueId: field.venueId, userId: user.id, bookings});
-
-      resetForm();
-      router.push('/booking/review');
+        resetForm();
+        setIsSubmitting(false);
+        router.push('/booking/review');
+      }, 1000);
     } catch (error) {
       console.error('Failed to book field', error);
-    } finally {
-      setIsSubmitting(false);
+      throw new Error('Failed to book field. Please try again later.');
     }
   };
 
@@ -463,7 +470,9 @@ function BookingForm({field, user}: BookingFormProps) {
                       ? '00.00 - 01.00'
                       : schedule.hour === 23
                         ? '23.00 - 00.00'
-                        : `${schedule.hour}.00 - ${schedule.hour + 1}.00`}
+                        : category === 'Sepak Bola'
+                          ? `${schedule.hour}.00 - ${schedule.hour + 2}.00`
+                          : `${schedule.hour}.00 - ${schedule.hour + 1}.00`}
                   </label>
                   <p
                     className={`${!isDisabled(schedule) ? 'text-black' : 'text-muted-foreground'} text-sm md:text-base`}
