@@ -682,6 +682,18 @@ export async function createBookings({
   bookings: Booking[];
 }) {
   try {
+    if (!venueId) {
+      throw new Error('Venue ID is required');
+    }
+
+    if (!userId) {
+      throw new Error('User ID is required');
+    }
+
+    if (!bookings || bookings.length === 0) {
+      throw new Error('Bookings are required');
+    }
+
     const today = new Date();
 
     const venue = await prisma.venue.findUnique({
@@ -701,7 +713,6 @@ export async function createBookings({
       throw new Error('Venue not found');
     }
 
-    // Prepare the data for bookings and check availability
     const bookingData = [];
 
     for (const booking of bookings) {
@@ -748,23 +759,18 @@ export async function createBookings({
       });
     }
 
-    await prisma.booking.updateMany({
+    await prisma.booking.deleteMany({
       where: {
-        date: {
+        startTime: {
           lt: today,
         },
-        status: 'PENDING',
-      },
-      data: {
-        status: 'CANCELLED',
       },
     });
 
-    const createdBookings = await prisma.booking.createMany({
+    await prisma.booking.createMany({
       data: bookingData,
     });
 
-    return createdBookings;
   } catch (error) {
     console.error('Error in createBookings', error);
     throw new Error('Error in creating bookings. Please try again later.');
