@@ -3,7 +3,8 @@
 import {dehydrate, HydrationBoundary, useQueryClient} from '@tanstack/react-query';
 import {getVenueById} from '@/actions/venue';
 import {getUser} from '@/actions/auth';
-import { VenuePage } from '@/pages';
+import { VenuePage } from '@/components/pages';
+
 
 export default function Page({params}: {params: {id: string}}) {
   const id = params.id;
