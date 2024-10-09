@@ -3,7 +3,7 @@
 import {prisma} from '@/libs/prisma';
 import {getDistanceFromLatLonInKm} from '@/libs/utils';
 
-export async function getAllVenues({amount = 4, category}: {amount?: number; category?: string}) {
+export async function getAllVenues(category?: string) {
   try {
     const fields = await prisma.field.findMany({
       where: {
@@ -21,7 +21,7 @@ export async function getAllVenues({amount = 4, category}: {amount?: number; cat
           },
         },
       },
-      take: amount,
+      take: 4,
     });
 
     const venueMap = new Map();
@@ -132,12 +132,10 @@ export async function getAllVenues({amount = 4, category}: {amount?: number; cat
 export async function getNearestVenues({
   latitude,
   longitude,
-  amount = 4,
   category,
 }: {
   latitude: number;
   longitude: number;
-  amount?: number;
   category?: string;
 }) {
   try {
@@ -157,7 +155,7 @@ export async function getNearestVenues({
           },
         },
       },
-      take: amount,
+      take: 4,
     });
 
     const venueMap = new Map();
@@ -276,13 +274,7 @@ export async function getNearestVenues({
   }
 }
 
-export async function getHighestRatingVenues({
-  amount = 4,
-  category,
-}: {
-  amount?: number;
-  category?: string;
-}) {
+export async function getHighestRatingVenues(category?: string) {
   try {
     const fields = await prisma.field.findMany({
       where: {
@@ -300,7 +292,7 @@ export async function getHighestRatingVenues({
           },
         },
       },
-      take: amount,
+      take: 4,
     });
 
     const venueMap = new Map();
