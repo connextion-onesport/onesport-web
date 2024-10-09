@@ -10,6 +10,7 @@ import Searchbar from '@/components/Searchbar';
 import {heroCategories} from '@/libs/constants';
 import {Suspense} from 'react';
 import {Skeleton} from './ui/skeleton';
+import { getCategoryImage } from '@/libs/utils';
 
 export default function Hero() {
   const router = useRouter();
@@ -93,11 +94,11 @@ function HeroText() {
 
 function HeroCategoryDesktop({handleCategory}: {handleCategory: (category: string) => void}) {
   const firstLineCategories = heroCategories.filter(category =>
-    ['Badminton', 'Basket', 'Futsal', 'Sepak Bola'].includes(category.name)
+    ['Badminton', 'Basket', 'Futsal', 'Sepak Bola'].includes(category)
   );
 
   const secondLineCategories = heroCategories.filter(category =>
-    ['Tenis', 'Tenis Meja', 'Voli'].includes(category.name)
+    ['Tenis', 'Tenis Meja', 'Volley'].includes(category)
   );
 
   return (
@@ -106,16 +107,16 @@ function HeroCategoryDesktop({handleCategory}: {handleCategory: (category: strin
         {firstLineCategories.map((category, index) => (
           <div key={index} className="flex flex-col items-center justify-center gap-1">
             <Button
-              onClick={() => handleCategory(category.name)}
+              onClick={() => handleCategory(category)}
               className="h-12 w-12 rounded-full bg-[#F3ECEC] p-0 hover:bg-[#E6E6EF] md:h-16 md:w-16"
             >
               <span className="rounded-full border-4 border-[#E6E6EF] bg-background p-[1px]">
-                {category.icon && (
-                  <category.icon className="h-8 w-8 text-black/75 hover:text-primary md:h-10 md:w-10" />
-                )}
+                <span className="relative flex items-center justify-center aspect-square shrink-0 grow-0 h-8 w-8 md:h-10 md:w-10">
+                  <Image src={getCategoryImage(category)} alt={category} layout="fill" className='object-contain' />
+                </span>
               </span>
             </Button>
-            <span className="text-sm text-white md:text-base">{category.name}</span>
+            <span className="text-sm text-white md:text-base">{category}</span>
           </div>
         ))}
       </div>
@@ -124,16 +125,16 @@ function HeroCategoryDesktop({handleCategory}: {handleCategory: (category: strin
         {secondLineCategories.map((category, index) => (
           <div key={index} className="flex flex-col items-center justify-center gap-1">
             <Button
-              onClick={() => handleCategory(category.name)}
+              onClick={() => handleCategory(category)}
               className="h-12 w-12 rounded-full bg-[#F3ECEC] p-0 hover:bg-[#E6E6EF] md:h-16 md:w-16"
             >
               <span className="rounded-full border-4 border-[#E6E6EF] bg-background p-[1px]">
-                {category.icon && (
-                  <category.icon className="h-8 w-8 text-black/75 hover:text-primary md:h-10 md:w-10" />
-                )}
+                <span className="relative flex items-center justify-center aspect-square shrink-0 grow-0 h-8 w-8 md:h-10 md:w-10">
+                  <Image src={getCategoryImage(category)} alt={category} layout="fill" className='object-contain' />
+                </span>
               </span>
             </Button>
-            <span className="text-sm text-white md:text-base">{category.name}</span>
+            <span className="text-sm text-white md:text-base">{category}</span>
           </div>
         ))}
       </div>
@@ -143,7 +144,7 @@ function HeroCategoryDesktop({handleCategory}: {handleCategory: (category: strin
 
 function HeroCategoryMobile({handleCategory}: {handleCategory: (category: string) => void}) {
   const categories = heroCategories.filter(category =>
-    ['Badminton', 'Basket', 'Futsal', 'Sepak Bola', 'Tenis Meja', 'Voli'].includes(category.name)
+    ['Badminton', 'Basket', 'Futsal', 'Sepak Bola', 'Tenis Meja', 'Volley'].includes(category)
   );
 
   return (
@@ -155,13 +156,16 @@ function HeroCategoryMobile({handleCategory}: {handleCategory: (category: string
         >
           <Button
             size="icon"
-            onClick={() => handleCategory(category.name)}
+            onClick={() => handleCategory(category)}
             className="flex aspect-square h-full w-full items-center justify-center rounded-xl bg-background p-0 shadow hover:bg-accent sm:aspect-auto sm:justify-start sm:rounded-none sm:bg-transparent sm:p-0 sm:shadow-none sm:hover:bg-transparent"
           >
-            {category.icon && <category.icon className="h-11 w-11 text-black/75 sm:h-7 sm:w-7" />}
+
+            <span className="relative flex items-center justify-center aspect-square shrink-0 grow-0 h-11 w-11 sm:h-7 md:w-7">
+                  <Image src={getCategoryImage(category)} alt={category} layout="fill" className='object-cover' />
+                </span>
           </Button>
           <p className="w-full text-center text-sm font-medium sm:text-start sm:text-base">
-            {category.name}
+            {category}
           </p>
         </div>
       ))}

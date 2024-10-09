@@ -65,13 +65,13 @@ export default function VenueReview({data}: VenueReviewProps) {
   return (
     <section className="flex flex-col gap-8 overflow-hidden rounded-2xl border p-4 md:p-8">
       <div className="flex flex-col">
-        <div className="flex justify-between gap-8">
-          <h2 className="text-2xl font-bold">Review & Rating</h2>
-          <Button variant="ghost" className="text-primary hover:text-primary">
+        <div className="flex justify-between gap-8 items-center">
+          <h2 className="text-xl font-bold sm:text-2xl">Review & Rating</h2>
+          <Button variant="outline" className="text-primary hover:text-primary rounded-full">
             Lihat Semua
           </Button>
         </div>
-        <p className="text-base font-medium text-muted-foreground">
+        <p className="text-sm sm:text-base font-medium text-muted-foreground">
           Apa kata orang yang telah menyewa tempat ini!
         </p>
       </div>
@@ -96,40 +96,48 @@ export default function VenueReview({data}: VenueReviewProps) {
 
         <Carousel className="flex w-full overflow-hidden">
           <CarouselContent className="h-full">
-            {reviews.map((review: { id: string; user: { image: string; name: string }; createdAt: Date; rating: number; comment: string }) => (
-              <CarouselItem key={review.id} className="min-h-40 min-w-96 md:basis-1/4">
-                <div className="flex h-full w-full flex-col rounded-lg border p-4">
-                  <div className="flex w-full justify-between gap-4">
-                    <div className="flex gap-2">
-                      <Avatar>
-                        <AvatarImage src={review.user.image} />
-                        <AvatarFallback>{getInitials(review.user.name)}</AvatarFallback>
-                      </Avatar>
+            {reviews.map(
+              (review: {
+                id: string;
+                user: {image: string; name: string};
+                createdAt: Date;
+                rating: number;
+                comment: string;
+              }) => (
+                <CarouselItem key={review.id} className="min-h-40 min-w-96 md:basis-1/4">
+                  <div className="flex h-full w-full flex-col rounded-lg border p-4">
+                    <div className="flex w-full justify-between gap-4">
+                      <div className="flex gap-2">
+                        <Avatar>
+                          <AvatarImage src={review.user.image} />
+                          <AvatarFallback>{getInitials(review.user.name)}</AvatarFallback>
+                        </Avatar>
 
-                      <div className="flex flex-col">
-                        <p className="line-clamp-1 text-sm font-semibold">{review.user.name}</p>
-                        <p className="line-clamp-1 text-xs text-muted-foreground">
-                          {format(review.createdAt, 'PPP', {locale: id})}
+                        <div className="flex flex-col">
+                          <p className="line-clamp-1 text-sm font-semibold">{review.user.name}</p>
+                          <p className="line-clamp-1 text-xs text-muted-foreground">
+                            {format(review.createdAt, 'PPP', {locale: id})}
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center gap-1 whitespace-nowrap">
+                        <span className="flex aspect-square h-6 w-6 items-center justify-center">
+                          <PiStarFill className="h-full w-full text-yellow-400" />
+                        </span>
+                        <p className="self-center text-base font-semibold">
+                          {review.rating.toFixed(1)}
                         </p>
                       </div>
                     </div>
 
-                    <div className="flex items-center gap-1 whitespace-nowrap">
-                      <span className="flex aspect-square h-6 w-6 items-center justify-center">
-                        <PiStarFill className="h-full w-full text-yellow-400" />
-                      </span>
-                      <p className="self-center text-base font-semibold">
-                        {review.rating.toFixed(1)}
-                      </p>
-                    </div>
+                    <Separator className="my-2" />
+
+                    <p className="line-clamp-3 text-sm">{review.comment}</p>
                   </div>
-
-                  <Separator className="my-2" />
-
-                  <p className="line-clamp-3 text-sm">{review.comment}</p>
-                </div>
-              </CarouselItem>
-            ))}
+                </CarouselItem>
+              )
+            )}
           </CarouselContent>
         </Carousel>
       </div>

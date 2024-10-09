@@ -1,22 +1,32 @@
-import React from 'react'
+import React, { use } from 'react'
 import { Button } from '../ui/button'
 import { PiBackspace } from 'react-icons/pi'
-import { useRouter } from 'next/navigation'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 
 export default function FilterReset() {
-  const router = useRouter()
+  const searchParams = useSearchParams()
+  const pathName = usePathname()
+  const {replace} = useRouter()
 
   const handleReset = () => {
-    router.push('/venues')
+    const params = new URLSearchParams(searchParams)
+    params.delete('order')
+    params.delete('category')
+    params.delete('min_price')
+    params.delete('max_price')
+    params.delete('rating')
+    params.delete('search')
+
+    replace(`${pathName}?${params.toString()}`)
   }
 
   return (
     <Button
       variant="outline"
       onClick={handleReset}
-      className="h-8 rounded-full px-3 text-xs text-muted-foreground md:h-9 md:px-4 md:py-2 md:text-sm"
+      className="rounded-full text-muted-foreground h-9 px-4 py-2 text-sm"
     >
-      <PiBackspace className="mr-1 h-3 w-3 md:mr-2 md:h-4 md:w-4" />
+      <PiBackspace className="mr-2 h-4 w-4" />
       Reset
     </Button>
   )

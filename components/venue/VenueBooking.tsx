@@ -15,7 +15,13 @@ import {
   isAfter,
 } from 'date-fns';
 import {id} from 'date-fns/locale';
-import {cn, convertHourToDate, formatPrice} from '@/libs/utils';
+import {
+  cn,
+  convertHourToDate,
+  formatPrice,
+  getCategoryImage,
+  getFieldFacilityImage,
+} from '@/libs/utils';
 
 import {DialogClose} from '@/components/ui/dialog';
 import {formatNumber} from '@/libs/utils';
@@ -59,9 +65,9 @@ import {
   PiSoccerBall,
   PiVolleyball,
 } from 'react-icons/pi';
-import { GiWhistle, GiStopwatch, GiRunningShoe, GiShuttlecock, GiSoccerKick} from "react-icons/gi";
+import {GiWhistle, GiStopwatch, GiRunningShoe, GiShuttlecock, GiSoccerKick} from 'react-icons/gi';
 import {FaClipboardList} from 'react-icons/fa';
-import { FaTableTennisPaddleBall } from 'react-icons/fa6';
+import {FaTableTennisPaddleBall} from 'react-icons/fa6';
 
 interface VenueBookingProps {
   fields: any;
@@ -74,10 +80,10 @@ export default function VenueBooking({fields, user}: VenueBookingProps) {
   return (
     <section
       id="booking-field"
-      className="flex flex-col gap-8 rounded-2xl bg-gradient-to-b from-blue-50 to-white px-4 py-8 md:px-8"
+      className="flex flex-col gap-8 rounded-2xl bg-gradient-to-b from-blue-50 to-white p-4 md:p-8"
     >
       <div className="flex flex-col gap-8">
-        <h2 className="text-2xl font-bold">Pilih Lapangan</h2>
+        <h2 className="text-xl font-bold sm:text-2xl">Pilih Lapangan</h2>
 
         <div className="flex flex-col gap-4">
           <BookingSchedule />
@@ -249,8 +255,13 @@ function BookingCard({field, user}: BookingCardProps) {
           <div className="flex flex-col gap-2">
             <h3 className="line-clamp-1 text-lg font-semibold">{field.name}</h3>
             <div className="flex w-fit items-center gap-1 whitespace-nowrap rounded-full bg-secondary px-3 py-1">
-              <span className="flex aspect-square h-4 w-4 items-center justify-center">
-                {getCategoryIcon(category)}
+              <span className="relative flex aspect-square h-4 w-4 shrink-0 grow-0 items-center justify-center">
+                <Image
+                  src={getCategoryImage(category)}
+                  alt={category}
+                  layout="fill"
+                  className="object-contain"
+                />
               </span>
               <p className="text-xs">{category}</p>
             </div>
@@ -269,8 +280,15 @@ function BookingCard({field, user}: BookingCardProps) {
               <p className="text-sm font-semibold">Fasilitas Lapangan</p>
               <div className="grid grid-cols-2 grid-rows-2 gap-2">
                 {facilities.map((facility: string, index: number) => (
-                  <div key={index} className="flex gap-2 items-center">
-                    {getFacilityIcon(facility)}
+                  <div key={index} className="flex items-center gap-2">
+                    <span className="relative flex aspect-square h-4 w-4 shrink-0 grow-0 items-center justify-center">
+                      <Image
+                        src={getFieldFacilityImage(facility)}
+                        alt={facility}
+                        layout="fill"
+                        className="object-contain"
+                      />
+                    </span>
                     <p className="text-sm">{facility}</p>
                   </div>
                 ))}
@@ -403,8 +421,7 @@ function BookingForm({field, user}: BookingFormProps) {
         endTime: convertHourToDate(bookingDate, slot.endHour),
         price: slot.price,
       }));
-      
-      
+
       await createBookingMutation({venueId: field.venueId, userId: user.id, bookings});
       resetForm();
       router.push('/booking/review');
@@ -426,7 +443,7 @@ function BookingForm({field, user}: BookingFormProps) {
     const {hour} = schedule;
     const isPastHour = isToday && currentHour >= hour;
 
-    return isPastHour
+    return isPastHour;
   };
 
   useEffect(() => {
@@ -531,50 +548,4 @@ export function VenueBookingSkeleton() {
       ))}
     </section>
   );
-}
-
-function getCategoryIcon(name: string) {
-  switch (name) {
-    case 'Badminton':
-      return <GiShuttlecock className="h-full w-full" />;
-    case 'Basket':
-      return <PiBasketball className="h-full w-full" />;
-    case 'Futsal':
-      return <GiSoccerKick className="h-full w-full" />;
-    case 'Sepak Bola':
-      return <PiSoccerBall className="h-full w-full" />;
-    case 'Tenis Meja':
-      return <FaTableTennisPaddleBall className="h-full w-full" />;
-    case 'Tenis':
-      return <PiTennisBall className="h-full w-full" />;
-    case 'Voli':
-      return <PiVolleyball className="h-full w-full" />;
-    default:
-      return <PiPlusCircle className="h-full w-full" />;
-  }
-}
-
-function getFacilityIcon(name: string) {
-  switch (name) {
-    case 'Baju':
-      return <PiTShirt className="h-4 w-4" />;
-    case 'Sepatu':
-      return <GiRunningShoe className="h-4 w-4" />;
-    case 'Bola':
-      return <PiSoccerBallFill className="h-4 w-4" />;
-    case 'Shuttlecock':
-      return <GiShuttlecock className="h-4 w-4" />;
-    case 'Raket':
-      return <PiTennisBall className="h-4 w-4" />;
-    case 'Kartu':
-      return <PiCardsThree className="h-4 w-4" />;
-    case 'Papan Skor':
-      return <FaClipboardList className="h-4 w-4" />;
-    case 'Stopwatch':
-      return <GiStopwatch className="h-4 w-4" />;
-    case 'Wasit':
-      return <GiWhistle className="h-4 w-4" />;
-    default:
-      return <PiPlusCircle className="h-4 w-4" />;
-  }
 }

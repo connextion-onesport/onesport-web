@@ -17,6 +17,7 @@ interface VenueListProps {
   description: string;
   data: any;
   category?: string;
+  amount?: number;
   isHeading?: boolean;
   isCategory?: boolean;
   isStatus?: boolean;
@@ -29,6 +30,7 @@ export default function VenueList({
   description,
   data,
   category,
+  amount,
   isHeading,
   isCategory,
   isStatus,
@@ -40,7 +42,7 @@ export default function VenueList({
   if (isLoading) {
     return (
       <section className="flex w-full px-4 py-8 md:px-8">
-        <VenueListSkeleton isHeading={isHeading} isCategory={isCategory} isStatus={isStatus} />
+        <VenueListSkeleton amount={amount} isHeading={isHeading} isCategory={isCategory} isStatus={isStatus} />
       </section>
     );
   }
@@ -172,8 +174,6 @@ function VenueStatus() {
     setSelectedStatus(statusValue);
   };
 
-  console.log('selectedStatus', selectedStatus);
-
   return (
     <div className="flex items-center justify-between gap-8">
       <Carousel className="flex overflow-hidden lg:w-full">
@@ -221,7 +221,7 @@ function List({data, latitude, longitude}: ListProps) {
   }
 
   return (
-    <div className="grid grid-cols-1 gap-x-8 gap-y-10 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+    <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
       {data.map((field: any) => (
         <VenueCard
           key={field.id}
@@ -246,12 +246,13 @@ function List({data, latitude, longitude}: ListProps) {
 }
 
 interface LoadingSkeletonProps {
+  amount?: number;
   isHeading?: boolean;
   isCategory?: boolean;
   isStatus?: boolean;
 }
 
-export function VenueListSkeleton({isHeading, isCategory, isStatus}: LoadingSkeletonProps) {
+export function VenueListSkeleton({amount = 4, isHeading, isCategory, isStatus}: LoadingSkeletonProps) {
   return (
     <div className="flex w-full flex-col gap-8">
       {isHeading && (
@@ -281,7 +282,7 @@ export function VenueListSkeleton({isHeading, isCategory, isStatus}: LoadingSkel
       )}
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-        {[1, 2, 3, 4].map(index => (
+        {[...Array(amount)].map((_, index) => (
           <Skeleton key={index} className="h-[384px] rounded-xl" />
         ))}
       </div>
