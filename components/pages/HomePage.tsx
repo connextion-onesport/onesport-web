@@ -5,7 +5,7 @@ import {NavbarBottom} from '@/components/navbar';
 import {VenueList} from '@/components/venue';
 import {Separator} from '@/components/ui/separator';
 import {useQuery} from '@tanstack/react-query';
-import {getAllVenues, getHighestRatingVenues, getNearestVenues} from '@/actions/venue';
+import {getVenues} from '@/actions/venue';
 import {useLocationStore, useVenueStore} from '@/providers/zustand-provider';
 
 export default function HomePage() {
@@ -18,7 +18,7 @@ export default function HomePage() {
     isError: errorNearby,
   } = useQuery({
     queryKey: ['nearby', latitude, longitude, categoryNearby],
-    queryFn: () => getNearestVenues({latitude, longitude, category: categoryNearby}),
+    queryFn: () => getVenues({latitude, longitude, category: categoryNearby}),
     enabled: !!latitude && !!longitude,
   });
 
@@ -28,7 +28,7 @@ export default function HomePage() {
     isError: errorHighestRating,
   } = useQuery({
     queryKey: ['rating', categoryRating],
-    queryFn: () => getHighestRatingVenues(categoryRating),
+    queryFn: () => getVenues({category: categoryRating}),
   });
 
   const {
@@ -37,9 +37,11 @@ export default function HomePage() {
     isError: errorAll,
   } = useQuery({
     queryKey: ['all', categoryAll],
-    queryFn: () => getAllVenues(categoryAll),
-    enabled: !latitude && !longitude,
+    queryFn: () => getVenues({category: categoryAll}),
   });
+
+  const sortedNearbyVenues = nearbyVenues?.sort((a, b) => a.distance - b.distance)
+  const sortedHighestRatingVenues = highestRatingVenues?.sort((a, b) => b.ratingAvg - a.ratingAvg)
 
   return (
     <main className="mx-auto flex w-full max-w-screen-2xl flex-col">
@@ -47,7 +49,7 @@ export default function HomePage() {
 
       {latitude && longitude ? (
         <VenueList
-          data={nearbyVenues}
+          data={sortedNearbyVenues}
           category="nearby"
           isHeading={true}
           isCategory={true}
@@ -72,7 +74,7 @@ export default function HomePage() {
       <Separator />
 
       <VenueList
-        data={highestRatingVenues}
+        data={sortedHighestRatingVenues}
         category="rating"
         isHeading={true}
         isCategory={true}

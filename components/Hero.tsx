@@ -111,8 +111,14 @@ function HeroCategoryDesktop({handleCategory}: {handleCategory: (category: strin
               className="h-12 w-12 rounded-full bg-[#F3ECEC] p-0 hover:bg-[#E6E6EF] md:h-16 md:w-16"
             >
               <span className="rounded-full border-4 border-[#E6E6EF] bg-background p-[1px]">
-                <span className="relative flex items-center justify-center aspect-square shrink-0 grow-0 h-8 w-8 md:h-10 md:w-10">
-                  <Image src={getCategoryImage(category)} alt={category} layout="fill" className='object-contain' />
+                <span className="relative flex aspect-square h-8 w-8 shrink-0 grow-0 items-center justify-center md:h-10 md:w-10">
+                  <Image
+                    src={getCategoryImage(category)}
+                    alt={category}
+                    width={40}
+                    height={40}
+                    className="h-8 w-8 md:h-10 md:w-10"
+                  />
                 </span>
               </span>
             </Button>
@@ -129,8 +135,14 @@ function HeroCategoryDesktop({handleCategory}: {handleCategory: (category: strin
               className="h-12 w-12 rounded-full bg-[#F3ECEC] p-0 hover:bg-[#E6E6EF] md:h-16 md:w-16"
             >
               <span className="rounded-full border-4 border-[#E6E6EF] bg-background p-[1px]">
-                <span className="relative flex items-center justify-center aspect-square shrink-0 grow-0 h-8 w-8 md:h-10 md:w-10">
-                  <Image src={getCategoryImage(category)} alt={category} layout="fill" className='object-contain' />
+                <span className="relative flex aspect-square h-8 w-8 shrink-0 grow-0 items-center justify-center md:h-10 md:w-10">
+                  <Image
+                    src={getCategoryImage(category)}
+                    alt={category}
+                    width={40}
+                    height={40}
+                    className="h-8 w-8 md:h-10 md:w-10"
+                  />
                 </span>
               </span>
             </Button>
@@ -159,10 +171,15 @@ function HeroCategoryMobile({handleCategory}: {handleCategory: (category: string
             onClick={() => handleCategory(category)}
             className="flex aspect-square h-full w-full items-center justify-center rounded-xl bg-background p-0 shadow hover:bg-accent sm:aspect-auto sm:justify-start sm:rounded-none sm:bg-transparent sm:p-0 sm:shadow-none sm:hover:bg-transparent"
           >
-
-            <span className="relative flex items-center justify-center aspect-square shrink-0 grow-0 h-11 w-11 sm:h-7 md:w-7">
-                  <Image src={getCategoryImage(category)} alt={category} layout="fill" className='object-cover' />
-                </span>
+            <span className="relative flex aspect-square h-11 w-11 shrink-0 grow-0 items-center justify-center sm:h-7 md:w-7">
+              <Image
+                src={getCategoryImage(category)}
+                alt={category}
+                width={40}
+                height={40}
+                className="h-11 w-11 sm:h-7 md:w-7"
+              />
+            </span>
           </Button>
           <p className="w-full text-center text-sm font-medium sm:text-start sm:text-base">
             {category}

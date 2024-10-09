@@ -9,8 +9,8 @@ import Link from 'next/link';
 
 import {Carousel, CarouselContent, CarouselItem} from '@/components/ui/carousel';
 import Image from 'next/image';
-import {getAllVenues, getHighestRatingVenues, getNearestVenues} from '@/actions/venue';
 import {bookingStatusNames, venueListCategoryNames} from '@/libs/constants';
+import { getVenues } from '@/actions/venue';
 
 interface VenueListProps {
   title: string;

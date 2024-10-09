@@ -3,139 +3,13 @@
 import {prisma} from '@/libs/prisma';
 import {getDistanceFromLatLonInKm} from '@/libs/utils';
 
-export async function getAllVenues(category?: string) {
-  try {
-    const fields = await prisma.field.findMany({
-      where: {
-        category: {
-          name: category,
-        },
-      },
-      include: {
-        availableHours: true,
-        venue: {
-          include: {
-            images: true,
-            location: true,
-            reviews: true,
-          },
-        },
-      },
-      take: 4,
-    });
-
-    const venueMap = new Map();
-
-    await Promise.all(
-      fields.map(async field => {
-        const venue = field.venue;
-
-        if (!venueMap.has(venue.id)) {
-          const prices = field.availableHours.map(hour => hour.pricePerHour);
-          const minPrice = prices.length > 0 ? Math.min(...prices) : undefined;
-
-          const hours = field.availableHours.map(hour => hour.hour);
-          const smallestHour = hours.length > 0 ? Math.min(...hours) : null;
-          const highestHour = hours.length > 0 ? Math.max(...hours) : null;
-          const openHours = `${smallestHour}.00 - ${highestHour}.00`;
-
-          const isIndoor = field.isIndoor;
-          const isOutdoor = !field.isIndoor;
-          const indoorOutdoor = isIndoor && isOutdoor ? 'Both' : isIndoor ? 'Indoor' : 'Outdoor';
-
-          const totalRatings = venue.reviews.reduce((acc, review) => acc + review.rating, 0);
-          const ratingAvg =
-            venue.reviews.length > 0
-              ? parseFloat((totalRatings / venue.reviews.length).toFixed(1))
-              : 0;
-          const reviewCount = venue.reviews.length;
-
-          if (openHours !== venue.openHours) {
-            await prisma.venue.update({
-              where: {
-                id: venue.id,
-              },
-              data: {
-                openHours: `${smallestHour}.00 - ${highestHour}.00`,
-              },
-            });
-          }
-
-          if (indoorOutdoor !== venue.isIndoor) {
-            await prisma.venue.update({
-              where: {
-                id: venue.id,
-              },
-              data: {
-                isIndoor: indoorOutdoor,
-              },
-            });
-          }
-
-          if (minPrice !== venue.minPrice) {
-            await prisma.venue.update({
-              where: {
-                id: venue.id,
-              },
-              data: {
-                minPrice: minPrice !== undefined ? minPrice : undefined,
-              },
-            });
-          }
-
-          if (ratingAvg !== venue.ratingAvg) {
-            await prisma.venue.update({
-              where: {
-                id: venue.id,
-              },
-              data: {
-                ratingAvg,
-              },
-            });
-          }
-
-          if (reviewCount !== venue.reviewCount) {
-            await prisma.venue.update({
-              where: {
-                id: venue.id,
-              },
-              data: {
-                reviewCount,
-              },
-            });
-          }
-
-          venueMap.set(venue.id, {
-            id: venue.id,
-            name: venue.name,
-            images: venue.images,
-            minPrice,
-            openHours,
-            isIndoor: indoorOutdoor,
-            location: venue.location,
-            ratingAvg,
-            reviewCount,
-          });
-        }
-      })
-    );
-
-    const uniqueVenues = Array.from(venueMap.values());
-
-    return uniqueVenues;
-  } catch (error) {
-    console.error('Error in getAllVenues', error);
-    throw new Error('Error in getAllVenues. Please try again later.');
-  }
-}
-
-export async function getNearestVenues({
+export async function getVenues({
   latitude,
   longitude,
   category,
 }: {
-  latitude: number;
-  longitude: number;
+  latitude?: number;
+  longitude?: number;
   category?: string;
 }) {
   try {
@@ -184,65 +58,49 @@ export async function getNearestVenues({
               : 0;
           const reviewCount = venue.reviews.length;
 
-          const distance = getDistanceFromLatLonInKm(
-            latitude,
-            longitude,
-            venue.location.latitude,
-            venue.location.longitude
-          );
+          const distance =
+            latitude !== undefined && longitude !== undefined
+              ? getDistanceFromLatLonInKm(
+                  latitude,
+                  longitude,
+                  venue.location.latitude,
+                  venue.location.longitude
+                )
+              : 0;
 
+          // Update the venue if necessary
           if (openHours !== venue.openHours) {
             await prisma.venue.update({
-              where: {
-                id: venue.id,
-              },
-              data: {
-                openHours: `${smallestHour}.00 - ${highestHour}.00`,
-              },
+              where: {id: venue.id},
+              data: {openHours},
             });
           }
 
           if (indoorOutdoor !== venue.isIndoor) {
             await prisma.venue.update({
-              where: {
-                id: venue.id,
-              },
-              data: {
-                isIndoor: indoorOutdoor,
-              },
+              where: {id: venue.id},
+              data: {isIndoor: indoorOutdoor},
             });
           }
 
           if (minPrice !== venue.minPrice) {
             await prisma.venue.update({
-              where: {
-                id: venue.id,
-              },
-              data: {
-                minPrice: minPrice !== undefined ? minPrice : undefined,
-              },
+              where: {id: venue.id},
+              data: {minPrice},
             });
           }
 
           if (ratingAvg !== venue.ratingAvg) {
             await prisma.venue.update({
-              where: {
-                id: venue.id,
-              },
-              data: {
-                ratingAvg,
-              },
+              where: {id: venue.id},
+              data: {ratingAvg},
             });
           }
 
           if (reviewCount !== venue.reviewCount) {
             await prisma.venue.update({
-              where: {
-                id: venue.id,
-              },
-              data: {
-                reviewCount,
-              },
+              where: {id: venue.id},
+              data: {reviewCount},
             });
           }
 
@@ -259,147 +117,15 @@ export async function getNearestVenues({
             distance,
           });
         }
-
-        return null;
       })
     );
 
-    const uniqueVenues = Array.from(venueMap.values());
-    const sortedVenues = uniqueVenues.sort((a, b) => a.distance - b.distance);
+    let uniqueVenues = Array.from(venueMap.values());
 
-    return sortedVenues;
+    return uniqueVenues;
   } catch (error) {
-    console.error('Error in getNearestVenues', error);
-    throw new Error('Error in getNearestVenues. Please try again later.');
-  }
-}
-
-export async function getHighestRatingVenues(category?: string) {
-  try {
-    const fields = await prisma.field.findMany({
-      where: {
-        category: {
-          name: category,
-        },
-      },
-      include: {
-        availableHours: true,
-        venue: {
-          include: {
-            images: true,
-            location: true,
-            reviews: true,
-          },
-        },
-      },
-      take: 4,
-    });
-
-    const venueMap = new Map();
-
-    await Promise.all(
-      fields.map(async field => {
-        const venue = field.venue;
-
-        if (!venueMap.has(venue.id)) {
-          const prices = field.availableHours.map(hour => hour.pricePerHour);
-          const minPrice = prices.length > 0 ? Math.min(...prices) : undefined;
-
-          const hours = field.availableHours.map(hour => hour.hour);
-          const smallestHour = hours.length > 0 ? Math.min(...hours) : null;
-          const highestHour = hours.length > 0 ? Math.max(...hours) : null;
-          const openHours = `${smallestHour}.00 - ${highestHour}.00`;
-
-          const isIndoor = field.isIndoor;
-          const isOutdoor = !field.isIndoor;
-          const indoorOutdoor = isIndoor && isOutdoor ? 'Both' : isIndoor ? 'Indoor' : 'Outdoor';
-
-          const totalRatings = venue.reviews.reduce((acc, review) => acc + review.rating, 0);
-          const ratingAvg =
-            venue.reviews.length > 0
-              ? parseFloat((totalRatings / venue.reviews.length).toFixed(1))
-              : 0;
-          const reviewCount = venue.reviews.length;
-
-          if (openHours !== venue.openHours) {
-            await prisma.venue.update({
-              where: {
-                id: venue.id,
-              },
-              data: {
-                openHours: `${smallestHour}.00 - ${highestHour}.00`,
-              },
-            });
-          }
-
-          if (indoorOutdoor !== venue.isIndoor) {
-            await prisma.venue.update({
-              where: {
-                id: venue.id,
-              },
-              data: {
-                isIndoor: indoorOutdoor,
-              },
-            });
-          }
-
-          if (minPrice !== venue.minPrice) {
-            await prisma.venue.update({
-              where: {
-                id: venue.id,
-              },
-              data: {
-                minPrice: minPrice !== undefined ? minPrice : undefined,
-              },
-            });
-          }
-
-          if (ratingAvg !== venue.ratingAvg) {
-            await prisma.venue.update({
-              where: {
-                id: venue.id,
-              },
-              data: {
-                ratingAvg,
-              },
-            });
-          }
-
-          if (reviewCount !== venue.reviewCount) {
-            await prisma.venue.update({
-              where: {
-                id: venue.id,
-              },
-              data: {
-                reviewCount,
-              },
-            });
-          }
-
-          venueMap.set(venue.id, {
-            id: venue.id,
-            name: venue.name,
-            images: venue.images,
-            minPrice,
-            openHours,
-            isIndoor: indoorOutdoor,
-            location: venue.location,
-            ratingAvg,
-            reviewCount,
-          });
-        }
-
-        return null;
-      })
-    );
-
-    const uniqueVenues = Array.from(venueMap.values());
-    const sortedVenues = uniqueVenues.sort((a, b) => b.ratingAvg - a.ratingAvg);
-
-    return sortedVenues;
-  } catch (error) {
-    console.error('Error in getHighestRatingVenues', error);
-    throw new Error('Error in getHighestRatingVenues. Please try again later.');
+    console.error('Error in getVenues', error);
+    throw new Error('Error in getVenues. Please try again later.');
   }
 }
 
@@ -728,7 +454,6 @@ export async function createBookings({
     await prisma.booking.createMany({
       data: bookingData,
     });
-
   } catch (error) {
     console.error('Error in createBookings', error);
     throw new Error('Error in creating bookings. Please try again later.');
