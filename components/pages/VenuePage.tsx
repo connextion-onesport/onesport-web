@@ -40,7 +40,7 @@ export default function VenuePage({params}: {params: {id: string}}) {
 
   if (isLoading) {
     return (
-      <main className="mx-auto flex w-full max-w-screen-2xl flex-col gap-6 md:gap-8 px-2 pb-10 pt-8 md:p-8">
+      <main className="mx-auto flex w-full max-w-screen-2xl flex-col gap-6 md:gap-8 px-4 pb-10 pt-8 md:p-8">
         <VenueBreadcrumbSkeleton />
         <VenueImagesSkeleton />
         <VenueDetailSkeleton />
@@ -55,7 +55,7 @@ export default function VenuePage({params}: {params: {id: string}}) {
   }
 
   return (
-      <main className="mx-auto flex w-full max-w-screen-2xl flex-col gap-6 md:gap-8 px-2 pb-10 pt-8 md:p-8">
+      <main className="mx-auto flex w-full max-w-screen-2xl flex-col gap-6 md:gap-8 px-4 pb-10 pt-8 md:p-8">
         <VenueBreadcrumb name={venue?.name} />
         <VenueImages data={venue} />
         <VenueDetail data={venue} />
