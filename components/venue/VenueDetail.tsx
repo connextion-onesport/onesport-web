@@ -6,9 +6,10 @@ import {Button} from '../ui/button';
 import {useLocationStore, useVenueStore} from '@/providers/zustand-provider';
 import {
   formatNumber,
+  getCategoryImage,
   getDistanceFromLatLonInKm,
-  getFacilityImage,
   getReviewCount,
+  getVenueFacilityImage,
 } from '@/libs/utils';
 import Link from 'next/link';
 
@@ -78,7 +79,7 @@ export default function VenueDetail({data}: VenueDetailProps) {
       <section className="flex flex-col gap-8 rounded-2xl border p-4 md:p-8">
         <div className="flex justify-between gap-8">
           <div className="flex w-full flex-col gap-4">
-            <h1 className="text-xl font-bold">{name}</h1>
+            <h1 className="text-xl font-bold sm:text-2xl">{name}</h1>
 
             {distance > 0 && latitude !== 0 && longitude !== 0 && (
               <div className="flex items-center gap-2">
@@ -112,12 +113,17 @@ export default function VenueDetail({data}: VenueDetailProps) {
             <div className="flex items-center gap-2">
               {uniqueCategories.map((category: string, index: number) => (
                 <div key={index} className="flex items-center gap-2">
-                  <span className="flex cursor-pointer items-center gap-1 rounded-full bg-secondary px-3 py-1 hover:bg-accent hover:text-accent-foreground">
-                    <span className="flex aspect-square h-5 w-5 items-center justify-center">
-                      {getCategoryIcon(category)}
-                    </span>
+                  <div className="flex cursor-pointer items-center gap-1 rounded-full bg-secondary px-3 py-1 hover:bg-accent hover:text-accent-foreground">
+                    <div className="relative flex aspect-square h-5 w-5 items-center justify-center">
+                      <Image
+                        src={getCategoryImage(category)}
+                        alt={category}
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
                     <p className="text-sm">{category}</p>
-                  </span>
+                  </div>
                 </div>
               ))}
             </div>
@@ -179,7 +185,7 @@ export default function VenueDetail({data}: VenueDetailProps) {
                   <div key={facility.id} className="flex items-start gap-2">
                     <span className="relative flex aspect-square h-6 w-6 shrink-0 grow-0 items-center justify-center">
                       <Image
-                        src={getFacilityImage(facility.name)}
+                        src={getVenueFacilityImage(facility.name)}
                         alt={facility.name}
                         fill
                         className="object-cover"
@@ -243,7 +249,7 @@ function VenueDetailDialog({showDetails, setShowDetails, data}: VenueDetailDialo
                 <div key={facility.id} className="flex items-start gap-2">
                   <span className="relative flex aspect-square h-6 w-6 shrink-0 grow-0 items-center justify-center">
                     <Image
-                      src={getFacilityImage(facility.name)}
+                      src={getVenueFacilityImage(facility.name)}
                       alt={facility.name}
                       fill
                       className="object-cover"
@@ -289,25 +295,4 @@ export function VenueDetailSkeleton() {
       </div>
     </section>
   );
-}
-
-function getCategoryIcon(name: string) {
-  switch (name) {
-    case 'Badminton':
-      return <GiShuttlecock className="h-full w-full" />;
-    case 'Basket':
-      return <PiBasketball className="h-full w-full" />;
-    case 'Futsal':
-      return <GiSoccerKick className="h-full w-full" />;
-    case 'Sepak Bola':
-      return <PiSoccerBall className="h-full w-full" />;
-    case 'Tenis Meja':
-      return <FaTableTennisPaddleBall className="h-full w-full" />;
-    case 'Tenis':
-      return <PiTennisBall className="h-full w-full" />;
-    case 'Voli':
-      return <PiVolleyball className="h-full w-full" />;
-    default:
-      return <PiPlusCircle className="h-full w-full" />;
-  }
 }

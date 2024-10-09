@@ -43,9 +43,9 @@ export default function FilterRating() {
       <DialogTrigger aria-label="Open Filter Rating" asChild>
         <Button
           variant="outline"
-          className="h-8 rounded-full px-3 text-xs text-muted-foreground md:h-9 md:px-4 md:py-2 md:text-sm"
+          className="rounded-full text-muted-foreground h-9 px-4 py-2 text-sm"
         >
-          <PiStarFill className="mr-1 h-3 w-3 md:mr-2 md:h-4 md:w-4" />
+          <PiStarFill className="mr-2 h-4 w-4" />
           Rating
         </Button>
       </DialogTrigger>

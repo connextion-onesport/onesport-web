@@ -45,7 +45,7 @@ export default function AuthProfile({user}: {user: User}) {
           <ChevronDownIcon className="ml-0.5 hidden h-4 w-4 md:flex" />
         )}
       </PopoverTrigger>
-      <PopoverContent align="end" className="flex flex-col gap-4">
+      <PopoverContent className="flex flex-col gap-4">
         <div className="flex flex-row items-center gap-2">
           <Avatar className="h-9 w-9 rounded-md">
             <AvatarImage src={user?.image!} width={36} height={36} alt={user?.name!} />

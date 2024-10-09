@@ -82,18 +82,24 @@ export function obfuscateEmail(email: string) {
   const obfuscatedUsername =
     username.charAt(0) + '*'.repeat(5) + username.charAt(username.length - 1);
   return obfuscatedUsername + '@' + domain;
-};
+}
 
-export function getCurrentLocation(setLatitude: (latitude: number) => void, setLongitude: (longitude: number) => void) {
+export function getCurrentLocation(
+  setLatitude: (latitude: number) => void,
+  setLongitude: (longitude: number) => void
+) {
   if (navigator.geolocation) {
-    navigator.geolocation.watchPosition((position) => {
-      const {latitude, longitude} = position.coords;
-      
-      setLatitude(latitude);
-      setLongitude(longitude);
-    }, (error) => {
-      console.error('Error getting location', error);
-    });
+    navigator.geolocation.getCurrentPosition(
+      position => {
+        const {latitude, longitude} = position.coords;
+
+        setLatitude(latitude);
+        setLongitude(longitude);
+      },
+      error => {
+        console.error('Error getting location', error);
+      }
+    );
   } else {
     console.error('Geolocation is not supported by this browser');
   }
@@ -115,7 +121,7 @@ function deg2rad(deg: number) {
   return deg * (Math.PI / 180);
 }
 
-export function getFacilityImage(name: string) {
+export function getVenueFacilityImage(name: string) {
   switch (name) {
     case 'Cafe & Resto': {
       return '/images/venues/cafe&resto.png';
@@ -126,35 +132,88 @@ export function getFacilityImage(name: string) {
     case 'Jual Makanan Ringan': {
       return '/images/venues/jual_makanan_ringan.png';
     }
-    case "Jual Minuman": {
+    case 'Jual Minuman': {
       return '/images/venues/jual_minuman.png';
     }
-    case "Musholla": {
+    case 'Musholla': {
       return '/images/venues/musholla.png';
     }
-    case "Parkir Mobil": {
+    case 'Parkir Mobil': {
       return '/images/venues/parkir_mobil.png';
     }
-    case "Parkir Motor": {
+    case 'Parkir Motor': {
       return '/images/venues/parkir_motor.png';
     }
-    case "Ruang Ganti": {
+    case 'Ruang Ganti': {
       return '/images/venues/ruang_ganti.png';
     }
-    case "Shower": {
+    case 'Shower': {
       return '/images/venues/shower.png';
     }
-    case "Toko Olahraga": {
+    case 'Toko Olahraga': {
       return '/images/venues/toko_olahraga.png';
     }
-    case "Toilet": {
+    case 'Toilet': {
       return '/images/venues/toilet.png';
     }
-    case "Tribun Penonton": {
+    case 'Tribun Penonton': {
       return '/images/venues/tribun_penonton.png';
     }
-    case "Wi-Fi": {
+    case 'Wi-Fi': {
       return '/images/venues/wifi.png';
+    }
+    default: {
+      return '/images/venues/others.png';
+    }
+  }
+}
+
+export function getFieldFacilityImage(name: string) {
+  switch (name) {
+    case 'Bola':
+      return '/images/icons/soccer.svg';
+    case 'Bola Basket':
+      return '/images/icons/basketball.svg';
+    case 'Bola Tenis':
+      return '/images/icons/tennis.svg';
+    case 'Bola Volley':
+      return '/images/icons/volleyball.svg';
+    case 'Shuttlecock':
+      return '/images/icons/badminton.svg';
+    case 'Kartu':
+      return '/images/icons/card.svg';
+    case 'Papan Skor':
+      return '/images/icons/scoreboard.svg';
+    case 'Wasit':
+      return '/images/icons/whistle.svg';
+    default: {
+      return '/images/venues/others.png';
+    }
+  }
+}
+
+export function getCategoryImage(name: string) {
+  switch (name) {
+    case 'Badminton': {
+      return '/images/icons/badminton.svg';
+    }
+    case 'Basket': {
+      return '/images/icons/basketball.svg';
+    }
+    case 'Futsal': {
+      return '/images/icons/futsal.svg';
+    }
+    case 'Sepak Bola': {
+      return '/images/icons/soccer.svg';
+    }
+    case 'Tenis': {
+      return '/images/icons/tennis.svg';
+    }
+    case 'Tenis Meja': {
+      return '/images/icons/table-tennis.svg';
+    }
+    case 'Volley': {
+      return '/images/icons/volleyball.svg';
     }
     default: {
       return '/images/venues/others.png';

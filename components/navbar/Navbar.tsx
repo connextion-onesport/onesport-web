@@ -12,10 +12,10 @@ import NavbarMobileMenu from './NavbarMobileMenu';
 import {AuthProfile} from '../auth';
 import {useQuery} from '@tanstack/react-query';
 import {getUser} from '@/actions/auth';
-import {User} from 'next-auth';
+import { Skeleton } from '../ui/skeleton';
 
 export default function Navbar() {
-  const {data: user} = useQuery({
+  const {data: user, isLoading: userLoading, isError: userError} = useQuery({
     queryKey: ['user'],
     queryFn: () => getUser(),
   });
@@ -26,7 +26,7 @@ export default function Navbar() {
       <NavbarLogo />
       <NavbarMenu />
       <SearchButton />
-      <AuthButton user={user} />
+      <AuthButton user={user} isLoading={userLoading} isError={userError} />
     </nav>
   );
 }
@@ -76,15 +76,25 @@ function SearchButton() {
 
 interface AuthButtonProps {
   user: any;
+  isLoading: boolean;
+  isError: boolean;
 }
 
-function AuthButton({user}: AuthButtonProps) {
+function AuthButton({user, isLoading, isError}: AuthButtonProps) {
   const {setCurrentStep, setShowAuth} = useAuthStore(state => state);
 
   const handleCurrentStep = (currentStep: string) => {
     setShowAuth(true);
     setCurrentStep(currentStep);
   };
+
+  if (isLoading) {
+    return <Skeleton className="h-10 w-10 hidden md:flex rounded-md" />;
+  }
+
+  if (isError) {
+    return null;
+  }
 
   return (
     <div className="hidden items-center gap-2 md:flex">

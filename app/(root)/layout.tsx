@@ -9,7 +9,7 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
         <Navbar />
       </header>
       {children}
-      <footer className="mb-[68px] bg-slate-950 px-6 pt-10 md:mb-0 md:px-8 md:pt-12">
+      <footer className="bg-slate-950 px-6 pt-10 md:mb-0 md:px-8 md:pt-12">
         <Footer />
       </footer>
       <AuthDialog />

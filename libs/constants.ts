@@ -42,43 +42,7 @@ export const navbarMobileRoutes = [
   },
 ];
 
-export const heroCategories = [
-  {
-    name: 'Badminton',
-    image: '/images/icons/basketball.svg',
-    icon: GiShuttlecock,
-  },
-  {
-    name: 'Basket',
-    image: '/images/icons/pingpong.svg',
-    icon: PiBasketball,
-  },
-  {
-    name: 'Futsal',
-    image: '/images/icons/softball.svg',
-    icon: GiSoccerKick,
-  },
-  {
-    name: 'Sepak Bola',
-    image: '/images/icons/track.svg',
-    icon: PiSoccerBall,
-  },
-  {
-    name: 'Tenis',
-    image: '/images/icons/soccer.svg',
-    icon: PiTennisBall,
-  },
-  {
-    name: 'Tenis Meja',
-    image: '/images/icons/baseball.svg',
-    icon: FaTableTennisPaddleBall,
-  },
-  {
-    name: 'Voli',
-    image: '/images/icons/volleyball.svg',
-    icon: PiVolleyball,
-  },
-];
+export const heroCategories = ['Badminton','Basket', 'Futsal', 'Sepak Bola', 'Tenis', 'Tenis Meja', 'Volley']
 
 export const venueListCategoryNames = ['Futsal', 'Basket', 'Sepak Bola', 'Badminton', 'Tenis'];
 

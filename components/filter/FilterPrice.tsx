@@ -49,10 +49,10 @@ export default function FilterPrice() {
       <DialogTrigger aria-label="Open Filter Price" asChild>
         <Button
           variant="outline"
-          className="h-8 rounded-full px-3 text-xs text-muted-foreground md:h-9 md:px-4 md:py-2 md:text-sm"
+          className="h-9 rounded-full px-4 py-2 text-sm text-muted-foreground"
         >
-          <span className="mr-1 flex aspect-square h-3 w-3 shrink-0 grow-0 items-center justify-center md:mr-2 md:h-4 md:w-4">
-            <p className="text-xs font-bold text-muted-foreground md:text-sm">Rp</p>
+          <span className="mr-2 flex aspect-square h-4 w-4 shrink-0 grow-0 items-center justify-center">
+            <p className="text-sm font-bold text-muted-foreground">Rp</p>
           </span>
           Harga
         </Button>
