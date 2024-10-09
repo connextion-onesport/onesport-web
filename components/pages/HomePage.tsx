@@ -18,7 +18,7 @@ export default function HomePage() {
     isError: errorNearby,
   } = useQuery({
     queryKey: ['nearby', latitude, longitude, categoryNearby],
-    queryFn: () => getNearestVenues({latitude, longitude, amount: 4, category: categoryNearby}),
+    queryFn: () => getNearestVenues({latitude, longitude, category: categoryNearby}),
     enabled: !!latitude && !!longitude,
   });
 
@@ -28,7 +28,7 @@ export default function HomePage() {
     isError: errorHighestRating,
   } = useQuery({
     queryKey: ['rating', categoryRating],
-    queryFn: () => getHighestRatingVenues({amount: 4, category: categoryRating}),
+    queryFn: () => getHighestRatingVenues(categoryRating),
   });
 
   const {
@@ -37,7 +37,7 @@ export default function HomePage() {
     isError: errorAll,
   } = useQuery({
     queryKey: ['all', categoryAll],
-    queryFn: () => getAllVenues({amount: 4, category: categoryAll}),
+    queryFn: () => getAllVenues(categoryAll),
     enabled: !latitude && !longitude,
   });
 
