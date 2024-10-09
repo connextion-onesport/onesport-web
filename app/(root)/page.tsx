@@ -18,17 +18,17 @@ export default function Page() {
 
   queryClient.prefetchQuery({
     queryKey: ['nearby', latitude, longitude],
-    queryFn: () => getNearestVenues({latitude, longitude, amount: 4}),
+    queryFn: () => getNearestVenues({latitude, longitude}),
   });
 
   queryClient.prefetchQuery({
     queryKey: ['rating'],
-    queryFn: () => getHighestRatingVenues({amount: 4}),
+    queryFn: () => getHighestRatingVenues(),
   });
 
   queryClient.prefetchQuery({
     queryKey: ['all'],
-    queryFn: () => getAllVenues({amount: 4}),
+    queryFn: () => getAllVenues(),
   });
 
   const dehydratedState = dehydrate(queryClient);
