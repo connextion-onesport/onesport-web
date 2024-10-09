@@ -1,9 +1,9 @@
 'use client';
 
-import {VenuesPage} from '@/pages';
 import {dehydrate, HydrationBoundary, useQueryClient} from '@tanstack/react-query';
 import {getInfiniteVenues} from '@/actions/venue';
 import {useLocationStore} from '@/providers/zustand-provider';
+import { VenuesPage } from '@/components/pages';
 
 export default function Page({
   searchParams,

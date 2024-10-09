@@ -11,7 +11,7 @@ import {useLocationStore, useVenueStore} from '@/providers/zustand-provider';
 import {Suspense, useEffect} from 'react';
 import {getCurrentLocation} from '@/libs/utils';
 import {venueListCategoryNames} from '@/libs/constants';
-import {HomePage} from '@/pages';
+import { HomePage } from '@/components/pages';
 
 export default function Page() {
   const {latitude, setLatitude, longitude, setLongitude} = useLocationStore(state => state);
