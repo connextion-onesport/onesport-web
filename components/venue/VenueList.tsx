@@ -330,11 +330,28 @@ export function VenueListSkeleton({
         </div>
       )}
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+      {amount > 4 ? (
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         {[...Array(amount)].map((_, index) => (
           <Skeleton key={index} className="h-[384px] rounded-xl" />
         ))}
       </div>
+      ) : (
+        <Carousel
+          opts={{
+            align: 'start',
+          }}
+          className="w-full max-w-screen-2xl"
+        >
+          <CarouselContent>
+            {[...Array(amount)].map((_, index) => (
+              <CarouselItem key={index} className="sm:basis-1/2 lg:basis-1/3 xl:basis-1/4">
+                <Skeleton className="h-[384px] rounded-xl" />
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+        </Carousel>
+      )}
     </div>
   );
 }
