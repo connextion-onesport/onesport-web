@@ -67,7 +67,7 @@ export default function VenueReview({data}: VenueReviewProps) {
       <div className="flex flex-col">
         <div className="flex justify-between gap-8 items-center">
           <h2 className="text-xl font-bold sm:text-2xl">Review & Rating</h2>
-          <Button variant="outline" className="text-primary hover:text-primary rounded-full">
+          <Button variant="ghost" className="text-primary hover:text-primary rounded-full">
             Lihat Semua
           </Button>
         </div>
@@ -104,7 +104,7 @@ export default function VenueReview({data}: VenueReviewProps) {
                 rating: number;
                 comment: string;
               }) => (
-                <CarouselItem key={review.id} className="min-h-40 min-w-96 md:basis-1/4">
+                <CarouselItem key={review.id} className="lg:basis-1/2 xl:basis-1/3 min-h-48">
                   <div className="flex h-full w-full flex-col rounded-lg border p-4">
                     <div className="flex w-full justify-between gap-4">
                       <div className="flex gap-2">

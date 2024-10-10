@@ -7,10 +7,16 @@ import VenueCard from './VenueCard';
 import {useLocationStore, usePaymentStore, useVenueStore} from '@/providers/zustand-provider';
 import Link from 'next/link';
 
-import {Carousel, CarouselContent, CarouselItem} from '@/components/ui/carousel';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from '@/components/ui/carousel';
 import Image from 'next/image';
 import {bookingStatusNames, venueListCategoryNames} from '@/libs/constants';
-import { getVenues } from '@/actions/venue';
+import {getVenues} from '@/actions/venue';
 
 interface VenueListProps {
   title: string;
@@ -42,7 +48,12 @@ export default function VenueList({
   if (isLoading) {
     return (
       <section className="flex w-full px-4 py-8 md:px-8">
-        <VenueListSkeleton amount={amount} isHeading={isHeading} isCategory={isCategory} isStatus={isStatus} />
+        <VenueListSkeleton
+          amount={amount}
+          isHeading={isHeading}
+          isCategory={isCategory}
+          isStatus={isStatus}
+        />
       </section>
     );
   }
@@ -220,7 +231,7 @@ function List({data, latitude, longitude}: ListProps) {
     );
   }
 
-  return (
+  return data.length > 4 ? (
     <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
       {data.map((field: any) => (
         <VenueCard
@@ -242,6 +253,39 @@ function List({data, latitude, longitude}: ListProps) {
         />
       ))}
     </div>
+  ) : (
+    <Carousel
+      opts={{
+        align: 'start',
+      }}
+      className="w-full max-w-screen-2xl"
+    >
+      <CarouselContent>
+        {data.map((field: any) => (
+          <CarouselItem key={field.id} className="sm:basis-1/2 lg:basis-1/3 xl:basis-1/4">
+            <div className="p-1">
+              <VenueCard
+                key={field.id}
+                id={field.id}
+                name={field.name}
+                images={field.images}
+                location={field.location}
+                latitude={latitude}
+                longitude={longitude}
+                isIndoor={field.isIndoor}
+                ratingAvg={field.ratingAvg}
+                reviewCount={field.reviewCount}
+                openHours={field.openHours}
+                minPrice={field.minPrice}
+                category={field.category}
+                status={field.status}
+                paymentId={field.paymentId}
+              />
+            </div>
+          </CarouselItem>
+        ))}
+      </CarouselContent>
+    </Carousel>
   );
 }
 
@@ -252,7 +296,12 @@ interface LoadingSkeletonProps {
   isStatus?: boolean;
 }
 
-export function VenueListSkeleton({amount = 4, isHeading, isCategory, isStatus}: LoadingSkeletonProps) {
+export function VenueListSkeleton({
+  amount = 4,
+  isHeading,
+  isCategory,
+  isStatus,
+}: LoadingSkeletonProps) {
   return (
     <div className="flex w-full flex-col gap-8">
       {isHeading && (
@@ -281,11 +330,28 @@ export function VenueListSkeleton({amount = 4, isHeading, isCategory, isStatus}:
         </div>
       )}
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+      {amount > 4 ? (
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         {[...Array(amount)].map((_, index) => (
           <Skeleton key={index} className="h-[384px] rounded-xl" />
         ))}
       </div>
+      ) : (
+        <Carousel
+          opts={{
+            align: 'start',
+          }}
+          className="w-full max-w-screen-2xl"
+        >
+          <CarouselContent>
+            {[...Array(amount)].map((_, index) => (
+              <CarouselItem key={index} className="sm:basis-1/2 lg:basis-1/3 xl:basis-1/4">
+                <Skeleton className="h-[384px] rounded-xl" />
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+        </Carousel>
+      )}
     </div>
   );
 }
