@@ -82,7 +82,7 @@ export default function VenueBooking({fields, user}: VenueBookingProps) {
       id="booking-field"
       className="flex flex-col gap-8 rounded-2xl bg-gradient-to-b from-blue-50 to-white p-4 md:p-8"
     >
-      <div className="flex flex-col gap-8">
+      <div className="flex flex-col gap-4">
         <h2 className="text-xl font-bold sm:text-2xl">Pilih Lapangan</h2>
 
         <div className="flex flex-col gap-4">
@@ -125,10 +125,10 @@ function BookingSchedule() {
 
   return (
     <div className="flex justify-between gap-8 rounded-lg bg-white p-4">
-      <Carousel className="flex overflow-hidden lg:w-full">
+      <Carousel className="overflow-hidden w-full max-w-screen-2xl">
         <CarouselContent>
           {weekDates.map((date, index) => (
-            <CarouselItem key={index} className="min-w-fit basis-0">
+            <CarouselItem key={index} className="basis-auto">
               <Button
                 variant="ghost"
                 className={cn(
@@ -171,7 +171,7 @@ function BookingCategory({categories}: {categories: string[]}) {
       <Button
         variant={categoryBooking === 'Semua' ? 'default' : 'outline'}
         onClick={() => handleSelectCategory('Semua')}
-        className={`${categoryBooking === 'Semua' && 'text-white'} h-8 rounded-full px-3 text-xs md:h-9 md:px-4 md:py-2 md:text-sm`}
+        className={`${categoryBooking === 'Semua' && 'text-white'} rounded-full h-9 px-4 py-2 text-sm`}
       >
         Semua
       </Button>
@@ -181,7 +181,7 @@ function BookingCategory({categories}: {categories: string[]}) {
           key={index}
           variant={categoryBooking === category ? 'default' : 'outline'}
           onClick={() => handleSelectCategory(category)}
-          className={`${categoryBooking === category && 'text-white'} h-8 rounded-full px-3 text-xs md:h-9 md:px-4 md:py-2 md:text-sm`}
+          className={`${categoryBooking === category && 'text-white'} rounded-full h-9 px-4 py-2 text-sm`}
         >
           {category}
         </Button>

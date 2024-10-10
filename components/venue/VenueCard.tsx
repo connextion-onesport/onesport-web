@@ -8,6 +8,7 @@ import {PiStarFill, PiClock} from 'react-icons/pi';
 
 import {Carousel, CarouselContent, CarouselItem, type CarouselApi} from '@/components/ui/carousel';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 export default function VenueCard({
   id,
@@ -28,6 +29,8 @@ export default function VenueCard({
   const [currentSlide, setCurrentSlide] = useState(0);
   const [count, setCount] = useState(0);
 
+  const router = useRouter();
+
   useEffect(() => {
     if (!api) return;
 
@@ -47,9 +50,17 @@ export default function VenueCard({
       : 0;
 
   return (
-    <Link
-      href={status === 'PENDING' ? '/booking/review' : status === "CONFIRMED" ? `/booking/status/${paymentId}` : `/venues/${id}`}
-      className="h-full max-h-full cursor-pointer rounded-xl border hover:shadow-lg hover:transition hover:duration-700 hover:ease-in-out"
+    <div
+      onClick={() => {
+        if (status === 'PENDING') {
+          router.push('/booking/review');
+        } else if (status === "CONFIRMED") {
+          router.push(`/booking/status/${paymentId}`);
+        } else {
+          router.push(`/venues/${id}`);
+        }
+      }}
+      className="h-full max-h-full cursor-pointer rounded-xl border hover:shadow-sm hover:transition hover:duration-700 hover:ease-in-out"
     >
       <div className="relative flex w-full">
         <Carousel
@@ -151,6 +162,6 @@ export default function VenueCard({
           </span>
         </div>
       </div>
-    </Link>
+    </div>
   );
 }

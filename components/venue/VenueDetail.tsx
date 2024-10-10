@@ -150,15 +150,15 @@ export default function VenueDetail({data}: VenueDetailProps) {
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <Link
               href={`https://www.google.com/maps?q=${location.latitude},${location.longitude}`}
-              className="flex flex-col gap-4 rounded-lg border bg-secondary p-4"
+              className="flex min-h-32 flex-col gap-4 rounded-lg border bg-secondary p-4"
               target="_blank"
             >
               <div className="flex items-center justify-between">
                 <h2 className="text-lg font-bold">Lokasi</h2>
 
-                <span className="flex w-fit cursor-pointer items-center text-base font-bold text-primary hover:text-blue-700">
+                <span className="flex w-fit cursor-pointer items-center text-sm font-bold text-primary hover:text-blue-700 md:text-base">
                   Buka Peta
-                  <RiArrowRightSLine className="h-6 w-6" />
+                  <RiArrowRightSLine className="h-4 w-4 md:h-6 md:w-6" />
                 </span>
               </div>
 
@@ -167,23 +167,23 @@ export default function VenueDetail({data}: VenueDetailProps) {
               </div>
             </Link>
 
-            <div className="flex flex-col gap-4 rounded-lg border p-4">
+            <div className="flex min-h-32 flex-col gap-4 rounded-lg border p-4">
               <div className="flex items-center justify-between">
                 <h2 className="text-lg font-bold">Fasilitas</h2>
 
                 <Button
                   variant="link"
                   onClick={() => setShowDetails(true)}
-                  className="flex h-fit w-fit items-center rounded-none p-0 text-base font-bold text-primary hover:text-blue-700 hover:no-underline"
+                  className="flex h-fit w-fit items-center rounded-none p-0 text-sm font-bold text-primary hover:text-blue-700 hover:no-underline md:text-base"
                 >
-                  Lihat Semua <RiArrowRightSLine className="h-6 w-6" />
+                  Lihat Semua <RiArrowRightSLine className="h-4 w-4 md:h-6 md:w-6" />
                 </Button>
               </div>
 
               <div className="grid grid-cols-2 gap-4 lg:grid-cols-3">
                 {facilities.map((facility: {id: string; name: string}) => (
                   <div key={facility.id} className="flex items-start gap-2">
-                    <span className="relative flex aspect-square h-6 w-6 shrink-0 grow-0 items-center justify-center">
+                    <span className="relative flex aspect-square h-5 w-5 shrink-0 grow-0 items-center justify-center">
                       <Image
                         src={getVenueFacilityImage(facility.name)}
                         alt={facility.name}
@@ -198,15 +198,15 @@ export default function VenueDetail({data}: VenueDetailProps) {
             </div>
           </div>
 
-          <div className="flex flex-col gap-4 rounded-lg border p-4">
+          <div className="flex min-h-32 flex-col justify-between gap-4 rounded-lg border p-4">
             <p className="line-clamp-4 text-pretty">{description}</p>
 
             <Button
               variant="link"
               onClick={() => setShowDetails(true)}
-              className="flex h-fit w-fit items-center rounded-none p-0 text-base font-bold text-primary hover:text-blue-700 hover:no-underline"
+              className="flex h-fit w-fit items-center rounded-none p-0 text-sm font-bold text-primary hover:text-blue-700 hover:no-underline md:text-base"
             >
-              Baca Semua <RiArrowRightSLine className="h-6 w-6" />
+              Baca Semua <RiArrowRightSLine className="h-4 w-4 md:h-6 md:w-6" />
             </Button>
           </div>
         </div>
@@ -247,7 +247,7 @@ function VenueDetailDialog({showDetails, setShowDetails, data}: VenueDetailDialo
             <div className="grid grid-cols-2 gap-4 lg:grid-cols-3">
               {facilities.map((facility: {id: string; name: string}) => (
                 <div key={facility.id} className="flex items-start gap-2">
-                  <span className="relative flex aspect-square h-6 w-6 shrink-0 grow-0 items-center justify-center">
+                  <span className="relative flex aspect-square h-5 w-5 shrink-0 grow-0 items-center justify-center">
                     <Image
                       src={getVenueFacilityImage(facility.name)}
                       alt={facility.name}

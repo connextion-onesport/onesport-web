@@ -139,7 +139,7 @@ function VenueImageDialog({data, imageCount, showImages, setShowImages}: VenueIm
     <Dialog open={showImages} onOpenChange={setShowImages}>
       <DialogContent className="flex h-dvh flex-col items-center justify-center gap-0 rounded-none p-0 md:h-fit md:max-w-5xl md:rounded-xl">
         <DialogHeader className="w-full border-b-2 p-6">
-          <DialogTitle className='line-clamp-1'>{name}</DialogTitle>
+          <DialogTitle className='line-clamp-1 mr-10'>{name}</DialogTitle>
           <VisuallyHidden>
             <DialogDescription>{description}</DialogDescription>
           </VisuallyHidden>
