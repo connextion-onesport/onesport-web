@@ -9,6 +9,7 @@ import Link from 'next/link';
 
 import {
   Carousel,
+  CarouselApi,
   CarouselContent,
   CarouselItem,
   CarouselNext,
@@ -17,6 +18,7 @@ import {
 import Image from 'next/image';
 import {bookingStatusNames, venueListCategoryNames} from '@/libs/constants';
 import {getVenues} from '@/actions/venue';
+import { useEffect, useState } from 'react';
 
 interface VenueListProps {
   title: string;
@@ -220,6 +222,23 @@ interface ListProps {
 }
 
 function List({data, latitude, longitude}: ListProps) {
+  const [api, setApi] = useState<CarouselApi>()
+  const [current, setCurrent] = useState(0)
+  const [count, setCount] = useState(0)
+
+  useEffect(() => {
+    if (!api) {
+      return
+    }
+
+    setCount(api.scrollSnapList().length)
+    setCurrent(api.selectedScrollSnap() + 1)
+
+    api.on('scroll', () => {
+      setCurrent(api.selectedScrollSnap() + 1)
+    })
+  }, [api])
+
   if (data.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center gap-4 p-8">
@@ -255,6 +274,7 @@ function List({data, latitude, longitude}: ListProps) {
     </div>
   ) : (
     <Carousel
+      setApi={setApi}
       opts={{
         align: 'start',
       }}

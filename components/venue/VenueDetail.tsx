@@ -19,7 +19,6 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from '@/components/ui/dialog';
 import {VisuallyHidden} from '@radix-ui/react-visually-hidden';
 import {Skeleton} from '../ui/skeleton';
@@ -27,19 +26,7 @@ import Image from 'next/image';
 
 import {
   PiClock,
-  PiTShirt,
-  PiCourtBasketball,
-  PiSoccerBallFill,
-  PiTennisBall,
-  PiCardsThree,
-  PiPlusCircle,
-  PiBasketball,
-  PiSoccerBall,
-  PiVolleyball,
 } from 'react-icons/pi';
-import {GiWhistle, GiStopwatch, GiRunningShoe, GiShuttlecock, GiSoccerKick} from 'react-icons/gi';
-import {FaClipboardList} from 'react-icons/fa';
-import {FaTableTennisPaddleBall} from 'react-icons/fa6';
 
 interface VenueDetailProps {
   data: any;
@@ -76,8 +63,8 @@ export default function VenueDetail({data}: VenueDetailProps) {
 
   return (
     <>
-      <section className="flex flex-col gap-8 rounded-2xl border p-4 md:p-8">
-        <div className="flex justify-between gap-8">
+      <section className="flex flex-col gap-4 md:gap-8 md:rounded-2xl md:border md:p-8">
+        <div className="flex justify-between gap-8 rounded-lg border p-4 md:rounded-none md:border-none md:p-0">
           <div className="flex w-full flex-col gap-4">
             <h1 className="text-xl font-bold sm:text-2xl">{name}</h1>
 
@@ -144,7 +131,7 @@ export default function VenueDetail({data}: VenueDetailProps) {
           </div>
         </div>
 
-        <Separator />
+        <Separator className='hidden md:block' />
 
         <div className="flex flex-col gap-4">
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">

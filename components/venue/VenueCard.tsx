@@ -72,7 +72,7 @@ export default function VenueCard({
         >
           <CarouselContent>
             {thumbnails?.map((thumbnail, index) => (
-              <CarouselItem key={index}>
+              <CarouselItem key={index} >
                 <div className="relative flex h-56 w-full items-center justify-center rounded-t-xl">
                   <Image
                     src={thumbnail}
